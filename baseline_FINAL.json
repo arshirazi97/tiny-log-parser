@@ -1,0 +1,711 @@
+{
+  "accuracy": 0.835,
+  "ci": [
+    0.785,
+    0.885
+  ],
+  "per_field": {
+    "timestamp": 0.975,
+    "level": 1.0,
+    "service": 0.895,
+    "trace_id": 1.0,
+    "status_code": 1.0,
+    "latency_ms": 0.965,
+    "message": 0.995
+  },
+  "misses": [
+    {
+      "input": "2026-07-26 10:13:44,779 warn [http-nio-8080-exec-19] com.auth.api.Handler - rate limit exceeded for client 186 elapsed=3739",
+      "gold": {
+        "timestamp": "2026-07-26T10:13:44Z",
+        "level": "WARNING",
+        "service": "auth-api",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 3739,
+        "message": "rate limit exceeded for client 186"
+      },
+      "pred": {
+        "timestamp": "2026-07-26T10:13:44Z",
+        "level": "WARNING",
+        "service": "com.auth.api.handler",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 3739,
+        "message": "rate limit exceeded for client 186"
+      }
+    },
+    {
+      "input": "[1780543196] [W] [user-profile] disk usage crossed warning watermark (trace_id: fe5f6372bab0548c6938175a7b13eeca) <1747>",
+      "gold": {
+        "timestamp": "2026-06-04T03:19:56Z",
+        "level": "WARNING",
+        "service": "user-profile",
+        "trace_id": "fe5f6372bab0548c6938175a7b13eeca",
+        "status_code": null,
+        "latency_ms": 1747,
+        "message": "disk usage crossed warning watermark"
+      },
+      "pred": {
+        "timestamp": "2026-06-04T03:19:56Z",
+        "level": "WARNING",
+        "service": "user-profile",
+        "trace_id": "fe5f6372bab0548c6938175a7b13eeca",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "disk usage crossed warning watermark"
+      }
+    },
+    {
+      "input": "2026-06-30 07:28:07,626 6 [http-nio-8080-exec-22] com.user.profile.Handler - webhook delivery failed with non-2xx response traceId=35ea19e59a188c053c026f3a0b26b1fc elapsed=1903ms",
+      "gold": {
+        "timestamp": "2026-06-30T07:28:07Z",
+        "level": "INFO",
+        "service": "user-profile",
+        "trace_id": "35ea19e59a188c053c026f3a0b26b1fc",
+        "status_code": null,
+        "latency_ms": 1903,
+        "message": "webhook delivery failed with non-2xx response"
+      },
+      "pred": {
+        "timestamp": "2026-06-30T07:28:07Z",
+        "level": "INFO",
+        "service": "com.user.profile.handler",
+        "trace_id": "35ea19e59a188c053c026f3a0b26b1fc",
+        "status_code": null,
+        "latency_ms": 1903,
+        "message": "webhook delivery failed with non-2xx response"
+      }
+    },
+    {
+      "input": "2026-07-30 08:42:36,239 NOTICE [http-nio-8080-exec-16] com.auth.api.Handler - retrying request after transient failure (attempt 4410) elapsed=6905000us",
+      "gold": {
+        "timestamp": "2026-07-30T08:42:36Z",
+        "level": "INFO",
+        "service": "auth-api",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 6905,
+        "message": "retrying request after transient failure (attempt 4410)"
+      },
+      "pred": {
+        "timestamp": "2026-07-30T08:42:36Z",
+        "level": "INFO",
+        "service": "com.auth.api.handler",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 6905,
+        "message": "retrying request after transient failure (attempt 4410)"
+      }
+    },
+    {
+      "input": "[1782080104] [6] [search-indexer] disk usage crossed warning watermark",
+      "gold": {
+        "timestamp": "2026-06-21T22:15:04Z",
+        "level": "INFO",
+        "service": "search-indexer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "disk usage crossed warning watermark"
+      },
+      "pred": {
+        "timestamp": "2026-06-21T22:01:44Z",
+        "level": "INFO",
+        "service": "search-indexer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "disk usage crossed warning watermark"
+      }
+    },
+    {
+      "input": "2026-06-29 06:22:43,971 notice [http-nio-8080-exec-27] com.search.indexer.Handler - message dropped after exceeding max redeliveries",
+      "gold": {
+        "timestamp": "2026-06-29T06:22:43Z",
+        "level": "INFO",
+        "service": "search-indexer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "message dropped after exceeding max redeliveries"
+      },
+      "pred": {
+        "timestamp": "2026-06-29T06:22:43Z",
+        "level": "INFO",
+        "service": "com.search.indexer.handler",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "message dropped after exceeding max redeliveries"
+      }
+    },
+    {
+      "input": "2026-07-28 17:24:52,186 6 [http-nio-8080-exec-16] com.billing.Handler - disk usage crossed warning watermark traceId=acbec207ae33cc7ee44efeebc2a5c60f elapsed=5773ms",
+      "gold": {
+        "timestamp": "2026-07-28T17:24:52Z",
+        "level": "INFO",
+        "service": "billing",
+        "trace_id": "acbec207ae33cc7ee44efeebc2a5c60f",
+        "status_code": null,
+        "latency_ms": 5773,
+        "message": "disk usage crossed warning watermark"
+      },
+      "pred": {
+        "timestamp": "2026-07-28T17:24:52Z",
+        "level": "INFO",
+        "service": "com.billing.handler",
+        "trace_id": "acbec207ae33cc7ee44efeebc2a5c60f",
+        "status_code": null,
+        "latency_ms": 5773,
+        "message": "disk usage crossed warning watermark"
+      }
+    },
+    {
+      "input": "2026-07-12 11:18:20,575 INFO [http-nio-8080-exec-19] com.auth.api.Handler - connection pool exhausted, waiting for free slot traceId=8bce25f633b55b3813a2fc3ebb6a9556",
+      "gold": {
+        "timestamp": "2026-07-12T11:18:20Z",
+        "level": "INFO",
+        "service": "auth-api",
+        "trace_id": "8bce25f633b55b3813a2fc3ebb6a9556",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "connection pool exhausted, waiting for free slot"
+      },
+      "pred": {
+        "timestamp": "2026-07-12T11:18:20Z",
+        "level": "INFO",
+        "service": "com.auth.api.handler",
+        "trace_id": "8bce25f633b55b3813a2fc3ebb6a9556",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "connection pool exhausted, waiting for free slot"
+      }
+    },
+    {
+      "input": "2026-07-20 00:19:07,052 warn [http-nio-8080-exec-10] com.search.indexer.Handler - cache miss for key user:8044:preferences elapsed=721",
+      "gold": {
+        "timestamp": "2026-07-20T00:19:07Z",
+        "level": "WARNING",
+        "service": "search-indexer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 721,
+        "message": "cache miss for key user:8044:preferences"
+      },
+      "pred": {
+        "timestamp": "2026-07-20T00:19:07Z",
+        "level": "WARNING",
+        "service": "indexer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 721,
+        "message": "cache miss for key user:8044:preferences"
+      }
+    },
+    {
+      "input": "2026-07-13 09:59:37,261 NOTICE [http-nio-8080-exec-17] com.session.store.Handler - cache miss for key user:9216:preferences elapsed=5449000us",
+      "gold": {
+        "timestamp": "2026-07-13T09:59:37Z",
+        "level": "INFO",
+        "service": "session-store",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 5449,
+        "message": "cache miss for key user:9216:preferences"
+      },
+      "pred": {
+        "timestamp": "2026-07-13T09:59:37Z",
+        "level": "INFO",
+        "service": "session",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 5449,
+        "message": "cache miss for key user:9216:preferences"
+      }
+    },
+    {
+      "input": "2026-06-11 01:50:56,966 E [http-nio-8080-exec-25] com.auth.api.Handler - webhook delivery failed with non-2xx response traceId=9cf7255fca48dcfa2ab62835ff20a193 elapsed=1516ms",
+      "gold": {
+        "timestamp": "2026-06-11T01:50:56Z",
+        "level": "ERROR",
+        "service": "auth-api",
+        "trace_id": "9cf7255fca48dcfa2ab62835ff20a193",
+        "status_code": null,
+        "latency_ms": 1516,
+        "message": "webhook delivery failed with non-2xx response"
+      },
+      "pred": {
+        "timestamp": "2026-06-11T01:50:56Z",
+        "level": "ERROR",
+        "service": "com.auth.api.handler",
+        "trace_id": "9cf7255fca48dcfa2ab62835ff20a193",
+        "status_code": null,
+        "latency_ms": 1516,
+        "message": "webhook delivery failed with non-2xx response"
+      }
+    },
+    {
+      "input": "[1783035071] [info] [recommendation] user session refreshed successfully (trace_id: ef4ff210ea72f20b72839a357b8ec03e) <2533>",
+      "gold": {
+        "timestamp": "2026-07-02T23:31:11Z",
+        "level": "INFO",
+        "service": "recommendation",
+        "trace_id": "ef4ff210ea72f20b72839a357b8ec03e",
+        "status_code": null,
+        "latency_ms": 2533,
+        "message": "user session refreshed successfully"
+      },
+      "pred": {
+        "timestamp": "2026-07-02T23:31:11Z",
+        "level": "INFO",
+        "service": "recommendation",
+        "trace_id": "ef4ff210ea72f20b72839a357b8ec03e",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "user session refreshed successfully"
+      }
+    },
+    {
+      "input": "[1780871702] [6] [notification-worker] upstream timed out while reading response header <2487>",
+      "gold": {
+        "timestamp": "2026-06-07T22:35:02Z",
+        "level": "INFO",
+        "service": "notification-worker",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 2487,
+        "message": "upstream timed out while reading response header"
+      },
+      "pred": {
+        "timestamp": "2026-06-07T22:35:02Z",
+        "level": "INFO",
+        "service": "notification-worker",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "upstream timed out while reading response header <2487>"
+      }
+    },
+    {
+      "input": "2026-07-17 10:54:29,134 error [http-nio-8080-exec-23] com.payments.Handler - payment intent confirmed and captured",
+      "gold": {
+        "timestamp": "2026-07-17T10:54:29Z",
+        "level": "ERROR",
+        "service": "payments",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "payment intent confirmed and captured"
+      },
+      "pred": {
+        "timestamp": "2026-07-17T10:54:29Z",
+        "level": "ERROR",
+        "service": "com.payments.handler",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "payment intent confirmed and captured"
+      }
+    },
+    {
+      "input": "[1784992414] [notice] [session-store] invalid JWT signature presented by client (traceID: fd514757c3c0f77f537738d1a10795b3) <4073>",
+      "gold": {
+        "timestamp": "2026-07-25T15:13:34Z",
+        "level": "INFO",
+        "service": "session-store",
+        "trace_id": "fd514757c3c0f77f537738d1a10795b3",
+        "status_code": null,
+        "latency_ms": 4073,
+        "message": "invalid JWT signature presented by client"
+      },
+      "pred": {
+        "timestamp": "2026-07-25T15:13:34Z",
+        "level": "INFO",
+        "service": "session-store",
+        "trace_id": "fd514757c3c0f77f537738d1a10795b3",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "invalid JWT signature presented by client"
+      }
+    },
+    {
+      "input": "2026-07-28 03:55:15,951 INFO [http-nio-8080-exec-3] com.webhook.dispatcher.Handler - cache miss for key user:2313:preferences traceId=ad2f0356de00a01de527640fd9e076e6",
+      "gold": {
+        "timestamp": "2026-07-28T03:55:15Z",
+        "level": "INFO",
+        "service": "webhook-dispatcher",
+        "trace_id": "ad2f0356de00a01de527640fd9e076e6",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "cache miss for key user:2313:preferences"
+      },
+      "pred": {
+        "timestamp": "2026-07-28T03:55:15Z",
+        "level": "INFO",
+        "service": "com.webhook.dispatcher.handler",
+        "trace_id": "ad2f0356de00a01de527640fd9e076e6",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "cache miss for key user:2313:preferences"
+      }
+    },
+    {
+      "input": "2026-07-02 10:21:02,852 notice [http-nio-8080-exec-26] com.recommendation.Handler - background job completed without errors",
+      "gold": {
+        "timestamp": "2026-07-02T10:21:02Z",
+        "level": "INFO",
+        "service": "recommendation",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "background job completed without errors"
+      },
+      "pred": {
+        "timestamp": "2026-07-02T10:21:02Z",
+        "level": "INFO",
+        "service": "com.recommendation.handler",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "background job completed without errors"
+      }
+    },
+    {
+      "input": "2026-07-25 21:50:11,432 WARN [http-nio-8080-exec-13] com.image.resizer.Handler - background job completed without errors",
+      "gold": {
+        "timestamp": "2026-07-25T21:50:11Z",
+        "level": "WARNING",
+        "service": "image-resizer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "background job completed without errors"
+      },
+      "pred": {
+        "timestamp": "2026-07-25T21:50:11Z",
+        "level": "WARNING",
+        "service": "com.image.resizer.handler",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "background job completed without errors"
+      }
+    },
+    {
+      "input": "[1781683124] [WARN] [image-resizer] failed to acquire advisory lock on shard 678 (trace-id: d06dc9a4aebdeaeae7dbe88fa2cb19bb)",
+      "gold": {
+        "timestamp": "2026-06-17T07:58:44Z",
+        "level": "WARNING",
+        "service": "image-resizer",
+        "trace_id": "d06dc9a4aebdeaeae7dbe88fa2cb19bb",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "failed to acquire advisory lock on shard 678"
+      },
+      "pred": {
+        "timestamp": "2026-06-16T07:58:44Z",
+        "level": "WARNING",
+        "service": "image-resizer",
+        "trace_id": "d06dc9a4aebdeaeae7dbe88fa2cb19bb",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "failed to acquire advisory lock on shard 678"
+      }
+    },
+    {
+      "input": "2026-06-13 14:35:51,629 DEBUG [http-nio-8080-exec-7] com.search.indexer.Handler - index rebuild finished, 3161 documents processed elapsed=2492000us",
+      "gold": {
+        "timestamp": "2026-06-13T14:35:51Z",
+        "level": "DEBUG",
+        "service": "search-indexer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 2492,
+        "message": "index rebuild finished, 3161 documents processed"
+      },
+      "pred": {
+        "timestamp": "2026-06-13T14:35:51Z",
+        "level": "DEBUG",
+        "service": "indexer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 2492,
+        "message": "index rebuild finished, 3161 documents processed"
+      }
+    },
+    {
+      "input": "2026-06-20 16:43:28,613 I [http-nio-8080-exec-16] com.image.resizer.Handler - cache miss for key user:8704:preferences traceId=fc6fd250e5e28893918b5b3a1b3a540c elapsed=4356000us",
+      "gold": {
+        "timestamp": "2026-06-20T16:43:28Z",
+        "level": "INFO",
+        "service": "image-resizer",
+        "trace_id": "fc6fd250e5e28893918b5b3a1b3a540c",
+        "status_code": null,
+        "latency_ms": 4356,
+        "message": "cache miss for key user:8704:preferences"
+      },
+      "pred": {
+        "timestamp": "2026-06-20T16:43:28Z",
+        "level": "INFO",
+        "service": "com.image.resizer.handler",
+        "trace_id": "fc6fd250e5e28893918b5b3a1b3a540c",
+        "status_code": null,
+        "latency_ms": 4356,
+        "message": "cache miss for key user:8704:preferences"
+      }
+    },
+    {
+      "input": "2026-07-07 04:27:34,742 info [http-nio-8080-exec-12] com.user.profile.Handler - database replica lag exceeded threshold",
+      "gold": {
+        "timestamp": "2026-07-07T04:27:34Z",
+        "level": "INFO",
+        "service": "user-profile",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "database replica lag exceeded threshold"
+      },
+      "pred": {
+        "timestamp": "2026-07-07T04:27:34Z",
+        "level": "INFO",
+        "service": "com.user.profile.handler",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "database replica lag exceeded threshold"
+      }
+    },
+    {
+      "input": "2026-06-11 21:49:38,250 WARN [http-nio-8080-exec-18] com.session.store.Handler - failed to acquire advisory lock on shard 9976 traceId=1caf8d7b0d617edd3ae82710316a0cb8",
+      "gold": {
+        "timestamp": "2026-06-11T21:49:38Z",
+        "level": "WARNING",
+        "service": "session-store",
+        "trace_id": "1caf8d7b0d617edd3ae82710316a0cb8",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "failed to acquire advisory lock on shard 9976"
+      },
+      "pred": {
+        "timestamp": "2026-06-11T21:49:38Z",
+        "level": "WARNING",
+        "service": "com.session.store.handler",
+        "trace_id": "1caf8d7b0d617edd3ae82710316a0cb8",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "failed to acquire advisory lock on shard 9976"
+      }
+    },
+    {
+      "input": "2026-06-18 04:09:08,609 info [http-nio-8080-exec-31] com.user.profile.Handler - TLS handshake aborted by peer traceId=ad4a2318a0b3010d1c607f0d0175d4ee elapsed=5.168s",
+      "gold": {
+        "timestamp": "2026-06-18T04:09:08Z",
+        "level": "INFO",
+        "service": "user-profile",
+        "trace_id": "ad4a2318a0b3010d1c607f0d0175d4ee",
+        "status_code": null,
+        "latency_ms": 5168,
+        "message": "TLS handshake aborted by peer"
+      },
+      "pred": {
+        "timestamp": "2026-06-18T04:09:08Z",
+        "level": "INFO",
+        "service": "com.user.profile.handler",
+        "trace_id": "ad4a2318a0b3010d1c607f0d0175d4ee",
+        "status_code": null,
+        "latency_ms": 5168,
+        "message": "TLS handshake aborted by peer"
+      }
+    },
+    {
+      "input": "2026-06-19 03:50:36,982 4 [http-nio-8080-exec-17] com.billing.Handler - upstream timed out while reading response header traceId=18140786144ad6a2f0336617d3fa961d elapsed=3.037s",
+      "gold": {
+        "timestamp": "2026-06-19T03:50:36Z",
+        "level": "WARNING",
+        "service": "billing",
+        "trace_id": "18140786144ad6a2f0336617d3fa961d",
+        "status_code": null,
+        "latency_ms": 3037,
+        "message": "upstream timed out while reading response header"
+      },
+      "pred": {
+        "timestamp": "2026-06-19T03:50:36Z",
+        "level": "WARNING",
+        "service": "com.billing.handler",
+        "trace_id": "18140786144ad6a2f0336617d3fa961d",
+        "status_code": null,
+        "latency_ms": 3037,
+        "message": "upstream timed out while reading response header"
+      }
+    },
+    {
+      "input": "2026-07-25 12:49:20,113 5 [http-nio-8080-exec-4] com.user.profile.Handler - user session refreshed successfully elapsed=5439ms",
+      "gold": {
+        "timestamp": "2026-07-25T12:49:20Z",
+        "level": "INFO",
+        "service": "user-profile",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 5439,
+        "message": "user session refreshed successfully"
+      },
+      "pred": {
+        "timestamp": "2026-07-25T12:49:20Z",
+        "level": "INFO",
+        "service": "com.user.profile.handler",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 5439,
+        "message": "user session refreshed successfully"
+      }
+    },
+    {
+      "input": "[1783952213] [info] [search-indexer] webhook delivery failed with non-2xx response (tid: 0242404afae302f2d34dae2a8ed29f8a) <6170>",
+      "gold": {
+        "timestamp": "2026-07-13T14:16:53Z",
+        "level": "INFO",
+        "service": "search-indexer",
+        "trace_id": "0242404afae302f2d34dae2a8ed29f8a",
+        "status_code": null,
+        "latency_ms": 6170,
+        "message": "webhook delivery failed with non-2xx response"
+      },
+      "pred": {
+        "timestamp": "2026-07-13T14:16:53Z",
+        "level": "INFO",
+        "service": "search-indexer",
+        "trace_id": "0242404afae302f2d34dae2a8ed29f8a",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "webhook delivery failed with non-2xx response"
+      }
+    },
+    {
+      "input": "[1780846791] [ERR] [inventory] rate limit exceeded for client 7817 <5489ms>",
+      "gold": {
+        "timestamp": "2026-06-07T15:39:51Z",
+        "level": "ERROR",
+        "service": "inventory",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 5489,
+        "message": "rate limit exceeded for client 7817"
+      },
+      "pred": {
+        "timestamp": "2026-06-06T15:39:51Z",
+        "level": "ERROR",
+        "service": "inventory",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 5489,
+        "message": "rate limit exceeded for client 7817"
+      }
+    },
+    {
+      "input": "2026-07-22 11:28:24,120 E [http-nio-8080-exec-20] com.user.profile.Handler - user session refreshed successfully traceId=ecfc3a21a254015c2d9dcca960b40d47 elapsed=3.604s",
+      "gold": {
+        "timestamp": "2026-07-22T11:28:24Z",
+        "level": "ERROR",
+        "service": "user-profile",
+        "trace_id": "ecfc3a21a254015c2d9dcca960b40d47",
+        "status_code": null,
+        "latency_ms": 3604,
+        "message": "user session refreshed successfully"
+      },
+      "pred": {
+        "timestamp": "2026-07-22T11:28:24Z",
+        "level": "ERROR",
+        "service": "com.user.profile.handler",
+        "trace_id": "ecfc3a21a254015c2d9dcca960b40d47",
+        "status_code": null,
+        "latency_ms": 3604,
+        "message": "user session refreshed successfully"
+      }
+    },
+    {
+      "input": "[1781658716] [ERR] [session-store] database replica lag exceeded threshold",
+      "gold": {
+        "timestamp": "2026-06-17T01:11:56Z",
+        "level": "ERROR",
+        "service": "session-store",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "database replica lag exceeded threshold"
+      },
+      "pred": {
+        "timestamp": "2026-06-17T11:58:36Z",
+        "level": "ERROR",
+        "service": "session-store",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "database replica lag exceeded threshold"
+      }
+    },
+    {
+      "input": "[1785104755] [4] [search-indexer] rate limit exceeded for client 6308 (traceID: 508d8eaa73165b3f31fda617c382bb11) <99>",
+      "gold": {
+        "timestamp": "2026-07-26T22:25:55Z",
+        "level": "WARNING",
+        "service": "search-indexer",
+        "trace_id": "508d8eaa73165b3f31fda617c382bb11",
+        "status_code": null,
+        "latency_ms": 99,
+        "message": "rate limit exceeded for client 6308"
+      },
+      "pred": {
+        "timestamp": "2026-07-26T22:25:55Z",
+        "level": "WARNING",
+        "service": "search-indexer",
+        "trace_id": "508d8eaa73165b3f31fda617c382bb11",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "rate limit exceeded for client 6308"
+      }
+    },
+    {
+      "input": "[1783176073] [ERR] [session-store] user session refreshed successfully (X-Trace-Id: fd2f02bd392ad399f3b2fb642320814c) <4197>",
+      "gold": {
+        "timestamp": "2026-07-04T14:41:13Z",
+        "level": "ERROR",
+        "service": "session-store",
+        "trace_id": "fd2f02bd392ad399f3b2fb642320814c",
+        "status_code": null,
+        "latency_ms": 4197,
+        "message": "user session refreshed successfully"
+      },
+      "pred": {
+        "timestamp": "2026-07-04T14:41:13Z",
+        "level": "ERROR",
+        "service": "session-store",
+        "trace_id": "fd2f02bd392ad399f3b2fb642320814c",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "user session refreshed successfully"
+      }
+    },
+    {
+      "input": "{\"time\": \"1781573106708\", \"severity\": \"5\", \"kubernetes\": {\"container_name\": \"session-store\", \"namespace\": \"prod\"}, \"log\": \"webhook delivery failed with non-2xx response\", \"tid\": \"742053efc1729dda8a2decd229942094\"}",
+      "gold": {
+        "timestamp": "2026-06-16T01:25:06Z",
+        "level": "INFO",
+        "service": "session-store",
+        "trace_id": "742053efc1729dda8a2decd229942094",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "webhook delivery failed with non-2xx response"
+      },
+      "pred": {
+        "timestamp": "2026-06-16T14:45:06Z",
+        "level": "INFO",
+        "service": "session-store",
+        "trace_id": "742053efc1729dda8a2decd229942094",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "webhook delivery failed with non-2xx response"
+      }
+    }
+  ]
+}
