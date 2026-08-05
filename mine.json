@@ -1,0 +1,855 @@
+{
+  "accuracy": 0.575,
+  "ci": [
+    0.51,
+    0.645
+  ],
+  "latency_ms": 3207.183017730713,
+  "per_field": {
+    "timestamp": 0.725,
+    "level": 0.87,
+    "service": 0.995,
+    "trace_id": 1.0,
+    "status_code": 1.0,
+    "latency_ms": 0.99,
+    "message": 0.965
+  },
+  "misses": [
+    {
+      "input": "76.75.59.163 - - [03/Jun/2026:23:31:39 -0800] \"PUT /assets/logo.svg HTTP/1.1\" 200 43702 \"-\" \"Mozilla/5.0\" rt=7.516 upstream=inventory",
+      "gold": {
+        "timestamp": "2026-06-04T07:31:39Z",
+        "level": "INFO",
+        "service": "inventory",
+        "trace_id": null,
+        "status_code": 200,
+        "latency_ms": 7516,
+        "message": "PUT /assets/logo.svg"
+      },
+      "pred": {
+        "timestamp": "2026-06-04T07:31:39Z",
+        "level": "INFO",
+        "service": "inventory",
+        "trace_id": null,
+        "status_code": 200,
+        "latency_ms": 7516
+      }
+    },
+    {
+      "input": "[1780543196] [W] [user-profile] disk usage crossed warning watermark (trace_id: fe5f6372bab0548c6938175a7b13eeca) <1747>",
+      "gold": {
+        "timestamp": "2026-06-04T03:19:56Z",
+        "level": "WARNING",
+        "service": "user-profile",
+        "trace_id": "fe5f6372bab0548c6938175a7b13eeca",
+        "status_code": null,
+        "latency_ms": 1747,
+        "message": "disk usage crossed warning watermark"
+      },
+      "pred": {
+        "timestamp": "2026-05-02T11:19:56Z",
+        "level": "WARNING",
+        "service": "user-profile",
+        "trace_id": "fe5f6372bab0548c6938175a7b13eeca",
+        "status_code": null,
+        "latency_ms": 1747,
+        "message": "disk usage crossed warning watermark"
+      }
+    },
+    {
+      "input": "2026-06-30 07:28:07,626 6 [http-nio-8080-exec-22] com.user.profile.Handler - webhook delivery failed with non-2xx response traceId=35ea19e59a188c053c026f3a0b26b1fc elapsed=1903ms",
+      "gold": {
+        "timestamp": "2026-06-30T07:28:07Z",
+        "level": "INFO",
+        "service": "user-profile",
+        "trace_id": "35ea19e59a188c053c026f3a0b26b1fc",
+        "status_code": null,
+        "latency_ms": 1903,
+        "message": "webhook delivery failed with non-2xx response"
+      },
+      "pred": {
+        "timestamp": "2026-06-30T07:28:07Z",
+        "level": "DEBUG",
+        "service": "user-profile",
+        "trace_id": "35ea19e59a188c053c026f3a0b26b1fc",
+        "status_code": null,
+        "latency_ms": 1903,
+        "message": "webhook delivery failed with non-2xx response"
+      }
+    },
+    {
+      "input": "[1782080104] [6] [search-indexer] disk usage crossed warning watermark",
+      "gold": {
+        "timestamp": "2026-06-21T22:15:04Z",
+        "level": "INFO",
+        "service": "search-indexer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "disk usage crossed warning watermark"
+      },
+      "pred": {
+        "timestamp": "2026-05-08T00:55:04Z",
+        "level": "INFO",
+        "service": "search-indexer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "disk usage crossed warning watermark"
+      }
+    },
+    {
+      "input": "{\"time\": \"2026-07-20T11:04:22+09:00\", \"severity\": \"NOTICE\", \"kubernetes\": {\"container_name\": \"billing\", \"namespace\": \"prod\"}, \"log\": \"user session refreshed successfully\", \"trace_id\": \"8fe6d2a69a34129cf07b58e18ed5addc\"}",
+      "gold": {
+        "timestamp": "2026-07-20T02:04:22Z",
+        "level": "INFO",
+        "service": "billing",
+        "trace_id": "8fe6d2a69a34129cf07b58e18ed5addc",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "user session refreshed successfully"
+      },
+      "pred": {
+        "timestamp": "2026-07-20T02:04:22Z",
+        "level": "INFO",
+        "service": "kubernetes",
+        "trace_id": "8fe6d2a69a34129cf07b58e18ed5addc",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "user session refreshed successfully"
+      }
+    },
+    {
+      "input": "[1784327130] [5] [recommendation] failed to acquire advisory lock on shard 8960 (X-Trace-Id: 95807424211948105913d4636b025481) <2360000us>",
+      "gold": {
+        "timestamp": "2026-07-17T22:25:30Z",
+        "level": "INFO",
+        "service": "recommendation",
+        "trace_id": "95807424211948105913d4636b025481",
+        "status_code": null,
+        "latency_ms": 2360,
+        "message": "failed to acquire advisory lock on shard 8960"
+      },
+      "pred": {
+        "timestamp": "2026-05-12T08:55:30Z",
+        "level": "INFO",
+        "service": "recommendation",
+        "trace_id": "95807424211948105913d4636b025481",
+        "status_code": null,
+        "latency_ms": 2360,
+        "message": "failed to acquire advisory lock on shard 8960"
+      }
+    },
+    {
+      "input": "[1782295596] [warning] [search-indexer] user session refreshed successfully (trace_id: a1e7fa1c18c2775d2fbdc9c70c34d128) <7838000us>",
+      "gold": {
+        "timestamp": "2026-06-24T10:06:36Z",
+        "level": "WARNING",
+        "service": "search-indexer",
+        "trace_id": "a1e7fa1c18c2775d2fbdc9c70c34d128",
+        "status_code": null,
+        "latency_ms": 7838,
+        "message": "user session refreshed successfully"
+      },
+      "pred": {
+        "timestamp": "2026-05-21T06:56:36Z",
+        "level": "WARNING",
+        "service": "search-indexer",
+        "trace_id": "a1e7fa1c18c2775d2fbdc9c70c34d128",
+        "status_code": null,
+        "latency_ms": 7838,
+        "message": "user session refreshed successfully"
+      }
+    },
+    {
+      "input": "<132>Jul  6 07:19:05 edge-10 checkout[1032]: database replica lag exceeded threshold took=2.411s",
+      "gold": {
+        "timestamp": "2026-07-06T07:19:05Z",
+        "level": "WARNING",
+        "service": "checkout",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 2411,
+        "message": "database replica lag exceeded threshold"
+      },
+      "pred": {
+        "timestamp": "2026-07-06T07:19:05Z",
+        "level": "INFO",
+        "service": "checkout",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 2411,
+        "message": "database replica lag exceeded threshold"
+      }
+    },
+    {
+      "input": "<134>Jul 21 04:16:28 web-09 billing[8007]: invalid JWT signature presented by client",
+      "gold": {
+        "timestamp": "2026-07-21T04:16:28Z",
+        "level": "INFO",
+        "service": "billing",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "invalid JWT signature presented by client"
+      },
+      "pred": {
+        "timestamp": "2026-07-21T04:16:28Z",
+        "level": "ERROR",
+        "service": "billing",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "invalid JWT signature presented by client"
+      }
+    },
+    {
+      "input": "[1785344021] [6] [session-store] cache miss for key user:3636:preferences",
+      "gold": {
+        "timestamp": "2026-07-29T16:53:41Z",
+        "level": "INFO",
+        "service": "session-store",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "cache miss for key user:3636:preferences"
+      },
+      "pred": {
+        "timestamp": "2026-07-01T11:07:01Z",
+        "level": "INFO",
+        "service": "session-store",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "cache miss for key user:3636:preferences"
+      }
+    },
+    {
+      "input": "[1780330021] [notice] [cdn-edge] index rebuild finished, 687 documents processed (trace_id: 50a64b3cdde0adef0b416a9ea7f61922)",
+      "gold": {
+        "timestamp": "2026-06-01T16:07:01Z",
+        "level": "INFO",
+        "service": "cdn-edge",
+        "trace_id": "50a64b3cdde0adef0b416a9ea7f61922",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "index rebuild finished, 687 documents processed"
+      },
+      "pred": {
+        "timestamp": "2026-05-08T06:00:21Z",
+        "level": "INFO",
+        "service": "cdn-edge",
+        "trace_id": "50a64b3cdde0adef0b416a9ea7f61922",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "index rebuild finished, 687 documents processed"
+      }
+    },
+    {
+      "input": "[1783093472] [notice] [checkout] background job completed without errors (X-Trace-Id: 196c3e6c8f43650d929555977edaaee0)",
+      "gold": {
+        "timestamp": "2026-07-03T15:44:32Z",
+        "level": "INFO",
+        "service": "checkout",
+        "trace_id": "196c3e6c8f43650d929555977edaaee0",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "background job completed without errors"
+      },
+      "pred": {
+        "timestamp": "2026-05-12T06:37:52Z",
+        "level": "INFO",
+        "service": "checkout",
+        "trace_id": "196c3e6c8f43650d929555977edaaee0",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "background job completed without errors"
+      }
+    },
+    {
+      "input": "[1781761358] [5] [auth-api] database replica lag exceeded threshold <2941000us>",
+      "gold": {
+        "timestamp": "2026-06-18T05:42:38Z",
+        "level": "INFO",
+        "service": "auth-api",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 2941,
+        "message": "database replica lag exceeded threshold"
+      },
+      "pred": {
+        "timestamp": "2026-05-12T06:42:38Z",
+        "level": "INFO",
+        "service": "auth-api",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 2941,
+        "message": "database replica lag exceeded threshold"
+      }
+    },
+    {
+      "input": "[1780868681] [WARNING] [recommendation] TLS handshake aborted by peer",
+      "gold": {
+        "timestamp": "2026-06-07T21:44:41Z",
+        "level": "WARNING",
+        "service": "recommendation",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "TLS handshake aborted by peer"
+      },
+      "pred": {
+        "timestamp": "2026-06-02T08:38:01Z",
+        "level": "WARNING",
+        "service": "recommendation",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "TLS handshake aborted by peer"
+      }
+    },
+    {
+      "input": "[1783573268] [4] [recommendation] index rebuild finished, 4333 documents processed (trace-id: 72fb4122dfe56fc64b20181bb39cdc76) <1980>",
+      "gold": {
+        "timestamp": "2026-07-09T05:01:08Z",
+        "level": "WARNING",
+        "service": "recommendation",
+        "trace_id": "72fb4122dfe56fc64b20181bb39cdc76",
+        "status_code": null,
+        "latency_ms": 1980,
+        "message": "index rebuild finished, 4333 documents processed"
+      },
+      "pred": {
+        "timestamp": "2026-07-21T06:01:08Z",
+        "level": "WARNING",
+        "service": "recommendation",
+        "trace_id": "72fb4122dfe56fc64b20181bb39cdc76",
+        "status_code": null,
+        "latency_ms": 1980,
+        "message": "index rebuild finished, 4333 documents processed"
+      }
+    },
+    {
+      "input": "[1781339204] [DBG] [notification-worker] payment intent confirmed and captured (traceId: d83c4d6d662f059497526464d4949df3)",
+      "gold": {
+        "timestamp": "2026-06-13T08:26:44Z",
+        "level": "DEBUG",
+        "service": "notification-worker",
+        "trace_id": "d83c4d6d662f059497526464d4949df3",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "payment intent confirmed and captured"
+      },
+      "pred": {
+        "timestamp": "2026-05-07T00:06:44Z",
+        "level": "DEBUG",
+        "service": "notification-worker",
+        "trace_id": "d83c4d6d662f059497526464d4949df3",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "payment intent confirmed and captured"
+      }
+    },
+    {
+      "input": "[1782900592] [6] [session-store] retrying request after transient failure (attempt 4280) (traceID: a3c33933d91f5bc7194688e03839502d)",
+      "gold": {
+        "timestamp": "2026-07-01T10:09:52Z",
+        "level": "INFO",
+        "service": "session-store",
+        "trace_id": "a3c33933d91f5bc7194688e03839502d",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "retrying request after transient failure (attempt 4280)"
+      },
+      "pred": {
+        "timestamp": "2026-06-02T06:29:52Z",
+        "level": "INFO",
+        "service": "session-store",
+        "trace_id": "a3c33933d91f5bc7194688e03839502d",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "retrying request after transient failure (attempt 4280)"
+      }
+    },
+    {
+      "input": "<135>Jun 23 03:15:45 edge-01 billing[9262]: message dropped after exceeding max redeliveries took=4.397s",
+      "gold": {
+        "timestamp": "2026-06-23T03:15:45Z",
+        "level": "DEBUG",
+        "service": "billing",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 4397,
+        "message": "message dropped after exceeding max redeliveries"
+      },
+      "pred": {
+        "timestamp": "2026-06-23T03:15:45Z",
+        "level": "CRITICAL",
+        "service": "billing",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 4397,
+        "message": "message dropped after exceeding max redeliveries"
+      }
+    },
+    {
+      "input": "<134>Jul 17 21:19:58 edge-07 search-indexer[1748]: disk usage crossed warning watermark",
+      "gold": {
+        "timestamp": "2026-07-17T21:19:58Z",
+        "level": "INFO",
+        "service": "search-indexer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "disk usage crossed warning watermark"
+      },
+      "pred": {
+        "timestamp": "2026-07-17T21:19:58Z",
+        "level": "WARNING",
+        "service": "search-indexer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "disk usage crossed warning watermark"
+      }
+    },
+    {
+      "input": "{\"time\": \"1783818621032\", \"severity\": \"ERR\", \"kubernetes\": {\"container_name\": \"checkout\", \"namespace\": \"prod\"}, \"log\": \"user session refreshed successfully\", \"latency\": \"986ms\"}",
+      "gold": {
+        "timestamp": "2026-07-12T01:10:21Z",
+        "level": "ERROR",
+        "service": "checkout",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 986,
+        "message": "user session refreshed successfully"
+      },
+      "pred": {
+        "timestamp": "2026-07-01T11:03:41Z",
+        "level": "ERROR",
+        "service": "checkout",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 986,
+        "message": "user session refreshed successfully"
+      }
+    },
+    {
+      "input": "<132>Jun 18 18:22:54 web-01 search-indexer[2017]: connection pool exhausted, waiting for free slot took=5579000us",
+      "gold": {
+        "timestamp": "2026-06-18T18:22:54Z",
+        "level": "WARNING",
+        "service": "search-indexer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 5579,
+        "message": "connection pool exhausted, waiting for free slot"
+      },
+      "pred": {
+        "timestamp": "2026-06-18T18:22:54Z",
+        "level": "CRITICAL",
+        "service": "search-indexer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 5579,
+        "message": "connection pool exhausted, waiting for free slot"
+      }
+    },
+    {
+      "input": "[1784720820] [6] [recommendation] upstream timed out while reading response header (X-Trace-Id: 11f7bd0ae6ce9b82e727c1a76157e15f)",
+      "gold": {
+        "timestamp": "2026-07-22T11:47:00Z",
+        "level": "INFO",
+        "service": "recommendation",
+        "trace_id": "11f7bd0ae6ce9b82e727c1a76157e15f",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "upstream timed out while reading response header"
+      },
+      "pred": {
+        "timestamp": "2026-07-01T08:47:00Z",
+        "level": "INFO",
+        "service": "recommendation",
+        "trace_id": "11f7bd0ae6ce9b82e727c1a76157e15f",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "upstream timed out while reading response header"
+      }
+    },
+    {
+      "input": "[1783035071] [info] [recommendation] user session refreshed successfully (trace_id: ef4ff210ea72f20b72839a357b8ec03e) <2533>",
+      "gold": {
+        "timestamp": "2026-07-02T23:31:11Z",
+        "level": "INFO",
+        "service": "recommendation",
+        "trace_id": "ef4ff210ea72f20b72839a357b8ec03e",
+        "status_code": null,
+        "latency_ms": 2533,
+        "message": "user session refreshed successfully"
+      },
+      "pred": {
+        "timestamp": "2026-05-12T06:51:11Z",
+        "level": "INFO",
+        "service": "recommendation",
+        "trace_id": "ef4ff210ea72f20b72839a357b8ec03e",
+        "status_code": null,
+        "latency_ms": 2533,
+        "message": "user session refreshed successfully"
+      }
+    },
+    {
+      "input": "{\"time\": \"1781071471672\", \"severity\": \"6\", \"kubernetes\": {\"container_name\": \"billing\", \"namespace\": \"prod\"}, \"log\": \"payment intent confirmed and captured\", \"traceId\": \"c646eeaed5419e423721c243849d5cc9\", \"latency\": \"2679ms\"}",
+      "gold": {
+        "timestamp": "2026-06-10T06:04:31Z",
+        "level": "INFO",
+        "service": "billing",
+        "trace_id": "c646eeaed5419e423721c243849d5cc9",
+        "status_code": null,
+        "latency_ms": 2679,
+        "message": "payment intent confirmed and captured"
+      },
+      "pred": {
+        "timestamp": "2026-05-21T08:31:11Z",
+        "level": "INFO",
+        "service": "billing",
+        "trace_id": "c646eeaed5419e423721c243849d5cc9",
+        "status_code": null,
+        "latency_ms": 2679,
+        "message": "payment intent confirmed and captured"
+      }
+    },
+    {
+      "input": "[1782210773] [DEBUG] [image-resizer] message dropped after exceeding max redeliveries",
+      "gold": {
+        "timestamp": "2026-06-23T10:32:53Z",
+        "level": "DEBUG",
+        "service": "image-resizer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "message dropped after exceeding max redeliveries"
+      },
+      "pred": {
+        "timestamp": "2026-05-08T00:59:33Z",
+        "level": "DEBUG",
+        "service": "image-resizer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "message dropped after exceeding max redeliveries"
+      }
+    },
+    {
+      "input": "[1782418884] [5] [cdn-edge] invalid JWT signature presented by client",
+      "gold": {
+        "timestamp": "2026-06-25T20:21:24Z",
+        "level": "INFO",
+        "service": "cdn-edge",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "invalid JWT signature presented by client"
+      },
+      "pred": {
+        "timestamp": "2026-05-12T06:48:04Z",
+        "level": "INFO",
+        "service": "cdn-edge",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "invalid JWT signature presented by client"
+      }
+    },
+    {
+      "input": "[1785071271] [7] [recommendation] webhook delivery failed with non-2xx response <1258000us>",
+      "gold": {
+        "timestamp": "2026-07-26T13:07:51Z",
+        "level": "DEBUG",
+        "service": "recommendation",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 1258,
+        "message": "webhook delivery failed with non-2xx response"
+      },
+      "pred": {
+        "timestamp": "2026-07-01T08:08:01Z",
+        "level": "DEBUG",
+        "service": "recommendation",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 1258,
+        "message": "webhook delivery failed with non-2xx response"
+      }
+    },
+    {
+      "input": "<134>Jul 24 13:50:03 app-16 session-store[9315]: webhook delivery failed with non-2xx response took=2428000us",
+      "gold": {
+        "timestamp": "2026-07-24T13:50:03Z",
+        "level": "INFO",
+        "service": "session-store",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 2428,
+        "message": "webhook delivery failed with non-2xx response"
+      },
+      "pred": {
+        "timestamp": "2026-07-24T13:50:03Z",
+        "level": "ERROR",
+        "service": "session-store",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 2428,
+        "message": "webhook delivery failed with non-2xx response"
+      }
+    },
+    {
+      "input": "{\"time\": \"1781265265458\", \"severity\": \"WARNING\", \"kubernetes\": {\"container_name\": \"billing\", \"namespace\": \"prod\"}, \"log\": \"message dropped after exceeding max redeliveries\"}",
+      "gold": {
+        "timestamp": "2026-06-12T11:54:25Z",
+        "level": "WARNING",
+        "service": "billing",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "message dropped after exceeding max redeliveries"
+      },
+      "pred": {
+        "timestamp": "2026-05-26T06:00:65Z",
+        "level": "WARNING",
+        "service": "billing",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "message dropped after exceeding max redeliveries"
+      }
+    },
+    {
+      "input": "[1785191995] [6] [auth-api] upstream timed out while reading response header",
+      "gold": {
+        "timestamp": "2026-07-27T22:39:55Z",
+        "level": "INFO",
+        "service": "auth-api",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "upstream timed out while reading response header"
+      },
+      "pred": {
+        "timestamp": "2026-07-01T11:33:15Z",
+        "level": "INFO",
+        "service": "auth-api",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 1500,
+        "message": "upstream timed out while reading response header"
+      }
+    },
+    {
+      "input": "[1780871702] [6] [notification-worker] upstream timed out while reading response header <2487>",
+      "gold": {
+        "timestamp": "2026-06-07T22:35:02Z",
+        "level": "INFO",
+        "service": "notification-worker",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 2487,
+        "message": "upstream timed out while reading response header"
+      },
+      "pred": {
+        "timestamp": "2026-05-12T06:35:02Z",
+        "level": "INFO",
+        "service": "notification-worker",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 2487,
+        "message": "upstream timed out while reading response header"
+      }
+    },
+    {
+      "input": "[1780919455] [4] [session-store] TLS handshake aborted by peer <5.169s>",
+      "gold": {
+        "timestamp": "2026-06-08T11:50:55Z",
+        "level": "WARNING",
+        "service": "session-store",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 5169,
+        "message": "TLS handshake aborted by peer"
+      },
+      "pred": {
+        "timestamp": "2026-05-16T08:30:55Z",
+        "level": "WARNING",
+        "service": "session-store",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 5169
+      }
+    },
+    {
+      "input": "[1780712927] [4] [webhook-dispatcher] background job completed without errors <4.628s>",
+      "gold": {
+        "timestamp": "2026-06-06T02:28:47Z",
+        "level": "WARNING",
+        "service": "webhook-dispatcher",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 4628,
+        "message": "background job completed without errors"
+      },
+      "pred": {
+        "timestamp": "2026-05-12T08:48:47Z",
+        "level": "WARNING",
+        "service": "webhook-dispatcher",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 4628
+      }
+    },
+    {
+      "input": "129.224.116.59 - - [28/Jun/2026:14:13:57 -0500] \"PATCH /api/v1/auth/token HTTP/1.1\" 301 66661 \"-\" \"Mozilla/5.0\" rt=5.285 upstream=inventory trace=9c300098a81bd15a841ce1bdf39f55f2",
+      "gold": {
+        "timestamp": "2026-06-28T19:13:57Z",
+        "level": "INFO",
+        "service": "inventory",
+        "trace_id": "9c300098a81bd15a841ce1bdf39f55f2",
+        "status_code": 301,
+        "latency_ms": 5285,
+        "message": "PATCH /api/v1/auth/token"
+      },
+      "pred": {
+        "timestamp": "2026-06-28T19:13:57Z",
+        "level": "INFO",
+        "service": "inventory",
+        "trace_id": "9c300098a81bd15a841ce1bdf39f55f2",
+        "status_code": 301,
+        "latency_ms": 5285
+      }
+    },
+    {
+      "input": "[1784992414] [notice] [session-store] invalid JWT signature presented by client (traceID: fd514757c3c0f77f537738d1a10795b3) <4073>",
+      "gold": {
+        "timestamp": "2026-07-25T15:13:34Z",
+        "level": "INFO",
+        "service": "session-store",
+        "trace_id": "fd514757c3c0f77f537738d1a10795b3",
+        "status_code": null,
+        "latency_ms": 4073,
+        "message": "invalid JWT signature presented by client"
+      },
+      "pred": {
+        "timestamp": "2026-07-01T11:06:54Z",
+        "level": "INFO",
+        "service": "session-store",
+        "trace_id": "fd514757c3c0f77f537738d1a10795b3",
+        "status_code": null,
+        "latency_ms": 4073,
+        "message": "invalid JWT signature presented by client"
+      }
+    },
+    {
+      "input": "211.118.7.25 - - [04/Jul/2026:01:14:42 +0200] \"PATCH /api/v1/orders HTTP/1.1\" 201 24602 \"-\" \"Mozilla/5.0\" rt=4.494 upstream=user-profile",
+      "gold": {
+        "timestamp": "2026-07-03T23:14:42Z",
+        "level": "INFO",
+        "service": "user-profile",
+        "trace_id": null,
+        "status_code": 201,
+        "latency_ms": 4494,
+        "message": "PATCH /api/v1/orders"
+      },
+      "pred": {
+        "timestamp": "2026-07-04T01:14:42Z",
+        "level": "INFO",
+        "service": "user-profile",
+        "trace_id": null,
+        "status_code": 201,
+        "latency_ms": 4494,
+        "message": "PATCH /api/v1/orders"
+      }
+    },
+    {
+      "input": "<134>Jun 18 08:15:32 web-34 image-resizer[4459]: failed to acquire advisory lock on shard 4089 [trace_id=7f2fd45ad89611c0ce263fcc7a4bcb44]",
+      "gold": {
+        "timestamp": "2026-06-18T08:15:32Z",
+        "level": "INFO",
+        "service": "image-resizer",
+        "trace_id": "7f2fd45ad89611c0ce263fcc7a4bcb44",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "failed to acquire advisory lock on shard 4089"
+      },
+      "pred": {
+        "timestamp": "2026-06-18T08:15:32Z",
+        "level": "ERROR",
+        "service": "image-resizer",
+        "trace_id": "7f2fd45ad89611c0ce263fcc7a4bcb44",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "failed to acquire advisory lock on shard 4089"
+      }
+    },
+    {
+      "input": "<132>Jul  7 14:32:31 web-06 checkout[7398]: webhook delivery failed with non-2xx response [trace_id=07af79f9de7d432e476a82d1614a9103]",
+      "gold": {
+        "timestamp": "2026-07-07T14:32:31Z",
+        "level": "WARNING",
+        "service": "checkout",
+        "trace_id": "07af79f9de7d432e476a82d1614a9103",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "webhook delivery failed with non-2xx response"
+      },
+      "pred": {
+        "timestamp": "2026-07-07T14:32:31Z",
+        "level": "ERROR",
+        "service": "checkout",
+        "trace_id": "07af79f9de7d432e476a82d1614a9103",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "webhook delivery failed with non-2xx response"
+      }
+    },
+    {
+      "input": "{\"time\": \"1784151706110\", \"severity\": \"6\", \"kubernetes\": {\"container_name\": \"payments\", \"namespace\": \"prod\"}, \"log\": \"index rebuild finished, 9132 documents processed\", \"traceId\": \"b185b3b24ef66dd475d313431253051a\", \"latency\": \"4042\"}",
+      "gold": {
+        "timestamp": "2026-07-15T21:41:46Z",
+        "level": "INFO",
+        "service": "payments",
+        "trace_id": "b185b3b24ef66dd475d313431253051a",
+        "status_code": null,
+        "latency_ms": 4042,
+        "message": "index rebuild finished, 9132 documents processed"
+      },
+      "pred": {
+        "timestamp": "2026-07-02T06:48:26Z",
+        "level": "INFO",
+        "service": "payments",
+        "trace_id": "b185b3b24ef66dd475d313431253051a",
+        "status_code": null,
+        "latency_ms": 4042,
+        "message": "index rebuild finished, 9132 documents processed"
+      }
+    },
+    {
+      "input": "{\"time\": \"1785397260767\", \"severity\": \"6\", \"kubernetes\": {\"container_name\": \"inventory\", \"namespace\": \"prod\"}, \"log\": \"TLS handshake aborted by peer\", \"latency\": \"777000us\"}",
+      "gold": {
+        "timestamp": "2026-07-30T07:41:00Z",
+        "level": "INFO",
+        "service": "inventory",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 777,
+        "message": "TLS handshake aborted by peer"
+      },
+      "pred": {
+        "timestamp": "2026-07-01T11:00:60Z",
+        "level": "INFO",
+        "service": "inventory",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 777,
+        "message": "TLS handshake aborted by peer"
+      }
+    }
+  ]
+}
