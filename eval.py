@@ -110,7 +110,7 @@ def runner_baseline(prompts):
         r = client.chat.completions.create(
             model="google/gemini-3.1-pro-preview",
             temperature=0,
-            max_tokens=2000,
+            max_tokens=8000,
             messages=[{"role": "user", "content": p}],
         )
         out.append(r.choices[0].message.content)
