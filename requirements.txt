@@ -1,0 +1,13 @@
+# inference + demo (works on CPU for cached mode)
+transformers>=4.51.0
+peft==0.20.0
+torch>=2.4.0
+accelerate>=0.34.0
+openai>=1.40.0
+
+# GPU-only (Colab / CUDA). Skip on Mac.
+bitsandbytes>=0.43.0 ; platform_system == "Linux"
+unsloth ; platform_system == "Linux"
+
+# dataset generation
+numpy>=1.26.0
