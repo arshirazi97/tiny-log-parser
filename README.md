@@ -3,6 +3,9 @@
 **A 4B fine-tune plus ten lines of Python beats Gemini 3.1 Pro at log
 normalization — 100% vs 83.5% exact match on the same test set.**
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/arshirazi97/tiny-log-parser/blob/main/demo.ipynb)
+
+
 Takes a log line in any of six formats and emits one canonical JSON record:
 always the same seven fields, always the same normalization rules.
 
