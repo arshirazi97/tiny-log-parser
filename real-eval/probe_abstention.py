@@ -20,7 +20,8 @@ from collections import Counter, defaultdict
 sys.path.insert(0, ".")
 from eval import SPEC, parse, FIELDS
 
-BASE, ADAPTER = "unsloth/qwen3-4b-unsloth-bnb-4bit", "arshirazi/tiny-log-parser"
+BASE = "unsloth/qwen3-4b-unsloth-bnb-4bit"
+ADAPTER = "arshirazi/tiny-log-parser"      # v1; override with --adapter
 
 # --------------------------------------------------------------------------
 # Conservative presence detectors.
@@ -79,6 +80,9 @@ def main():
     ap.add_argument("--batch", type=int, default=8)
     ap.add_argument("--max-new", type=int, default=160)
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--adapter", default=ADAPTER,
+                    help="HF repo or local path of the LoRA adapter to probe")
+    ap.add_argument("--base", default=BASE)
     ap.add_argument("--out", default="real-eval/probe_dev.json")
     args = ap.parse_args()
 
@@ -94,11 +98,13 @@ def main():
     from transformers import AutoTokenizer, AutoModelForCausalLM
     from peft import PeftModel
 
-    tok = AutoTokenizer.from_pretrained(BASE, padding_side="left")
+    print(f"base    {args.base}\nadapter {args.adapter}\n")
+    tok = AutoTokenizer.from_pretrained(args.base, padding_side="left")
     if tok.pad_token is None:
         tok.pad_token = tok.eos_token
     model = PeftModel.from_pretrained(
-        AutoModelForCausalLM.from_pretrained(BASE, device_map="auto"), ADAPTER).eval()
+        AutoModelForCausalLM.from_pretrained(args.base, device_map="auto"),
+        args.adapter).eval()
 
     builder = build_chat if args.prompt == "chat" else build_flat
     raws = generate(tok, model, [builder(tok, r["raw"]) for r in rows],
@@ -174,7 +180,7 @@ def main():
         print("         check the per-source table before deciding to retrain.")
     print(f"{'='*72}\n")
 
-    json.dump({"prompt": args.prompt, "n": n, "unparseable": unparseable,
+    json.dump({"adapter": args.adapter, "prompt": args.prompt, "n": n, "unparseable": unparseable,
                "null_rate": {f: null_rate[f] / n for f in FIELDS},
                "hallucination": summary,
                "by_source": dict(by_source), "records": records},
