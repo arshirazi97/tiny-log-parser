@@ -36,6 +36,12 @@ This is the single most important abstention test in the set.
 **L2 — canonical vocabulary.** `TRACE DEBUG INFO WARNING ERROR FATAL`.
 Map `WARN`→`WARNING`, `notice`→`INFO`, `err`→`ERROR`, `crit`/`critical`→`FATAL`.
 
+**L1b — an HTTP status code does not imply a level.** An access-style line
+carrying `status: 200` or `" 503 ` but no level token has level `null`. The
+status belongs in `status_code`; inferring ERROR/WARNING/INFO from it is the
+same context-inference L1 forbids. (This reverses the v1 spec, which mapped
+5xx->ERROR. Both arms are scored against the rule as written here.)
+
 **L3 — severity in the message body.** If a level-like word appears only inside
 the human-readable text and not in a structural level position, it is not a
 level. → `null`.

@@ -32,12 +32,11 @@ SPEC = """Normalize the log line into JSON with exactly these keys:
               ERR/E->ERROR, CRIT/CRITICAL/FATAL->FATAL.
               Syslog numeric severities: 2->FATAL, 3->ERROR, 4->WARNING,
               5/6->INFO, 7->DEBUG.
-              If the line carries no level token, and no HTTP status code,
-              emit null. Do NOT infer a level from the wording of the
-              message -- "authentication failure" is not ERROR. A level-like
+              If the line carries no level token, emit null -- including when
+              an HTTP status code is present. Do NOT infer a level from the
+              status code, and do NOT infer one from the wording of the
+              message; "authentication failure" is not ERROR. A level-like
               word inside the human-readable text is not a level.
-              If there is no level token but there IS an HTTP status code:
-              5xx->ERROR, 4xx->WARNING, otherwise INFO.
   service     The emitting component, as written. Keep dotted or nested
               logger paths whole ("dfs.DataNode$PacketResponder", not
               "PacketResponder"). Drop a trailing [pid] and any parenthesised

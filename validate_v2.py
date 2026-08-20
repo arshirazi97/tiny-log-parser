@@ -73,12 +73,25 @@ def check(rows, tag):
             bad("latency-null-but-field", row)
         if (ms := o["latency_ms"]) is not None:
             # the value must be recoverable from some rendering in the line
-            cands = [f"{ms}ms", f"{ms / 1000:.3f}s", f"{ms / 1000:.3f}",
-                     f"{ms / 1000:.7f}", str(ms)]
+            # each candidate must both APPEAR in the line and convert back to
+            # exactly ms -- "rt=5.906" for a gold of 5906.1849 is not derivable
+            cands = [(f"{ms}ms", ms), (f"{ms / 1000:.3f}s", None),
+                     (f"{ms / 1000:.3f}", None), (f"{ms / 1000:.7f}", None),
+                     (str(ms), ms)]
             if isinstance(ms, int):
-                cands.append(f"{ms * 1000}us")
-            if not any(c in i for c in cands):
-                bad("latency-not-in-line", row, str(ms))
+                cands.append((f"{ms * 1000}us", ms))
+            ok = False
+            for text, val in cands:
+                if text not in i:
+                    continue
+                if val is None:
+                    num = re.sub(r"[^\d.]", "", text)
+                    val = float(num) * 1000 if "." in num and float(num) < 100 else None
+                if val is not None and abs(val - ms) < 1e-6:
+                    ok = True
+                    break
+            if not ok:
+                bad("latency-not-derivable", row, str(ms))
         msg = re.sub(r"\s+", " ", o["message"]).strip()
         if msg and msg not in re.sub(r"\s+", " ", i):
             bad("message-not-in-line", row, msg[:40])

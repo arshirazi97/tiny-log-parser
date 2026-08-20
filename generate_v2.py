@@ -194,7 +194,8 @@ def fmt_latency():
 # --------------------------------------------------------------------------
 
 def r_logfmt(r, dt):
-    ts, frac, yr = ts_iso_offset(dt)
+    ts, frac, yr = random.choice(
+        [ts_iso_offset, ts_iso_offset, ts_epoch])(dt)
     parts = [f"ts={ts}", f"level={random.choice(LEVEL_ALIASES[r['level']])}",
              f"service={r['service']}"]
     if r["trace_id"]:
@@ -239,7 +240,8 @@ def r_syslog_nolevel(r, dt):
 
 
 def r_json_container(r, dt):
-    ts, frac, yr = random.choice([ts_epoch_ms, ts_iso_offset, ts_dotted])(dt)
+    ts, frac, yr = random.choice(
+        [ts_epoch_ms, ts_epoch, ts_iso_offset, ts_dotted])(dt)
     obj = {"time": ts, "severity": random.choice(LEVEL_ALIASES[r["level"]]),
            "container": {"name": r["service"], "namespace": "prod"},
            "log": r["message"]}
@@ -337,9 +339,15 @@ def r_access_log(r, dt):
     ts, frac, yr = ts_apache(dt)
     status = r["status_code"]
     ip = ".".join(str(random.randint(1, 254)) for _ in range(4))
+    # rt= carries 3 decimals of seconds, i.e. whole milliseconds. Re-derive the
+    # label FROM the rendered text so the gold is always recoverable from the
+    # line -- rendering a rounded value against an unrounded label would make
+    # the example impossible to get right.
+    rt_txt = f'{r["latency_ms"] / 1000:.3f}'
+    r["latency_ms"] = int(round(float(rt_txt) * 1000))
     line = (f'{ip} - - [{ts}] "{r["_method"]} {r["_path"]} HTTP/1.1" '
             f'{status} {random.randint(80, 90000)} "-" "Mozilla/5.0" '
-            f'rt={r["latency_ms"] / 1000:.3f} upstream={r["service"]}')
+            f'rt={rt_txt} upstream={r["service"]}')
     if r["trace_id"]:
         line += f' trace={r["trace_id"]}'
     return line, frac, yr
@@ -374,7 +382,7 @@ def make_record(start, end, has_level, has_service, is_http):
         service = None
 
     lat_txt, lat = None, None
-    if random.random() < 0.5:
+    if random.random() < 0.12:
         lat_txt, lat = fmt_latency()
 
     r = {
@@ -387,7 +395,7 @@ def make_record(start, end, has_level, has_service, is_http):
         "message": random.choice(MESSAGES).replace("{n}", str(random.randint(1, 9999))),
         "_lat_txt": lat_txt,
     }
-    if random.random() < 0.5:
+    if random.random() < 0.2:
         r["trace_id"] = (f"req-{rand_uuid()}" if random.random() < 0.35
                          else rand_hex(32))
 
@@ -395,7 +403,10 @@ def make_record(start, end, has_level, has_service, is_http):
         status = random.choice([200, 201, 204, 301, 304, 400, 401,
                                 403, 404, 429, 500, 502, 503, 504])
         r["status_code"] = status
-        r["level"] = "ERROR" if status >= 500 else ("WARNING" if status >= 400 else "INFO")
+        # ADJUDICATION L1: absent level means null. Inferring one from the
+        # status code would teach context-inference in the same dataset that
+        # teaches abstention. status_code carries the signal instead.
+        r["level"] = None
         if r["latency_ms"] is None:
             r["latency_ms"] = random.randint(1, 5000)
         r["_method"], r["_path"] = random.choice(METHODS), random.choice(PATHS)
