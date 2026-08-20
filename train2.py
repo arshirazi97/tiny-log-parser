@@ -15,7 +15,18 @@ import torch
 from torch.utils.data import DataLoader, Dataset
 from unsloth import FastLanguageModel
 
-from eval import SPEC
+from eval import SPEC as _SPEC_V1
+
+SPEC = _SPEC_V1        # build_messages reads this at call time
+
+
+def use_spec(name):
+    """v1 = eval.py SPEC (no nulls for level/service). v2 = schema_v2.SPEC."""
+    global SPEC
+    if name == "v2":
+        from schema_v2 import SPEC as _s
+        SPEC = _s
+    return SPEC
 
 
 def build_messages(raw, target=None):
@@ -84,7 +95,11 @@ def main():
     ap.add_argument("--seq", type=int, default=1024)
     ap.add_argument("--bs", type=int, default=4)
     ap.add_argument("--accum", type=int, default=4)
+    ap.add_argument("--spec", choices=["v1", "v2"], default="v1")
     args = ap.parse_args()
+
+    use_spec(args.spec)
+    print(f"spec: {args.spec}  ({len(SPEC)} chars)")
 
     model, tok = FastLanguageModel.from_pretrained(
         model_name=args.model,

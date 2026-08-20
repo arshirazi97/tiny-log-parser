@@ -1,14 +1,23 @@
 """Generate predictions from ./merged with plain transformers. No vLLM."""
-import json, time, torch
+import argparse, json, time, torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from train2 import build_messages
+from train2 import build_messages, use_spec
 
-tok = AutoTokenizer.from_pretrained("./merged")
+ap = argparse.ArgumentParser()
+ap.add_argument("--model", default="./merged")
+ap.add_argument("--test", default="test.jsonl")
+ap.add_argument("--out", default="local_raw.json")
+ap.add_argument("--n", type=int, default=200)
+ap.add_argument("--spec", choices=["v1", "v2"], default="v1")
+args = ap.parse_args()
+use_spec(args.spec)
+
+tok = AutoTokenizer.from_pretrained(args.model)
 model = AutoModelForCausalLM.from_pretrained(
-    "./merged", torch_dtype=torch.bfloat16, device_map="cuda")
+    args.model, torch_dtype=torch.bfloat16, device_map="cuda")
 model.eval()
 
-rows = [json.loads(l) for l in open("test.jsonl")][:200]
+rows = [json.loads(l) for l in open(args.test)][:args.n]
 out = []
 t0 = time.time()
 for i, r in enumerate(rows):
@@ -23,5 +32,5 @@ for i, r in enumerate(rows):
     if i % 25 == 0:
         print(f"  {i}/{len(rows)}")
 
-json.dump({"outputs": out, "elapsed": time.time() - t0}, open("local_raw.json", "w"))
+json.dump({"outputs": out, "elapsed": time.time() - t0}, open(args.out, "w"))
 print(f"done in {time.time()-t0:.0f}s  ({(time.time()-t0)/len(rows)*1000:.0f} ms/item)")

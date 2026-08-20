@@ -51,9 +51,11 @@ ckpt/
 *.bin
 *.safetensors
 
-# Generated datasets (reproducible via generate.py)
+# Generated datasets (reproducible via generate.py / generate_v2.py)
 train.jsonl
 test.jsonl
+train_v2.jsonl
+test_v2.jsonl
 
 # Evaluation outputs
 baseline.json
