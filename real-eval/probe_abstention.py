@@ -18,7 +18,19 @@ import argparse, json, re, sys
 from collections import Counter, defaultdict
 
 sys.path.insert(0, ".")
-from eval import SPEC, parse, FIELDS
+from eval import SPEC as SPEC_V1, parse, FIELDS
+
+SPEC = SPEC_V1        # build_chat/build_flat read this; --spec switches it
+
+
+def use_spec(name):
+    """Must match the spec the adapter was TRAINED with, or the model is being
+    asked to follow rules it never saw. v1 has no null level at all."""
+    global SPEC
+    if name == "v2":
+        from schema_v2 import SPEC as _s
+        SPEC = _s
+    return SPEC
 
 BASE = "unsloth/qwen3-4b-unsloth-bnb-4bit"
 ADAPTER = "arshirazi/tiny-log-parser"      # v1; override with --adapter
@@ -83,14 +95,18 @@ def main():
     ap.add_argument("--adapter", default=ADAPTER,
                     help="HF repo or local path of the LoRA adapter to probe")
     ap.add_argument("--base", default=BASE)
+    ap.add_argument("--spec", choices=["v1", "v2"], default="v1",
+                    help="the spec the adapter was trained with")
     ap.add_argument("--out", default="real-eval/probe_dev.json")
     args = ap.parse_args()
 
     if "test" in args.corpus:
         sys.exit("Refusing to touch the test corpus. Probe on dev only.")
 
+    use_spec(args.spec)
     rows = [json.loads(l) for l in open(args.corpus) if l.strip()][: args.limit]
-    print(f"{len(rows)} lines from {args.corpus}\n")
+    print(f"{len(rows)} lines from {args.corpus}  |  spec {args.spec} "
+          f"({len(SPEC)} chars)\n")
 
     import torch
     if not torch.cuda.is_available():
@@ -180,7 +196,8 @@ def main():
         print("         check the per-source table before deciding to retrain.")
     print(f"{'='*72}\n")
 
-    json.dump({"adapter": args.adapter, "prompt": args.prompt, "n": n, "unparseable": unparseable,
+    json.dump({"adapter": args.adapter, "spec": args.spec,
+               "prompt": args.prompt, "n": n, "unparseable": unparseable,
                "null_rate": {f: null_rate[f] / n for f in FIELDS},
                "hallucination": summary,
                "by_source": dict(by_source), "records": records},
