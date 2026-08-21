@@ -24,15 +24,30 @@ FIELDS = ["timestamp", "level", "service", "trace_id",
 
 HELP = """
   timestamp    ISO-8601 UTC, e.g. 2015-07-29T17:41:44.747Z
-               No year in the line (syslog)   -> see ADJUDICATION rule T1
-               No timezone in the line         -> see rule T2
-  level        canonical: TRACE DEBUG INFO WARNING ERROR FATAL
-               No level token present          -> null. Do NOT infer from wording.
-  service      the emitting component as it appears. Rule S1 for logger classes.
-  trace_id     only if an actual correlation id is present. null otherwise.
-  status_code  integer, HTTP/protocol status only. null otherwise.
-  latency_ms   float, milliseconds. null otherwise.
-  message      the human-readable remainder, fields stripped.
+               T1  no year in the line      -> use year 1900
+               T2  no timezone              -> assume UTC, suffix Z
+               T3  sub-second               -> keep exactly ("',747" -> ".747")
+               T4  081110 222512 = yymmdd hhmmss;  17/06/09 = yy/mm/dd -> 20xx
+  level        TRACE DEBUG INFO WARNING ERROR FATAL
+               L1  no level token           -> null
+               L1b an HTTP status code does NOT imply a level -> null
+               L3  a level word inside the message text is not a level
+               WARN->WARNING notice->INFO err->ERROR crit->FATAL
+  service      S1  logger in its own position -> full dotted path, whole
+               S1b logger inside a thread bracket -> class before "@line"
+                   [SessionTracker:ZooKeeperServer@325] -> ZooKeeperServer
+               S2  syslog process, drop (pam) qualifier and [pid]
+               S3  no service position -> null. Never invent a placeholder.
+  trace_id     F2  keep the "req-" prefix
+               F3  block/job/session ids and PIDs are NOT trace ids -> null
+  status_code  integer HTTP status only, else null
+  latency_ms   F4  seconds -> ms, do not round (0.2477829 -> 247.7829)
+               F5  a configured timeout or a connection lifetime is NOT a
+                   latency -> null
+  message      M1b keep the remainder verbatim; values you put in other
+                   fields stay in the message text
+
+  Enter = null.   /<text> on the message field = from that text to end of line.
 """
 
 
@@ -67,6 +82,7 @@ def main():
         print("-" * 78)
         print(row["raw"])
         print("-" * 78)
+        print(f"  ({len(done) + n}/{len(rows)} of the corpus labelled)")
 
         label, i, aborted = {}, 0, None
         while i < len(FIELDS):
@@ -88,6 +104,17 @@ def main():
             if v.startswith("!"):
                 aborted = v[1:].strip() or "ambiguous"
                 break
+            if f == "message" and v.startswith("/"):
+                # anchor: take the raw line from the first occurrence of <text>
+                # to its end. You choose where the message starts; the copying
+                # is mechanical, so no typos land in the gold.
+                anchor = v[1:]
+                if anchor and anchor in row["raw"]:
+                    v = row["raw"][row["raw"].index(anchor):].strip()
+                    print(f"    -> {v}")
+                else:
+                    print("    anchor not found in the line, try again")
+                    continue
             label[f] = None if v == "" else v
             i += 1
 

@@ -111,6 +111,8 @@ def main():
     ap.add_argument("--corpus", default="real-eval/corpus_dev.jsonl")
     ap.add_argument("--out", default=None)
     ap.add_argument("--allow-test", action="store_true")
+    ap.add_argument("--limit", type=int, default=None,
+                    help="first N lines only -- for smoke-testing an arm cheaply")
     ap.add_argument("--base", default="unsloth/qwen3-4b-unsloth-bnb-4bit")
     ap.add_argument("--adapter", default="arshirazi/tiny-log-parser-v2")
     ap.add_argument("--batch", type=int, default=8)
@@ -120,9 +122,10 @@ def main():
     ap.add_argument("--shots-file", default="train_v2.jsonl")
     args = ap.parse_args()
 
-    rows = load_corpus(args.corpus, args.allow_test)
+    rows = load_corpus(args.corpus, args.allow_test)[: args.limit]
     split = "test" if "test" in os.path.basename(args.corpus) else "dev"
-    out_path = args.out or f"real-eval/preds_{split}_{args.arm}.jsonl"
+    out_path = args.out or (f"real-eval/preds_{split}_{args.arm}"
+                            f"{f'_first{args.limit}' if args.limit else ''}.jsonl")
 
     print(f"{len(rows)} lines | arm={args.arm} | spec=SPEC_EVAL "
           f"({len(SPEC_EVAL)} chars)")

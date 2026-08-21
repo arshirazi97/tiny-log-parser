@@ -9,6 +9,30 @@ generator never produced. That gap is the point of the exercise.
 
 ---
 
+## P1 — only structural positions count
+
+A value that appears **only inside the human-readable message text** is not
+extracted into a field, however unambiguous it is. Fields come from the
+positions the format defines, not from the prose.
+
+This was already implicit in L3 (a severity word in the text is not a level).
+Labelling the test corpus turned up three more instances of the same principle,
+and it is cleaner as one rule than four:
+
+| line | in the prose | field |
+|---|---|---|
+| `... at Wed Jun 22 13:16:30 2005` (Linux ftpd) | the year `2005` | timestamp still `1900` (T1) |
+| `... status code 403` (Proxifier error) | an HTTP status | `status_code: null` |
+| `Took 0.45 seconds to deallocate ...` (OpenStack) | a real measured duration | `latency_ms: null` |
+| `authentication failure` (OpenSSH) | a severity word | `level: null` (L3) |
+
+The third is the least comfortable: it *is* the duration of the logged
+operation. It stays null because the alternative -- extracting numbers from
+English sentences -- is a different and much harder task than the one this
+schema defines.
+
+---
+
 ## Timestamp
 
 **T1 — no year in the line.** Syslog-derived sources (Linux, OpenSSH) and
@@ -64,6 +88,10 @@ Spark, OpenStack), where the full dotted path is taken whole.
 
 **S2 — syslog process.** `sshd(pam_unix)[19939]` → service is `sshd`. Drop the
 PAM qualifier and the PID.
+
+**S2b — a version suffix stays.** `combo syslogd 1.4.1: restart.` → service is
+`syslogd 1.4.1`. S2 licenses dropping a `(pam)` qualifier and a `[pid]`; nothing
+licenses dropping a version.
 
 **S3 — no service present.** Apache `[notice] workerEnv.init() ok` has no
 service position. → `null`. Do **not** emit `apache`, `httpd`, `unknown`, or any
