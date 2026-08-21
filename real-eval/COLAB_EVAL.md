@@ -21,10 +21,13 @@ os.chdir('/content')
 !git clone -q https://github.com/arshirazi97/tiny-log-parser.git
 os.chdir('/content/tiny-log-parser')
 !pip install -q "transformers==4.51.3" "peft==0.20.0" accelerate bitsandbytes
+!pip uninstall -q -y torchao         # Colab ships 0.10.0; peft 0.20 raises under 0.16
 
-import transformers, peft
-if (transformers.__version__, peft.__version__) != ("4.51.3", "0.20.0"):
-    print("restarting to pick up new versions...")
+import importlib.util, transformers, peft
+stale = ((transformers.__version__, peft.__version__) != ("4.51.3", "0.20.0")
+         or importlib.util.find_spec("torchao") is not None)
+if stale:
+    print("restarting to pick up the new versions...")
     os.kill(os.getpid(), 9)          # re-run this cell after the restart
 ```
 
@@ -38,6 +41,17 @@ committed notebook output records what it printed:
 Ignored, not rejected. Nothing in that list changes LoRA maths today, so 0.17.1
 would very likely give identical predictions -- but "very likely" is not a thing
 to run a single-shot test-set eval through when the correct pin is free.
+
+Uninstalling `torchao` is required, not tidying. `is_torchao_available()` in
+peft 0.20 **raises** when torchao is importable and below 0.16.0, and Colab
+preinstalls 0.10.0, so the load fails with
+
+    ImportError: Found an incompatible version of torchao. Found version
+    0.10.0, but only versions above 0.16.0 are supported
+
+which reads like an adapter problem and is not one. With torchao absent the
+check returns False and the load proceeds; quantization here is bitsandbytes.
+Upgrading torchao instead would drag torch with it -- do not.
 
 ### Cell 2 -- smoke, 8 dev lines (~1 min)
 
