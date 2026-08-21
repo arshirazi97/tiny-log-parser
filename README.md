@@ -1,199 +1,300 @@
 # tiny-log-parser
 
-**A 4B fine-tune plus ten lines of Python beats Gemini 3.1 Pro at log
-normalization — 100% vs 83.5% exact match on the same test set.**
+**A 4B fine-tune, a deterministic parser, and Gemini 3.1 Pro, measured on 127
+hand-adjudicated lines of real production logs. The fine-tune loses. The
+200-line parser doesn't.**
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/arshirazi97/tiny-log-parser/blob/main/demo.ipynb)
 
-
-Takes a log line in any of six formats and emits one canonical JSON record:
-always the same seven fields, always the same normalization rules.
+Takes a log line and emits one canonical JSON record: always the same seven
+fields, always the same normalization rules, and `null` for every field the line
+does not carry.
 
 ```
-input   <131>Mar  5 02:10:12 web-07 payments[4471]: TLS handshake aborted
-        by peer [tid=8f2c91aa04bd77e35c1d6b0392ef4a18] took=4.775s
+input   Dec 10 07:11:42 LabSZ sshd[24224]: pam_unix(sshd:auth): authentication
+        failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=202.100.179.208
 
-output  {"timestamp": "2026-03-04T21:10:12Z",
-         "level": "ERROR",
-         "service": "payments",
-         "trace_id": "8f2c91aa04bd77e35c1d6b0392ef4a18",
+output  {"timestamp": "1900-12-10T07:11:42Z",
+         "level": null,
+         "service": "sshd",
+         "trace_id": null,
          "status_code": null,
-         "latency_ms": 4775,
-         "message": "TLS handshake aborted by peer"}
+         "latency_ms": null,
+         "message": "authentication failure; logname= uid=0 ..."}
 ```
 
-The `+05:00` offset rolls the date back a full day, syslog severity `3` maps
-to `ERROR`, and `4.775s` becomes `4775`.
+Four of seven fields are `null`, and that is the hard part. `authentication
+failure` is not an `ERROR` — the line carries no level, and inventing one
+poisons every downstream alert built on the field. The year is absent, so a
+`1900` sentinel says so rather than guessing.
 
 ---
 
 ## Results
 
-200-example held-out test set. Same schema spec, same exact-match verifier,
-all seven fields must match.
+127 lines from ten real production systems (Loghub: HDFS, OpenStack, OpenSSH,
+Linux, Hadoop, Spark, Zookeeper, Apache, HealthApp, Proxifier), deduplicated by
+template signature, frozen by hash, hand-adjudicated against a written rule
+list, **scored once**. Full detail in [`real-eval/RESULTS.md`](real-eval/RESULTS.md).
 
-| | Exact match | 95% CI | Valid JSON | Latency p50 |
+| arm | exact (7 fields) | six-field | 95% CI (six) | valid JSON |
 |---|---|---|---|---|
-| gemini-3.1-pro-preview | 83.5% | 78.5 – 88.5% | 100% | 11,713 ms |
-| Qwen3-4B fine-tune (model alone) | 73.0% | 66.5 – 79.0% | 100% | 4,197 ms |
-| **Qwen3-4B + epoch pre-pass** | **100%** | 100 – 100% | 100% | 4,197 ms |
+| rules (`rule_parser.py`) | 92.1% | 92.1% | 87.4 – 96.9% | 100% |
+| Qwen3-4B fine-tune (v2) | 40.2% | 73.2% | 65.4 – 80.3% | 100% |
+| **gemini-3.1-pro-preview** | **81.1%** | **96.1%** | 92.1 – 99.2% | 100% |
 
-Per-field:
+Six-field excludes `message`, the most judgement-dependent field, so a
+formatting quibble does not swamp the extraction result.
 
-| Field | Baseline | Fine-tune alone | + pre-pass |
+**McNemar's exact test, paired, on six-field match:**
+
+| comparison | discordant pairs | p | result |
 |---|---|---|---|
-| timestamp | 97.5% | 73.0% | **100%** |
-| level | 100% | 100% | 100% |
-| service | 89.5% | **100%** | 100% |
-| trace_id | 100% | 100% | 100% |
-| status_code | 100% | 100% | 100% |
-| latency_ms | 96.5% | **100%** | 100% |
-| message | 99.5% | 100% | 100% |
+| fine-tune vs Gemini | 0 – 29 | < 0.0001 | Gemini |
+| rules vs fine-tune | 24 – 0 | < 0.0001 | rules |
+| rules vs Gemini | 4 – 9 | 0.27 | indistinguishable |
 
-**Fairness.** The baseline gets three few-shot examples in its prompt; the
-fine-tune gets none. The fine-tune saw 20,000 examples during training, so
-few-shotting it as well would be double-dipping — and zero-shot is how it
-would run in production. The asymmetry favours the baseline deliberately.
+**The fine-tune is not competitive at extraction on real logs.** Zero wins in 29
+discordant pairs, and it does not improve under any stratum split — on the 91
+sparse lines it drops to 63.7% against Gemini's 95.6%.
+
+An earlier version of this README claimed the opposite, on a test set drawn from
+the same generator as the training data. That claim is withdrawn; see
+[Appendix](#appendix--the-synthetic-result-and-what-it-was-worth).
+
+**Fairness.** The baseline gets three few-shot examples; the fine-tune gets none.
+Both receive identical spec text. Every asymmetry points at the baseline
+deliberately, and the baseline still wins.
 
 ---
 
-## The interesting result
+## What does survive: the model learned to abstain
 
-The model alone **loses** to the baseline: 73.0% vs 83.5%. But look at where.
+Most real log lines carry three or four of the seven fields. A system that
+cannot emit `null` fails them by construction, and v1 could not.
 
-Six of seven fields are at 100%. Every one of the 54 misses is a timestamp
-error, and every one of those has correct minutes and seconds with wrong
-hours and dates:
+A label-free probe on 50 real lines found v1 emitting a **non-null `level` on
+50 of 50**, including all 16 that contain no level token at all — a 100%
+hallucination rate where abstention was required — while correctly abstaining on
+`trace_id` (82%), `status_code` (90%) and `latency_ms` (82%).
+
+The diagnosis was in the training data, not the weights: all 20,000 v1 examples
+carried a level and a service, and **abstention is learned per-field from nulls
+in the data**. The three fields that had nulls in training were the three it
+could abstain on.
+
+The prediction, registered before the retrain: add explicit nulls and `level`
+moves to 70–90% abstention with hallucination falling from 100%.
+
+| | v1 | v2 |
+|---|---|---|
+| `level` abstention (dev) | 0% | 34% |
+| `level` hallucination where no level token present | 100% (16/16) | **0%** (0/16) |
+
+Undercorrected against the prediction, but the direction held and the
+hallucination rate went to zero. On the test set the fine-tune hallucinates a
+level on **1 of 53** opportunities, and `trace_id` on **0 of 103**.
+
+That single level failure is worth reading:
 
 ```
-gold  2026-06-04T03:19:56Z    pred  2026-05-30T11:19:56Z
-gold  2026-06-21T22:15:04Z    pred  2026-09-04T10:15:04Z
-gold  2026-07-29T16:53:41Z    pred  2026-04-01T00:53:41Z
+[10.30 21:08:03] spoolsv.exe *64 - 127.0.0.1:135 error : Could not connect ...
 ```
 
-All of them are bare epoch integers. Converting `1780543196` to a date needs
-integer division by 86400 plus calendar arithmetic across months of unequal
-length. The model handles the cheap modulo (minutes, seconds) and fails the
-division.
+Both the fine-tune and gemini-3.1-pro emit `ERROR` here, inferring a level from
+the word "error" in the message body, which the rule list excludes. The 4B
+model's only level failure is one the frontier model also makes.
 
-**Scaling did not fix this.** Two controlled runs on Qwen3-1.7B:
+---
+
+## How the evaluation is built
+
+The v1 evaluation scored a fine-tune on the output of the generator it was
+trained on. That measures memorization of a rulebook, not extraction. This one is
+built so it cannot do that.
+
+**Independent inputs.** `build_corpus.py` pulls Loghub's raw `_2k.log` files,
+deduplicates by template signature so the sample is distinct log *shapes* rather
+than 40 copies of one line, stratifies into rich and sparse, and splits dev (50,
+iterate freely) from test (127, touch once). Hashes in `CORPUS_FREEZE.txt`.
+
+**Independently corroborated labels.** The labels were drafted by a model from
+the written rule list in `ADJUDICATION.md` and reviewed — not hand-annotated from
+scratch, and `LABEL_REVIEW_TEST.md` says so exactly. `validate_labels_loghub.py`
+then scores them against Loghub's own `*_2k.log_structured.csv` annotations,
+produced by the logpai authors years before this project:
+
+- **`level`: 127/127.** All 53 null levels fall in the four sources whose Loghub
+  schema carries no usable level column. An independent party asserts there is
+  no level to extract in exactly the lines labelled `null`.
+- **`service`: 111/127**, the remainder two definitional families argued in
+  `ADJUDICATION.md`.
+
+**A label correction that cost us.** That cross-check found 10 Proxifier labels
+that had dropped the `*64` marker from `chrome.exe *64`. Corrected before any
+test scoring:
+
+| arm | six-field (labels of record) | pre-correction | delta |
+|---|---|---|---|
+| rules | 92.1% | 100.0% | −7.9 |
+| fine-tune | 73.2% | 77.2% | −3.9 |
+| gemini | 96.1% | 89.0% | **+7.1** |
+
+Reproduce with `score_arms.py --pre-s2c`. It cost both in-house arms and gave the
+external baseline seven points — and it broke the rules arm's 100%-by-construction
+agreement with its own author's labels.
+
+**A sealed test set.** `predict.py` refuses the test corpus without
+`--allow-test`. Dev is where the iteration happened; test was scored in one pass,
+after both arms' predictions existed.
+
+---
+
+## Where the fine-tune actually fails
+
+It misses six-field on 34 of 127 lines, 42 field errors in total: `service` 25,
+`latency_ms` 10, `timestamp` 5, `level` 1, `status_code` 1. Gemini misses 5 lines
+and 6 fields. The two dominant families are conventions rather than capability:
+
+- **Nested logger vs thread bracket.** Hadoop writes
+  `[IPC Server handler 27 on 62270] org.apache.hadoop.mapred.TaskAttemptListenerImpl:`.
+  The logger is the class; the model takes the thread. Loghub's own schema splits
+  these into separate columns, agreeing with the rule list.
+- **Duration is not latency.** Proxifier's `lifetime 00:01` is how long a
+  connection lived, not the measured time of the logged event. The model reads it
+  as `60000`. Six of its ten `latency_ms` errors are this pattern, and Gemini is
+  correct on 8 of the 10 lines where the fine-tune gets the field wrong.
+
+Both rules are stated in the spec both systems receive. The fine-tune reads them
+and still misapplies them; that is a training-distribution gap, and the fix is
+training data containing those conventions, not a larger model.
+
+---
+
+## Cost
+
+| | per line | per 1M lines | latency |
+|---|---|---|---|
+| gemini-3.1-pro-preview | $0.0159 | ~$15,900 | 8.8 s |
+| Qwen3-4B fine-tune, self-hosted | ~$0.000003 | ~$3 | ~4.2 s\* |
+| rules | 0 | 0 | < 1 ms |
+
+Measured over the 127-line test run: Gemini spent **1,103 completion tokens per
+line** — roughly 11× the JSON record it emits — because reasoning tokens bill at
+output rate on every line.
+
+The accuracy gap is real and significant. So is a 5,000× cost gap, and a
+deterministic parser that a frontier model cannot be distinguished from at
+p = 0.27.
+
+\* carried from the v1 synthetic run; the real-log run was batched and not timed
+per line.
+
+---
+
+## Appendix — the synthetic result, and what it was worth
+
+The original result was **100% vs 83.5% exact match** against
+`gemini-3.1-pro-preview` on a 200-example held-out set, with a deterministic
+epoch pre-pass on top of the fine-tune.
+
+**It is withdrawn as evidence of extraction quality.** `generate.py` produced the
+training set, the test set and the scoring rubric. "Held-out" meant different
+rows from the same process, so the comparison measured how well a fine-tune
+memorizes a rulebook against how well a frontier model reads one once.
+
+One finding from that work does survive, because it does not depend on the test
+set being independent:
+
+**The model could not do epoch arithmetic, and more data did not help.** Every
+timestamp miss had correct minutes and seconds with wrong hours and dates — all
+of them bare epoch integers, where `1780543196` needs integer division by 86400
+plus calendar arithmetic. Two controlled runs on Qwen3-1.7B:
 
 | Training examples | Exact match | timestamp |
 |---|---|---|
 | 5,000 | 57.5% | 72.5% |
 | 20,000 | 56.5% | 73.0% |
 
-Four times the data moved timestamp accuracy 0.5 points. That ruled out data
-volume and pointed at capability. Moving to Qwen3-4B fixed `level`
-(83.5% → 100%) but left timestamp at 73.0% — so it was not a general capacity
-problem either. It was arithmetic specifically.
+Four times the data moved timestamp accuracy 0.5 points. Moving to Qwen3-4B
+fixed `level` but left timestamp at 73.0%, so it was not general capacity
+either. The fix was to stop asking: a regex detects bare epochs and
+`datetime.fromtimestamp()` converts them, exactly, on 41 of 200 inputs.
 
-**The fix was to stop asking the model to do it.** A regex detects bare epoch
-integers and `datetime.fromtimestamp()` converts them — exact, instant, zero
-parameters. It fires on 41 of 200 inputs. Everything else still goes to the
-model.
-
-That is the actual finding: the right move was not a bigger model but
-recognising that one subtask should never have been learned at all.
-
----
-
-## Why a small model wins the rest
-
-Capacity was never the bottleneck on the other six fields; **specification
-was**. Parsing six log formats, mapping twenty level aliases and converting
-three time units needs almost no reasoning. It needs the same rules applied
-identically every time.
-
-A frontier model is a generalist sampling over plausible interpretations. On
-open-ended work that is an asset. On a task with exactly one correct answer
-per input it means drift — `WARN` where the spec says `WARNING`, a reformatted
-timestamp, a hallucinated `trace_id` where the spec says `null`. The baseline's
-weakest field was `service` at 89.5%, where the name sits in six different
-structural positions. The fine-tune takes it to 100%.
-
-Economics reinforce it. Log parsing runs at millions of lines a day:
-
-| | Per 1M log lines |
-|---|---|
-| gemini-3.1-pro-preview | ~$7,400 |
-| this model, self-hosted | ~$3 |
-
-Gemini 3.1 Pro also emits mandatory reasoning tokens — 44 of them just to
-answer "say ok" — billed at output rate on every single line. It is not a
-model anyone would deploy for this.
-
----
-
-## The dataset is built backwards
-
-No logs were collected and no labels were written by hand.
-
-`generate.py` constructs the **canonical record first** — random timestamp,
-level, service, trace id, latency — then renders it into a messy log line via
-one of six format emitters (syslog RFC3164, nginx combined, logfmt, Java,
-container JSON, bracket).
-
-The label exists before the input does, so **every one of the 20,000 training
-examples is correct by construction**. Train and test draw from disjoint time
-windows (Jan–May vs Jun–Jul) so timestamps cannot be memorised. Generation is
-seeded — one command reproduces the exact dataset.
+The right move was not a bigger model but recognising that one subtask should
+never have been learned at all. That still holds.
 
 ---
 
 ## Limitations
 
-**The test set is synthetic.** It comes from the same six renderers as
-training, with disjoint time windows. That prevents timestamp memorisation but
-not format memorisation. Once epoch conversion is routed deterministically,
-what remains is pattern extraction over a bounded input space — a 4B model
-saturating that is the expected outcome, not a surprising one. The 100% should
-be read as "this task is solved within its stated distribution," not as a
-claim about production logs.
+**The rules arm shares an author with the labels.** Both trace to the same rule
+list, so 92.1% is a generous read of that arm even after the S2c correction moved
+10 labels away from it. Only the Gemini arm is fully independent of both the
+labels and the training data.
 
-**Real logs are harder.** Multiline stack traces, truncated lines, formats
-outside these six, and vendor quirks are all absent here. Handling them would
-mean training on real log corpora and adding renderers.
+**n = 127.** Roughly ±8 points on the six-field numbers. The rules-vs-Gemini
+comparison is genuinely unresolved at this sample size, not a tie.
 
-**One baseline, one run.** Compared against `gemini-3.1-pro-preview` only,
-scored once, at temperature 0.
+**Only `level` and `service` are externally corroborated.** `timestamp`,
+`latency_ms`, `trace_id`, `status_code` and `message` labels have no counterpart
+in Loghub's schema and remain self-attested.
+
+**Single-line only.** Multi-line stack traces, truncated lines and formats
+outside these ten sources are absent. The schema's seven fields are also the
+wrong abstraction for some sources entirely.
+
+**One baseline, one run**, at temperature 0.
 
 ---
 
 ## Reproduce
 
+The prediction files are committed, so the scoring tables need no GPU and no API
+key:
+
 ```bash
-pip install unsloth openai
-
-# 1. dataset (seeded -- byte-identical every run)
-python generate.py --train 20000 --test 200
-
-# 2. frontier baseline
-export OPENROUTER_API_KEY=...
-python eval.py --runner baseline --n 200 --out baseline.json
-
-# 3. fine-tune           (~2.5h on an RTX 2000 Ada, ~$0.60)
-python train2.py --model unsloth/Qwen3-4B --data train.jsonl \
-                 --epochs 2 --bs 2 --accum 8
-
-# 4. inference + scoring
-python run_local.py
-python score.py           # model alone
-python score_hybrid.py    # model + epoch pre-pass
+python real-eval/score_arms.py --labels real-eval/labels_test.jsonl \
+    rules model=real-eval/preds_test_model.jsonl gemini=real-eval/preds_test_gemini.jsonl
+python real-eval/validate_labels_loghub.py --labels real-eval/labels_test.jsonl
 ```
 
-Weights: [`arshirazi/tiny-log-parser`](https://huggingface.co/arshirazi/tiny-log-parser)
+From scratch:
+
+```bash
+# 1. corpus (seeded; hashes in CORPUS_FREEZE.txt)
+python real-eval/build_corpus.py --out real-eval
+
+# 2. training data + fine-tune  (~2.5h on an RTX 2000 Ada, ~$0.60)
+python generate_v2.py --train 20000 --test 200
+python validate_v2.py train_v2.jsonl test_v2.jsonl     # must print PASS
+python train2.py --model unsloth/Qwen3-4B --data train_v2.jsonl \
+                 --spec v2 --epochs 2 --bs 2 --accum 8
+
+# 3. the arms (the model arm needs a GPU; see real-eval/COLAB_EVAL.md)
+python real-eval/predict.py --arm model  --corpus real-eval/corpus_test.jsonl --allow-test
+export OPENROUTER_API_KEY=...
+python real-eval/predict.py --arm gemini --corpus real-eval/corpus_test.jsonl --allow-test
+```
+
+Weights: [`arshirazi/tiny-log-parser-v2`](https://huggingface.co/arshirazi/tiny-log-parser-v2)
+(v1 kept at [`arshirazi/tiny-log-parser`](https://huggingface.co/arshirazi/tiny-log-parser)
+so the abstention comparison stays reproducible).
 
 ## Files
 
 | | |
 |---|---|
-| `generate.py` | canonical-record generator + six format renderers |
+| `real-eval/build_corpus.py` | Loghub fetch, template dedup, stratify, freeze |
+| `real-eval/ADJUDICATION.md` | the labelling rule list, including corrections |
+| `real-eval/validate_labels_loghub.py` | labels vs Loghub's own annotations |
+| `real-eval/predict.py` | run one arm (rules / model / gemini) over a corpus |
+| `real-eval/score_arms.py` | scoring, bootstrap CIs, McNemar, `--pre-s2c` |
+| `real-eval/probe_abstention.py` | label-free abstention probe (the v1 diagnosis) |
+| `real-eval/RESULTS.md` | the scored tables and what they do not support |
+| `generate_v2.py` / `schema_v2.py` | canonical-record generator, with nulls |
 | `train2.py` | LoRA fine-tune, response-masked so loss lands on the JSON only |
-| `eval.py` | shared prompt spec, exact-match verifier, bootstrap CI |
-| `run_local.py` | inference against the merged model |
-| `score.py` / `score_hybrid.py` | scoring, with and without the epoch pre-pass |
-| `baseline.json` / `mine.json` / `hybrid.json` | per-field results and saved misses |
+| `generate.py` / `eval.py` / `score*.py` | the v1 synthetic pipeline (appendix) |
 
 ## Setup
 
@@ -201,4 +302,4 @@ Weights: [`arshirazi/tiny-log-parser`](https://huggingface.co/arshirazi/tiny-log
 - **Method** — 4-bit QLoRA, r=16, 2 epochs, response masking, 20k examples
 - **Hardware** — single RTX 2000 Ada (16 GB), ~2.5h, ~$0.60
 - **Baseline** — `google/gemini-3.1-pro-preview` via OpenRouter, temperature 0
-- **Total project cost** — ~$9 (GPU + baseline API)
+- **Evaluation** — 127 real log lines, scored once, $2.02 of baseline API
