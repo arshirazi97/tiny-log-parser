@@ -138,10 +138,23 @@ def main():
     ap.add_argument("--labels", default="real-eval/labels_dev.jsonl")
     ap.add_argument("--stratum", choices=["all", "rich", "sparse"], default="all")
     ap.add_argument("--show-misses", type=int, default=0)
+    ap.add_argument("--pre-s2c", action="store_true",
+                    help="score against the labels as they stood BEFORE the "
+                         "S2c correction (Proxifier '*64' dropped). Shows what "
+                         "the correction cost or gave each arm.")
     ap.add_argument("arms", nargs="+", help="'rules' or 'name=path'")
     args = ap.parse_args()
 
     labels = [json.loads(l) for l in open(args.labels) if l.strip()]
+    if args.pre_s2c:
+        n = 0
+        for r in labels:
+            svc = r["label"]["service"]
+            if r["source"] == "Proxifier" and svc and svc.endswith(" *64"):
+                r["label"]["service"] = svc[:-4]
+                n += 1
+        print(f"\n*** --pre-s2c: reverted {n} labels to their pre-correction "
+              f"state. These are NOT the labels of record. ***")
     if args.stratum != "all":
         labels = [r for r in labels if r["stratum"] == args.stratum]
     pending = sum(1 for r in labels if r.get("_review") == "pending")
