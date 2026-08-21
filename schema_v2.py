@@ -62,3 +62,36 @@ def canon_ts(dt, frac=None, year_known=True):
     s = (f"{y:04d}-{dt.month:02d}-{dt.day:02d}"
          f"T{dt.hour:02d}:{dt.minute:02d}:{dt.second:02d}")
     return s + (f".{frac}Z" if frac else "Z")
+
+
+# ---------------------------------------------------------------------------
+# Evaluation spec.
+#
+# SPEC above is FROZEN -- it is what the v2 adapter was trained with, and
+# changing it would break reproducibility of that run.
+#
+# But labelling the real corpus forced three clarifications (ADJUDICATION S1b,
+# F5, M1b) that SPEC does not state. Scoring either arm against rules it was
+# never given would be unfair, so evaluation sends SPEC plus this appendix --
+# identical text to the fine-tune and to the baseline.
+# ---------------------------------------------------------------------------
+
+CLARIFICATIONS = """
+
+Three clarifications:
+
+  service     When a logger is nested inside a thread bracket, e.g.
+              "[SessionTracker:ZooKeeperServer@325]", the leading token is the
+              thread, not the logger. Take the class immediately before the
+              "@line" suffix: "ZooKeeperServer". Where the logger sits in its
+              own position, keep the full dotted path whole.
+  latency_ms  A duration is not necessarily a latency. A configured timeout
+              ("timeout of 10000ms exceeded") and a connection lifetime
+              ("lifetime 00:01") are null -- neither is the measured time of
+              the event the line reports.
+  message     Keep the remainder verbatim. Values you extracted into other
+              fields stay in the message text; do not edit them out."""
+
+SPEC_EVAL = SPEC.replace(
+    "\nOutput only the JSON object. No markdown fences, no commentary.",
+    CLARIFICATIONS + "\n\nOutput only the JSON object. No markdown fences, no commentary.")

@@ -87,11 +87,10 @@ def m_zookeeper(l):
     # S1 wants the logger. Zookeeper buries it in the thread bracket, and the
     # bracket itself contains ':' separators, so "before the first :" does not
     # apply cleanly here.
-    # Taken literally S1 gives "SessionTracker" -- the thread, not the logger.
-    # Taking the class before '@' gives "ZooKeeperServer". Chose the class;
-    # this needs a rule either way, so it is flagged on every Zookeeper line.
+    # ADJUDICATION S1b: the class immediately before @<line>, not the thread.
     cls = re.search(r"([A-Za-z_$][\w$]*)@\d+$", thread)
-    OPEN_QUESTIONS.append(("zookeeper-service-is-thread-or-class?", l[:70]))
+    if not cls:
+        OPEN_QUESTIONS.append(("zookeeper-bracket-without-@line", l[:70]))
     return rec(timestamp=iso(int(y), int(mo), int(d), int(h), int(mi), int(s), frac),
                level=lvl(lv), service=cls.group(1) if cls else None,
                message=msg.strip())
@@ -156,9 +155,7 @@ def m_proxifier(l):
     if not m:
         return None
     mo, d, h, mi, s, proc, msg = m.groups()
-    if re.search(r"lifetime [\d:<]", msg):
-        # a connection lifetime -- a duration, but is it this schema's latency?
-        OPEN_QUESTIONS.append(("proxifier-lifetime-is-latency?", l[:70]))
+    # ADJUDICATION F5: a connection lifetime is not the latency of the event.
     return rec(timestamp=iso(1900, int(mo), int(d), int(h), int(mi), int(s)),
                level=None, service=proc, message=msg.strip())
 

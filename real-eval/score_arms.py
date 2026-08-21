@@ -60,8 +60,6 @@ def eq(a, b):
 def load_preds(spec, corpus_rows):
     """spec is 'rules' or 'name=path'. Returns (name, {id: pred|None})."""
     if spec == "rules":
-        from importlib import import_module
-        rp = import_module("real-eval.rule_parser") if False else None
         import importlib.util
         s = importlib.util.spec_from_file_location("rp", "real-eval/rule_parser.py")
         rp = importlib.util.module_from_spec(s)
@@ -70,10 +68,15 @@ def load_preds(spec, corpus_rows):
 
     name, path = spec.split("=", 1)
     raw = open(path).read().strip()
-    if raw.startswith("{"):                       # probe JSON
+    # a probe JSON is one object with a "records" list; a predictions file is
+    # JSONL. Both start with "{", so discriminate by parsing, not by prefix.
+    try:
         d = json.loads(raw)
-        return name, {r["id"]: r["pred"] for r in d["records"]}
-    out = {}                                       # JSONL
+        if isinstance(d, dict) and "records" in d:
+            return name, {r["id"]: r["pred"] for r in d["records"]}
+    except json.JSONDecodeError:
+        pass
+    out = {}
     for line in raw.splitlines():
         if line.strip():
             r = json.loads(line)

@@ -53,6 +53,15 @@ logger (`org.apache.hadoop.mapreduce.v2.app.MRAppMaster`,
 `dfs.DataNode$PacketResponder`). Take the **full string as written**, before the
 first `:` separator. Do not shorten to the last segment.
 
+**S1b — logger nested inside a thread bracket.** Zookeeper writes
+`[SessionTracker:ZooKeeperServer@325]` and
+`[ProcessThread(sid:2 cport:-1)::PrepRequestProcessor@476]`. The leading token is
+the *thread*, not the logger, so S1's "before the first `:`" does not apply.
+→ Take the class immediately before `@<line>`: `ZooKeeperServer`,
+`PrepRequestProcessor`, `NIOServerCnxn`, `FastLeaderElection`.
+S1 still governs sources that put the logger in its own position (Hadoop, HDFS,
+Spark, OpenStack), where the full dotted path is taken whole.
+
 **S2 — syslog process.** `sshd(pam_unix)[19939]` → service is `sshd`. Drop the
 PAM qualifier and the PID.
 
@@ -80,10 +89,24 @@ identifier, not a request correlation id. → `null`.
 **F4 — OpenStack latency.** `time: 0.2477829` is seconds → `247.7829` ms.
 Do not round.
 
+**F5 — a duration is not a latency.** `latency_ms` means the measured time of
+the event the line reports. It is null for:
+  - a *configured* timeout — Zookeeper `timeout of 10000ms exceeded`
+  - a connection *lifetime* — Proxifier `lifetime 00:01`, `lifetime <1 sec`
+Neither is the duration of the logged operation. This is a deliberate call: a
+system that emits `10000` or `60000` here is wrong under these rules.
+
 ## Message
 
 **M1 — remainder after field extraction**, with structural punctuation and the
 trailing whitespace stripped. Embedded IPs, paths and ids stay in the message.
+
+**M1b — extracted values stay in the message.** OpenStack wsgi lines end
+`... status: 200 len: 1893 time: 0.2598419`. `status: 200` and `time: ...` are
+also extracted into `status_code` and `latency_ms`, but the message keeps the
+remainder **verbatim** — everything after the `[req-...]` bracket, unedited.
+Chosen over M1's stricter reading because it needs no editing judgement and is
+reproducible across annotators.
 
 **M2 — the message is scored last and separately.** It is the most
 judgement-dependent field; report exact-match on it but also report the
