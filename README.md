@@ -1,8 +1,8 @@
 # tiny-log-parser
 
 **A 4B fine-tune, a deterministic parser, and Gemini 3.1 Pro, measured on 127
-hand-adjudicated lines of real production logs. The fine-tune loses. The
-200-line parser doesn't.**
+adjudicated lines of real production logs. The fine-tune loses. The 250-line
+parser doesn't.**
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/arshirazi97/tiny-log-parser/blob/main/demo.ipynb)
 
@@ -34,8 +34,8 @@ poisons every downstream alert built on the field. The year is absent, so a
 
 127 lines from ten real production systems (Loghub: HDFS, OpenStack, OpenSSH,
 Linux, Hadoop, Spark, Zookeeper, Apache, HealthApp, Proxifier), deduplicated by
-template signature, frozen by hash, hand-adjudicated against a written rule
-list, **scored once**. Full detail in [`real-eval/RESULTS.md`](real-eval/RESULTS.md).
+template signature, frozen by hash, labelled against a written rule list and
+cross-checked against Loghub's own annotations, **scored once**. Full detail in [`real-eval/RESULTS.md`](real-eval/RESULTS.md).
 
 | arm | exact (7 fields) | six-field | 95% CI (six) | valid JSON |
 |---|---|---|---|---|
