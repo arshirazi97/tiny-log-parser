@@ -93,6 +93,18 @@ PAM qualifier and the PID.
 `syslogd 1.4.1`. S2 licenses dropping a `(pam)` qualifier and a `[pid]`; nothing
 licenses dropping a version.
 
+**S2c — an architecture marker stays.** Proxifier writes
+`chrome.exe *64 - host:443 close, ...`. The service is `chrome.exe *64`, not
+`chrome.exe`. S2 drops a trailing `[pid]` and a *parenthesised* qualifier; `*64`
+is neither, and the field is defined as the component **as written**.
+
+Corrected on 2026-08-21 after `validate_labels_loghub.py` showed LogHub's own
+`Program` column keeps the marker on all 10 affected test lines. The original
+labels dropped it. The correction moves 10 test labels and 1 dev label *against*
+the fine-tune, which predicts `chrome.exe` — it is applied because it is right
+under S2, not because of its direction, and it was applied before any test
+scoring.
+
 **S3 — no service present.** Apache `[notice] workerEnv.init() ok` has no
 service position. → `null`. Do **not** emit `apache`, `httpd`, `unknown`, or any
 placeholder. Inventing a value here counts as a hallucination, not a near-miss.
@@ -140,6 +152,36 @@ reproducible across annotators.
 judgement-dependent field; report exact-match on it but also report the
 six-field exact-match excluding it, so a formatting quibble does not swamp the
 extraction result.
+
+---
+
+## Independent corroboration
+
+`validate_labels_loghub.py` scores these labels against LogHub's own
+`*_2k.log_structured.csv` annotations — produced by the logpai authors, years
+before this project, with no knowledge of this schema. It covers `level` and
+`service` only; the other five fields have no counterpart there.
+
+| field | test agreement |
+|---|---|
+| level | **127/127** |
+| service | 111/127 |
+
+The `level` result is the one that matters: all 53 null levels fall in the four
+sources (OpenSSH, Proxifier, HealthApp, Linux) whose LogHub schema carries no
+usable level column. An independent party asserts there is no level to extract
+in exactly the lines L1 labels null.
+
+Two families of `service` disagreement stand, both definitional, neither
+conceded:
+
+- **OpenSSH, 14 lines.** Their `Component` is `LabSZ`. Their header is
+  `Date,Day,Time,Component,Pid,Content`, so that column sits positionally where
+  the *hostname* is and `sshd` is never captured. A host is not an emitting
+  component; S2 governs and our label stands.
+- **Linux, 2 lines.** Their `Component` is `su(pam_unix)`; S2 drops the
+  parenthesised qualifier, giving `su`. A definitional difference against a rule
+  written down in advance, not an error.
 
 ---
 

@@ -29,6 +29,36 @@ To recover the rules arm as a real comparison, the labels have to come from
 someone else, or you have to review and change enough of them that agreement
 with the parser stops being total.
 
+## What independent corroboration exists now
+
+`validate_labels_loghub.py` (added 2026-08-21) scores the labels against
+LogHub's own `*_2k.log_structured.csv` annotations — third-party, predating this
+project, covering `level` and `service`.
+
+- **level: 127/127.** All 53 nulls fall in the four sources whose LogHub schema
+  has no usable level column. The abstention result no longer depends on this
+  project's own rulebook.
+- **service: 111/127**, after S2c corrected 10 Proxifier labels that had dropped
+  the `*64` architecture marker. The 16 standing disagreements are two
+  definitional families (OpenSSH hostname-as-Component, Linux parenthesised
+  qualifier), both argued in `ADJUDICATION.md`.
+
+This does not repair the rules-arm circularity — the parser and the labels still
+share an author, and S2c moved the labels *away* from the parser on 10 lines
+rather than toward independence in general. It does mean the two fields the v2
+result rests on are no longer only self-attested.
+
+## Provenance, stated exactly
+
+`_labelled_by: claude-proposal-v1` on every row: the labels were **drafted by a
+model** from the rules in `ADJUDICATION.md`, then reviewed. `review.py --approve`
+stamps `_review: human-approved` across all rows regardless of how many were
+displayed, so that field records a batch decision, not a per-line inspection.
+Rows corrected under S2c carry `human-approved+loghub-S2c`.
+
+Describe them as machine-drafted from a written rubric and human-reviewed. Not
+as hand-annotated.
+
 ## Distribution
 
 | field | null |
