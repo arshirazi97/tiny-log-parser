@@ -1,0 +1,288 @@
+nohup: ignoring input
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+spec: v2  (2286 chars)
+==((====))==  Unsloth 2026.8.19: Fast Qwen3 patching. Transformers: 5.5.0.
+   \\   /|    NVIDIA RTX 4000 Ada Generation. Num GPUs = 1. Max memory: 19.558 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.8.0+cu128. CUDA: 8.9. CUDA Toolkit: 12.8. Triton: 3.4.0
+\        /    Bfloat16 = TRUE. FA [Xformers = None. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights:   9%|▊         | 34/398 [00:00<00:01, 290.30it/s]Loading weights:  17%|█▋        | 67/398 [00:00<00:01, 279.80it/s]Loading weights:  30%|██▉       | 118/398 [00:00<00:00, 374.15it/s]Loading weights:  41%|████▏     | 165/398 [00:00<00:00, 409.53it/s]Loading weights:  53%|█████▎    | 211/398 [00:00<00:00, 426.88it/s]Loading weights:  65%|██████▍   | 257/398 [00:00<00:00, 436.60it/s]Loading weights:  77%|███████▋  | 307/398 [00:00<00:00, 456.77it/s]Loading weights:  89%|████████▊ | 353/398 [00:00<00:00, 455.51it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 414.23it/s]
+Unsloth 2026.8.19 patched 36 layers with 36 QKV layers, 36 O layers and 36 MLP layers.
+loaded 20000 examples
+--- loss is computed on ---
+{"timestamp": "1900-04-13T15:39:13Z", "level": null, "service": "store.index.SegmentMerger", "trace_id": null, "status_code": null, "latency_ms": null, "message": "failed to acquire advisory lock on shard 36"}<|im_end|>
+---------------------------
+`use_return_dict` is deprecated! Use `return_dict` instead!
+Unsloth: Will smartly offload gradients to save VRAM!
+Unsloth: Double buffering enabled (parallel H2D + compute) for backward pass.
+step 10/2500  loss 0.3479
+step 20/2500  loss 0.2012
+step 30/2500  loss 0.0870
+step 40/2500  loss 0.0595
+step 50/2500  loss 0.0412
+step 60/2500  loss 0.0347
+step 70/2500  loss 0.0225
+step 80/2500  loss 0.0141
+step 90/2500  loss 0.0122
+step 100/2500  loss 0.0125
+step 110/2500  loss 0.0130
+step 120/2500  loss 0.0141
+step 130/2500  loss 0.0101
+step 140/2500  loss 0.0101
+step 150/2500  loss 0.0136
+step 160/2500  loss 0.0106
+step 170/2500  loss 0.0122
+step 180/2500  loss 0.0128
+step 190/2500  loss 0.0096
+step 200/2500  loss 0.0091
+step 210/2500  loss 0.0085
+step 220/2500  loss 0.0055
+step 230/2500  loss 0.0077
+step 240/2500  loss 0.0074
+step 250/2500  loss 0.0105
+step 260/2500  loss 0.0132
+step 270/2500  loss 0.0093
+step 280/2500  loss 0.0112
+step 290/2500  loss 0.0084
+step 300/2500  loss 0.0077
+step 310/2500  loss 0.0103
+step 320/2500  loss 0.0103
+step 330/2500  loss 0.0086
+step 340/2500  loss 0.0127
+step 350/2500  loss 0.0110
+step 360/2500  loss 0.0096
+step 370/2500  loss 0.0061
+step 380/2500  loss 0.0117
+step 390/2500  loss 0.0115
+step 400/2500  loss 0.0107
+step 410/2500  loss 0.0109
+step 420/2500  loss 0.0136
+step 430/2500  loss 0.0139
+step 440/2500  loss 0.0107
+step 450/2500  loss 0.0089
+step 460/2500  loss 0.0112
+step 470/2500  loss 0.0134
+step 480/2500  loss 0.0051
+step 490/2500  loss 0.0114
+step 500/2500  loss 0.0058
+step 510/2500  loss 0.0088
+step 520/2500  loss 0.0099
+step 530/2500  loss 0.0102
+step 540/2500  loss 0.0046
+step 550/2500  loss 0.0070
+step 560/2500  loss 0.0086
+step 570/2500  loss 0.0079
+step 580/2500  loss 0.0074
+step 590/2500  loss 0.0063
+step 600/2500  loss 0.0109
+step 610/2500  loss 0.0056
+step 620/2500  loss 0.0071
+step 630/2500  loss 0.0086
+step 640/2500  loss 0.0110
+step 650/2500  loss 0.0110
+step 660/2500  loss 0.0094
+step 670/2500  loss 0.0077
+step 680/2500  loss 0.0081
+step 690/2500  loss 0.0079
+step 700/2500  loss 0.0072
+step 710/2500  loss 0.0065
+step 720/2500  loss 0.0144
+step 730/2500  loss 0.0132
+step 740/2500  loss 0.0081
+step 750/2500  loss 0.0088
+step 760/2500  loss 0.0051
+step 770/2500  loss 0.0082
+step 780/2500  loss 0.0075
+step 790/2500  loss 0.0081
+step 800/2500  loss 0.0108
+step 810/2500  loss 0.0062
+step 820/2500  loss 0.0080
+step 830/2500  loss 0.0087
+step 840/2500  loss 0.0076
+step 850/2500  loss 0.0100
+step 860/2500  loss 0.0124
+step 870/2500  loss 0.0089
+step 880/2500  loss 0.0080
+step 890/2500  loss 0.0087
+step 900/2500  loss 0.0068
+step 910/2500  loss 0.0059
+step 920/2500  loss 0.0086
+step 930/2500  loss 0.0073
+step 940/2500  loss 0.0061
+step 950/2500  loss 0.0085
+step 960/2500  loss 0.0079
+step 970/2500  loss 0.0077
+step 980/2500  loss 0.0101
+step 990/2500  loss 0.0101
+step 1000/2500  loss 0.0063
+step 1010/2500  loss 0.0059
+step 1020/2500  loss 0.0059
+step 1030/2500  loss 0.0076
+step 1040/2500  loss 0.0041
+step 1050/2500  loss 0.0085
+step 1060/2500  loss 0.0105
+step 1070/2500  loss 0.0066
+step 1080/2500  loss 0.0110
+step 1090/2500  loss 0.0066
+step 1100/2500  loss 0.0118
+step 1110/2500  loss 0.0086
+step 1120/2500  loss 0.0078
+step 1130/2500  loss 0.0086
+step 1140/2500  loss 0.0073
+step 1150/2500  loss 0.0080
+step 1160/2500  loss 0.0078
+step 1170/2500  loss 0.0062
+step 1180/2500  loss 0.0075
+step 1190/2500  loss 0.0060
+step 1200/2500  loss 0.0050
+step 1210/2500  loss 0.0077
+step 1220/2500  loss 0.0050
+step 1230/2500  loss 0.0096
+step 1240/2500  loss 0.0093
+step 1250/2500  loss 0.0094
+step 1260/2500  loss 0.0060
+step 1270/2500  loss 0.0079
+step 1280/2500  loss 0.0079
+step 1290/2500  loss 0.0062
+step 1300/2500  loss 0.0076
+step 1310/2500  loss 0.0094
+step 1320/2500  loss 0.0064
+step 1330/2500  loss 0.0054
+step 1340/2500  loss 0.0034
+step 1350/2500  loss 0.0038
+step 1360/2500  loss 0.0066
+step 1370/2500  loss 0.0106
+step 1380/2500  loss 0.0097
+step 1390/2500  loss 0.0111
+step 1400/2500  loss 0.0080
+step 1410/2500  loss 0.0065
+step 1420/2500  loss 0.0078
+step 1430/2500  loss 0.0084
+step 1440/2500  loss 0.0059
+step 1450/2500  loss 0.0087
+step 1460/2500  loss 0.0082
+step 1470/2500  loss 0.0092
+step 1480/2500  loss 0.0064
+step 1490/2500  loss 0.0114
+step 1500/2500  loss 0.0092
+step 1510/2500  loss 0.0080
+step 1520/2500  loss 0.0068
+step 1530/2500  loss 0.0089
+step 1540/2500  loss 0.0046
+step 1550/2500  loss 0.0072
+step 1560/2500  loss 0.0048
+step 1570/2500  loss 0.0078
+step 1580/2500  loss 0.0065
+step 1590/2500  loss 0.0087
+step 1600/2500  loss 0.0086
+step 1610/2500  loss 0.0050
+step 1620/2500  loss 0.0076
+step 1630/2500  loss 0.0105
+step 1640/2500  loss 0.0065
+step 1650/2500  loss 0.0100
+step 1660/2500  loss 0.0067
+step 1670/2500  loss 0.0108
+step 1680/2500  loss 0.0060
+step 1690/2500  loss 0.0082
+step 1700/2500  loss 0.0082
+step 1710/2500  loss 0.0078
+step 1720/2500  loss 0.0046
+step 1730/2500  loss 0.0053
+step 1740/2500  loss 0.0111
+step 1750/2500  loss 0.0080
+step 1760/2500  loss 0.0064
+step 1770/2500  loss 0.0072
+step 1780/2500  loss 0.0087
+step 1790/2500  loss 0.0081
+step 1800/2500  loss 0.0041
+step 1810/2500  loss 0.0086
+step 1820/2500  loss 0.0094
+step 1830/2500  loss 0.0083
+step 1840/2500  loss 0.0118
+step 1850/2500  loss 0.0060
+step 1860/2500  loss 0.0107
+step 1870/2500  loss 0.0070
+step 1880/2500  loss 0.0072
+step 1890/2500  loss 0.0068
+step 1900/2500  loss 0.0068
+step 1910/2500  loss 0.0069
+step 1920/2500  loss 0.0064
+step 1930/2500  loss 0.0052
+step 1940/2500  loss 0.0035
+step 1950/2500  loss 0.0047
+step 1960/2500  loss 0.0062
+step 1970/2500  loss 0.0087
+step 1980/2500  loss 0.0019
+step 1990/2500  loss 0.0070
+step 2000/2500  loss 0.0069
+step 2010/2500  loss 0.0089
+step 2020/2500  loss 0.0026
+step 2030/2500  loss 0.0070
+step 2040/2500  loss 0.0067
+step 2050/2500  loss 0.0065
+step 2060/2500  loss 0.0032
+step 2070/2500  loss 0.0027
+step 2080/2500  loss 0.0059
+step 2090/2500  loss 0.0069
+step 2100/2500  loss 0.0058
+step 2110/2500  loss 0.0057
+step 2120/2500  loss 0.0041
+step 2130/2500  loss 0.0070
+step 2140/2500  loss 0.0075
+step 2150/2500  loss 0.0057
+step 2160/2500  loss 0.0073
+step 2170/2500  loss 0.0077
+step 2180/2500  loss 0.0047
+step 2190/2500  loss 0.0076
+step 2200/2500  loss 0.0065
+step 2210/2500  loss 0.0080
+step 2220/2500  loss 0.0085
+step 2230/2500  loss 0.0047
+step 2240/2500  loss 0.0046
+step 2250/2500  loss 0.0064
+step 2260/2500  loss 0.0072
+step 2270/2500  loss 0.0079
+step 2280/2500  loss 0.0065
+step 2290/2500  loss 0.0075
+step 2300/2500  loss 0.0072
+step 2310/2500  loss 0.0084
+step 2320/2500  loss 0.0057
+step 2330/2500  loss 0.0077
+step 2340/2500  loss 0.0048
+step 2350/2500  loss 0.0048
+step 2360/2500  loss 0.0060
+step 2370/2500  loss 0.0074
+step 2380/2500  loss 0.0081
+step 2390/2500  loss 0.0069
+step 2400/2500  loss 0.0062
+step 2410/2500  loss 0.0056
+step 2420/2500  loss 0.0064
+step 2430/2500  loss 0.0037
+step 2440/2500  loss 0.0061
+step 2450/2500  loss 0.0077
+step 2460/2500  loss 0.0073
+step 2470/2500  loss 0.0072
+step 2480/2500  loss 0.0060
+step 2490/2500  loss 0.0038
+step 2500/2500  loss 0.0041
+
+done
+Unsloth: Restored added_tokens_decoder metadata in ./lora_adapter/tokenizer_config.json.
+Unsloth: Downloading `unsloth/qwen3-4b` into the Hugging Face cache so future exports skip the 7.5GB download...
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:10<00:05,  5.06s/it]Fetching 3 files: 100%|██████████| 3/3 [00:15<00:00,  5.18s/it]Fetching 3 files: 100%|██████████| 3/3 [00:15<00:00,  5.16s/it]
+Unsloth: Restored added_tokens_decoder metadata in ./merged/tokenizer_config.json.
+Found HuggingFace hub cache directory: /workspace/.cache/huggingface/hub
+Fetching 1 files:   0%|          | 0/1 [00:00<?, ?it/s]Fetching 1 files: 100%|██████████| 1/1 [00:00<00:00,  3.08it/s]Fetching 1 files: 100%|██████████| 1/1 [00:00<00:00,  3.07it/s]
+Checking cache directory for required files...
+Unsloth: Copying 2 files from cache to `./merged`:   0%|          | 0/2 [00:00<?, ?it/s]Unsloth: Copying 2 files from cache to `./merged`:  50%|█████     | 1/2 [00:14<00:14, 14.85s/it]Unsloth: Copying 2 files from cache to `./merged`: 100%|██████████| 2/2 [00:23<00:00, 11.42s/it]Unsloth: Copying 2 files from cache to `./merged`: 100%|██████████| 2/2 [00:23<00:00, 11.93s/it]
+Successfully copied all 2 files from cache to `./merged`
+Checking cache directory for required files...
+Cache check failed: tokenizer.model not found in local cache.
+Not all required files found in cache. Will proceed with downloading.
+Unsloth: Preparing safetensor model files:   0%|          | 0/2 [00:00<?, ?it/s]Unsloth: Preparing safetensor model files: 100%|██████████| 2/2 [00:00<00:00, 32140.26it/s]
+Unsloth: Merging weights into 16bit:   0%|          | 0/2 [00:00<?, ?it/s]Unsloth: Merging weights into 16bit:  50%|█████     | 1/2 [00:36<00:36, 36.56s/it]Unsloth: Merging weights into 16bit: 100%|██████████| 2/2 [00:52<00:00, 24.72s/it]Unsloth: Merging weights into 16bit: 100%|██████████| 2/2 [00:52<00:00, 26.50s/it]
+Unsloth: Merge process complete. Saved to `/workspace/tiny-log-parser/merged`
+saved ./lora_adapter and ./merged

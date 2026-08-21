@@ -1,0 +1,892 @@
+{
+  "adapter": "./lora_adapter",
+  "spec": "v2",
+  "prompt": "chat",
+  "n": 50,
+  "unparseable": 0,
+  "null_rate": {
+    "timestamp": 0.0,
+    "level": 0.34,
+    "service": 0.06,
+    "trace_id": 0.88,
+    "status_code": 0.9,
+    "latency_ms": 0.78,
+    "message": 0.0
+  },
+  "hallucination": {
+    "level": {
+      "n_absent": 16,
+      "n_hallucinated": 0,
+      "rate": 0.0
+    },
+    "trace_id": {
+      "n_absent": 44,
+      "n_hallucinated": 0,
+      "rate": 0.0
+    },
+    "status_code": {
+      "n_absent": 45,
+      "n_hallucinated": 0,
+      "rate": 0.0
+    },
+    "latency_ms": {
+      "n_absent": 42,
+      "n_hallucinated": 3,
+      "rate": 0.07142857142857142
+    }
+  },
+  "by_source": {
+    "HDFS": {
+      "n": 8,
+      "level_nonnull": 8,
+      "service_nonnull": 8
+    },
+    "Zookeeper": {
+      "n": 6,
+      "level_nonnull": 6,
+      "service_nonnull": 6
+    },
+    "OpenSSH": {
+      "n": 6,
+      "level_nonnull": 0,
+      "service_nonnull": 6
+    },
+    "Spark": {
+      "n": 3,
+      "level_nonnull": 3,
+      "service_nonnull": 3
+    },
+    "Hadoop": {
+      "n": 7,
+      "level_nonnull": 7,
+      "service_nonnull": 7
+    },
+    "Linux": {
+      "n": 5,
+      "level_nonnull": 0,
+      "service_nonnull": 5
+    },
+    "OpenStack": {
+      "n": 6,
+      "level_nonnull": 6,
+      "service_nonnull": 6
+    },
+    "HealthApp": {
+      "n": 3,
+      "level_nonnull": 0,
+      "service_nonnull": 3
+    },
+    "Apache": {
+      "n": 3,
+      "level_nonnull": 3,
+      "service_nonnull": 0
+    },
+    "Proxifier": {
+      "n": 3,
+      "level_nonnull": 0,
+      "service_nonnull": 3
+    }
+  },
+  "records": [
+    {
+      "id": "93418bafbdce",
+      "source": "HDFS",
+      "stratum": "rich",
+      "raw": "081110 222512 16222 INFO dfs.DataNode$PacketResponder: PacketResponder 0 for block blk_708101772844351082 terminating",
+      "pred": {
+        "timestamp": "2008-11-10T22:25:12Z",
+        "level": "INFO",
+        "service": "dfs.DataNode$PacketResponder",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "PacketResponder 0 for block blk_708101772844351082 terminating"
+      },
+      "raw_output": "{\"timestamp\": \"2008-11-10T22:25:12Z\", \"level\": \"INFO\", \"service\": \"dfs.DataNode$PacketResponder\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"PacketResponder 0 for block blk_708101772844351082 terminating\"}"
+    },
+    {
+      "id": "f5d49cad4980",
+      "source": "HDFS",
+      "stratum": "rich",
+      "raw": "081109 210807 1408 INFO dfs.DataNode$PacketResponder: Received block blk_4755566011267050000 of size 67108864 from /10.251.75.79",
+      "pred": {
+        "timestamp": "2008-11-09T21:08:07Z",
+        "level": "INFO",
+        "service": "dfs.DataNode$PacketResponder",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Received block blk_4755566011267050000 of size 67108864 from 10.251.75.79"
+      },
+      "raw_output": "{\"timestamp\": \"2008-11-09T21:08:07Z\", \"level\": \"INFO\", \"service\": \"dfs.DataNode$PacketResponder\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Received block blk_4755566011267050000 of size 67108864 from 10.251.75.79\"}"
+    },
+    {
+      "id": "0245d562d619",
+      "source": "Zookeeper",
+      "stratum": "sparse",
+      "raw": "2015-08-20 17:14:24,000 - INFO  [SessionTracker:ZooKeeperServer@325] - Expiring session 0x24f3fdaf7380008, timeout of 10000ms exceeded",
+      "pred": {
+        "timestamp": "2015-08-20T17:14:24.000Z",
+        "level": "INFO",
+        "service": "SessionTracker:ZooKeeperServer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 10000,
+        "message": "Expiring session 0x24f3fdaf7380008"
+      },
+      "raw_output": "{\"timestamp\": \"2015-08-20T17:14:24.000Z\", \"level\": \"INFO\", \"service\": \"SessionTracker:ZooKeeperServer\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": 10000, \"message\": \"Expiring session 0x24f3fdaf7380008\"}"
+    },
+    {
+      "id": "c0e4b67cf181",
+      "source": "HDFS",
+      "stratum": "rich",
+      "raw": "081110 225056 16728 INFO dfs.DataNode$DataXceiver: Receiving block blk_6245594177708848366 src: /10.250.15.198:46793 dest: /10.250.15.198:50010",
+      "pred": {
+        "timestamp": "2008-11-10T22:50:56Z",
+        "level": "INFO",
+        "service": "dfs.DataNode$DataXceiver",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Receiving block blk_6245594177708848366"
+      },
+      "raw_output": "{\"timestamp\": \"2008-11-10T22:50:56Z\", \"level\": \"INFO\", \"service\": \"dfs.DataNode$DataXceiver\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Receiving block blk_6245594177708848366\"}"
+    },
+    {
+      "id": "100bbf83f18b",
+      "source": "HDFS",
+      "stratum": "rich",
+      "raw": "081110 224652 16437 INFO dfs.DataNode$PacketResponder: Received block blk_5648034804629064273 of size 67108864 from /10.251.91.159",
+      "pred": {
+        "timestamp": "2008-11-10T22:46:52Z",
+        "level": "INFO",
+        "service": "dfs.DataNode$PacketResponder",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Received block blk_5648034804629064273 of size 67108864 from 10.251.91.159"
+      },
+      "raw_output": "{\"timestamp\": \"2008-11-10T22:46:52Z\", \"level\": \"INFO\", \"service\": \"dfs.DataNode$PacketResponder\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Received block blk_5648034804629064273 of size 67108864 from 10.251.91.159\"}"
+    },
+    {
+      "id": "b9aa5b4f7fb5",
+      "source": "OpenSSH",
+      "stratum": "sparse",
+      "raw": "Dec 10 10:54:29 LabSZ sshd[24868]: Failed password for invalid user zhangyan from 183.62.140.253 port 33521 ssh2",
+      "pred": {
+        "timestamp": "1900-12-10T10:54:29Z",
+        "level": null,
+        "service": "sshd",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Failed password for invalid user zhangyan"
+      },
+      "raw_output": "{\"timestamp\": \"1900-12-10T10:54:29Z\", \"level\": null, \"service\": \"sshd\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Failed password for invalid user zhangyan\"}"
+    },
+    {
+      "id": "414ee0aa20f4",
+      "source": "Spark",
+      "stratum": "sparse",
+      "raw": "17/06/09 20:10:40 INFO spark.SecurityManager: Changing view acls to: yarn,curi",
+      "pred": {
+        "timestamp": "2017-06-09T20:10:40Z",
+        "level": "INFO",
+        "service": "spark.SecurityManager",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Changing view acls to: yarn,curi"
+      },
+      "raw_output": "{\"timestamp\": \"2017-06-09T20:10:40Z\", \"level\": \"INFO\", \"service\": \"spark.SecurityManager\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Changing view acls to: yarn,curi\"}"
+    },
+    {
+      "id": "b94b390e1697",
+      "source": "Hadoop",
+      "stratum": "sparse",
+      "raw": "2015-10-18 18:02:02,104 INFO [Socket Reader #1 for port 62270] SecurityLogger.org.apache.hadoop.ipc.Server: Auth successful for job_1445144423722_0020 (auth:SIMPLE)",
+      "pred": {
+        "timestamp": "2015-10-18T18:02:02.104Z",
+        "level": "INFO",
+        "service": "Socket Reader #1 for port 62270",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Auth successful"
+      },
+      "raw_output": "{\"timestamp\": \"2015-10-18T18:02:02.104Z\", \"level\": \"INFO\", \"service\": \"Socket Reader #1 for port 62270\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Auth successful\"}"
+    },
+    {
+      "id": "e4876781b2e2",
+      "source": "Linux",
+      "stratum": "sparse",
+      "raw": "Jul 27 14:41:59 combo kernel: PCI: Probing PCI hardware (bus 00)",
+      "pred": {
+        "timestamp": "1900-07-27T14:41:59Z",
+        "level": null,
+        "service": "kernel",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Probing PCI hardware (bus 00)"
+      },
+      "raw_output": "{\"timestamp\": \"1900-07-27T14:41:59Z\", \"level\": null, \"service\": \"kernel\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Probing PCI hardware (bus 00)\"}"
+    },
+    {
+      "id": "ed02b586a0fd",
+      "source": "OpenStack",
+      "stratum": "rich",
+      "raw": "nova-api.log.1.2017-05-16_13:53:08 2017-05-16 00:09:41.903 25746 INFO nova.osapi_compute.wsgi.server [req-cacb633a-46b5-4f22-aad1-864352c7e20d 113d3a99c3da401fbd62cc2caa5b96d2 54fadb412c4e40cdbaed9335e4c35a9e - - -] 10.11.10.1 \"GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail HTTP/1.1\" status: 200 len: 1893 time: 0.2598419",
+      "pred": {
+        "timestamp": "2017-05-16T00:09:41.903Z",
+        "level": "INFO",
+        "service": "nova.osapi_compute.wsgi.server",
+        "trace_id": "req-cacb633a-46b5-4f22-aad1-864352c7e20d",
+        "status_code": 200,
+        "latency_ms": 259.8419,
+        "message": "GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail"
+      },
+      "raw_output": "{\"timestamp\": \"2017-05-16T00:09:41.903Z\", \"level\": \"INFO\", \"service\": \"nova.osapi_compute.wsgi.server\", \"trace_id\": \"req-cacb633a-46b5-4f22-aad1-864352c7e20d\", \"status_code\": 200, \"latency_ms\": 259.8419, \"message\": \"GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail\"}"
+    },
+    {
+      "id": "453a3f7e45a3",
+      "source": "HDFS",
+      "stratum": "rich",
+      "raw": "081110 091216 7593 WARN dfs.DataNode$DataXceiver: 10.251.107.50:50010:Got exception while serving blk_4524198807982839635 to /10.251.122.79:",
+      "pred": {
+        "timestamp": "2008-11-10T09:12:16Z",
+        "level": "WARNING",
+        "service": "dfs.DataNode$DataXceiver",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Got exception while serving blk_4524198807982839635 to /10.251.122.79"
+      },
+      "raw_output": "{\"timestamp\": \"2008-11-10T09:12:16Z\", \"level\": \"WARNING\", \"service\": \"dfs.DataNode$DataXceiver\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Got exception while serving blk_4524198807982839635 to /10.251.122.79\"}"
+    },
+    {
+      "id": "23f056a103ac",
+      "source": "HealthApp",
+      "stratum": "sparse",
+      "raw": "20171223-22:31:59:725|Step_LSC|30002312|timeStamp back,extendReportTimeStamp=1514039575000",
+      "pred": {
+        "timestamp": "2017-12-23T22:31:59.725Z",
+        "level": null,
+        "service": "Step_LSC",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "timeStamp back"
+      },
+      "raw_output": "{\"timestamp\": \"2017-12-23T22:31:59.725Z\", \"level\": null, \"service\": \"Step_LSC\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"timeStamp back\"}"
+    },
+    {
+      "id": "d9cda723fbfd",
+      "source": "OpenStack",
+      "stratum": "rich",
+      "raw": "nova-api.log.1.2017-05-16_13:53:08 2017-05-16 00:08:26.583 25743 INFO nova.osapi_compute.wsgi.server [req-a27af937-85b3-4903-abf5-6c809b6cde67 f7b8d1f1d4d44643b07fa10ca7d021fb e9746973ac574c6b8a9e8857f56a7608 - - -] 10.11.10.1 \"POST /v2/e9746973ac574c6b8a9e8857f56a7608/os-server-external-events HTTP/1.1\" status: 200 len: 380 time: 0.0935540",
+      "pred": {
+        "timestamp": "2017-05-16T00:08:26.583Z",
+        "level": "INFO",
+        "service": "nova.osapi_compute.wsgi.server",
+        "trace_id": "req-a27af937-85b3-4903-abf5-6c809b6cde67",
+        "status_code": 200,
+        "latency_ms": 93.554,
+        "message": "POST /v2/e9746973ac574c6b8a9e8857f56a7608/os-server-external-events"
+      },
+      "raw_output": "{\"timestamp\": \"2017-05-16T00:08:26.583Z\", \"level\": \"INFO\", \"service\": \"nova.osapi_compute.wsgi.server\", \"trace_id\": \"req-a27af937-85b3-4903-abf5-6c809b6cde67\", \"status_code\": 200, \"latency_ms\": 93.554, \"message\": \"POST /v2/e9746973ac574c6b8a9e8857f56a7608/os-server-external-events\"}"
+    },
+    {
+      "id": "0de6fc5212f9",
+      "source": "Spark",
+      "stratum": "sparse",
+      "raw": "17/06/09 20:11:08 INFO storage.MemoryStore: Block rdd_42_28 stored as bytes in memory (estimated size 901.0 B, free 828.5 KB)",
+      "pred": {
+        "timestamp": "2017-06-09T20:11:08Z",
+        "level": "INFO",
+        "service": "storage.MemoryStore",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Block rdd_42_28 stored as bytes in memory (estimated size 901.0 B, free 828.5 KB)"
+      },
+      "raw_output": "{\"timestamp\": \"2017-06-09T20:11:08Z\", \"level\": \"INFO\", \"service\": \"storage.MemoryStore\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Block rdd_42_28 stored as bytes in memory (estimated size 901.0 B, free 828.5 KB)\"}"
+    },
+    {
+      "id": "d260ab072476",
+      "source": "Zookeeper",
+      "stratum": "sparse",
+      "raw": "2015-07-31 11:01:06,006 - INFO  [ProcessThread(sid:2 cport:-1)::PrepRequestProcessor@476] - Processed session termination for sessionid: 0x24edfaa8717002d",
+      "pred": {
+        "timestamp": "2015-07-31T11:01:06.006Z",
+        "level": "INFO",
+        "service": "PrepRequestProcessor",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Processed session termination for sessionid: 0x24edfaa8717002d"
+      },
+      "raw_output": "{\"timestamp\": \"2015-07-31T11:01:06.006Z\", \"level\": \"INFO\", \"service\": \"PrepRequestProcessor\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Processed session termination for sessionid: 0x24edfaa8717002d\"}"
+    },
+    {
+      "id": "bbe07d1a9552",
+      "source": "Apache",
+      "stratum": "sparse",
+      "raw": "[Sun Dec 04 06:01:42 2005] [notice] jk2_init() Found child 32353 in scoreboard slot 10",
+      "pred": {
+        "timestamp": "2005-12-04T06:01:42Z",
+        "level": "INFO",
+        "service": null,
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "jk2_init() Found child 32353 in scoreboard slot 10"
+      },
+      "raw_output": "{\"timestamp\": \"2005-12-04T06:01:42Z\", \"level\": \"INFO\", \"service\": null, \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"jk2_init() Found child 32353 in scoreboard slot 10\"}"
+    },
+    {
+      "id": "6fdf6eb037e6",
+      "source": "Proxifier",
+      "stratum": "sparse",
+      "raw": "[10.30 16:49:10] chrome.exe - proxy.cse.cuhk.edu.hk:5070 close, 1093 bytes (1.06 KB) sent, 1006 bytes received, lifetime 00:01",
+      "pred": {
+        "timestamp": "1900-10-30T16:49:10Z",
+        "level": null,
+        "service": "chrome.exe",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 60000,
+        "message": "close"
+      },
+      "raw_output": "{\"timestamp\": \"1900-10-30T16:49:10Z\", \"level\": null, \"service\": \"chrome.exe\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": 60000, \"message\": \"close\"}"
+    },
+    {
+      "id": "52cfdc0bbd49",
+      "source": "Linux",
+      "stratum": "sparse",
+      "raw": "Jul 25 23:23:13 combo xinetd[26482]: warning: can't get client address: Connection reset by peer",
+      "pred": {
+        "timestamp": "1900-07-25T23:23:13Z",
+        "level": null,
+        "service": "xinetd",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "can't get client address: Connection reset by peer"
+      },
+      "raw_output": "{\"timestamp\": \"1900-07-25T23:23:13Z\", \"level\": null, \"service\": \"xinetd\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"can't get client address: Connection reset by peer\"}"
+    },
+    {
+      "id": "afde50eb74d2",
+      "source": "Hadoop",
+      "stratum": "sparse",
+      "raw": "2015-10-18 18:01:53,885 INFO [AsyncDispatcher event handler] org.apache.hadoop.mapreduce.v2.app.job.impl.TaskImpl: task_1445144423722_0020_m_000009 Task Transitioned from NEW to SCHEDULED",
+      "pred": {
+        "timestamp": "2015-10-18T18:01:53.885Z",
+        "level": "INFO",
+        "service": "AsyncDispatcher event handler",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "task_1445144423722_0020_m_000009 Task Transitioned from NEW to SCHEDULED"
+      },
+      "raw_output": "{\"timestamp\": \"2015-10-18T18:01:53.885Z\", \"level\": \"INFO\", \"service\": \"AsyncDispatcher event handler\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"task_1445144423722_0020_m_000009 Task Transitioned from NEW to SCHEDULED\"}"
+    },
+    {
+      "id": "f9f5f2649301",
+      "source": "Hadoop",
+      "stratum": "sparse",
+      "raw": "2015-10-18 18:04:06,971 INFO [IPC Server handler 27 on 62270] org.apache.hadoop.mapred.TaskAttemptListenerImpl: JVM with ID: jvm_1445144423722_0020_m_000009 given task: attempt_1445144423722_0020_m_000007_0",
+      "pred": {
+        "timestamp": "2015-10-18T18:04:06.971Z",
+        "level": "INFO",
+        "service": "IPC Server handler 27",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "JVM with ID: jvm_1445144423722_0020_m_000009 given task: attempt_1445144423722_0020_m_000007_0"
+      },
+      "raw_output": "{\"timestamp\": \"2015-10-18T18:04:06.971Z\", \"level\": \"INFO\", \"service\": \"IPC Server handler 27\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"JVM with ID: jvm_1445144423722_0020_m_000009 given task: attempt_1445144423722_0020_m_000007_0\"}"
+    },
+    {
+      "id": "060d9f4e8f90",
+      "source": "OpenStack",
+      "stratum": "rich",
+      "raw": "nova-api.log.1.2017-05-16_13:53:08 2017-05-16 00:06:52.821 25746 INFO nova.osapi_compute.wsgi.server [req-b3dbbd16-100c-4a9e-a7cd-e2911d09417d 113d3a99c3da401fbd62cc2caa5b96d2 54fadb412c4e40cdbaed9335e4c35a9e - - -] 10.11.10.1 \"GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail HTTP/1.1\" status: 200 len: 1893 time: 0.2583311",
+      "pred": {
+        "timestamp": "2017-05-16T00:06:52.821Z",
+        "level": "INFO",
+        "service": "nova.osapi_compute.wsgi.server",
+        "trace_id": "req-b3dbbd16-100c-4a9e-a7cd-e2911d09417d",
+        "status_code": 200,
+        "latency_ms": 258.3311,
+        "message": "GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail"
+      },
+      "raw_output": "{\"timestamp\": \"2017-05-16T00:06:52.821Z\", \"level\": \"INFO\", \"service\": \"nova.osapi_compute.wsgi.server\", \"trace_id\": \"req-b3dbbd16-100c-4a9e-a7cd-e2911d09417d\", \"status_code\": 200, \"latency_ms\": 258.3311, \"message\": \"GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail\"}"
+    },
+    {
+      "id": "e873b4944de3",
+      "source": "Proxifier",
+      "stratum": "sparse",
+      "raw": "[07.26 16:48:51] chrome.exe *64 - avatars3.githubusercontent.com:443 close, 2194 bytes (2.14 KB) sent, 11695 bytes (11.4 KB) received, lifetime 05:29",
+      "pred": {
+        "timestamp": "1900-07-26T16:48:51Z",
+        "level": null,
+        "service": "chrome.exe",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 329,
+        "message": "close"
+      },
+      "raw_output": "{\"timestamp\": \"1900-07-26T16:48:51Z\", \"level\": null, \"service\": \"chrome.exe\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": 329, \"message\": \"close\"}"
+    },
+    {
+      "id": "d86643cf5a4d",
+      "source": "OpenSSH",
+      "stratum": "sparse",
+      "raw": "Dec 10 09:17:28 LabSZ sshd[24612]: Failed password for invalid user postgres from 187.141.143.180 port 54596 ssh2",
+      "pred": {
+        "timestamp": "1900-12-10T09:17:28Z",
+        "level": null,
+        "service": "sshd",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Failed password for invalid user postgres"
+      },
+      "raw_output": "{\"timestamp\": \"1900-12-10T09:17:28Z\", \"level\": null, \"service\": \"sshd\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Failed password for invalid user postgres\"}"
+    },
+    {
+      "id": "b3f65c469f7a",
+      "source": "OpenSSH",
+      "stratum": "sparse",
+      "raw": "Dec 10 09:17:52 LabSZ sshd[24622]: Invalid user vnc from 187.141.143.180",
+      "pred": {
+        "timestamp": "1900-12-10T09:17:52Z",
+        "level": null,
+        "service": "sshd",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Invalid user vnc"
+      },
+      "raw_output": "{\"timestamp\": \"1900-12-10T09:17:52Z\", \"level\": null, \"service\": \"sshd\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Invalid user vnc\"}"
+    },
+    {
+      "id": "2e325128d98f",
+      "source": "Zookeeper",
+      "stratum": "sparse",
+      "raw": "2015-07-30 14:52:23,211 - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1001] - Closed socket connection for client /10.10.34.13:37335 which had sessionid 0x24ed93119420065",
+      "pred": {
+        "timestamp": "2015-07-30T14:52:23.211Z",
+        "level": "INFO",
+        "service": "NIOServerCxn.Factory",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Closed socket connection for client /10.10.34.13:37335 which had sessionid 0x24ed93119420065"
+      },
+      "raw_output": "{\"timestamp\": \"2015-07-30T14:52:23.211Z\", \"level\": \"INFO\", \"service\": \"NIOServerCxn.Factory\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Closed socket connection for client /10.10.34.13:37335 which had sessionid 0x24ed93119420065\"}"
+    },
+    {
+      "id": "c3d208788e32",
+      "source": "OpenSSH",
+      "stratum": "sparse",
+      "raw": "Dec 10 07:13:56 LabSZ sshd[24227]: PAM service(sshd) ignoring max retries; 6 > 3",
+      "pred": {
+        "timestamp": "1900-12-10T07:13:56Z",
+        "level": null,
+        "service": "sshd",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "PAM service(sshd) ignoring max retries; 6 > 3"
+      },
+      "raw_output": "{\"timestamp\": \"1900-12-10T07:13:56Z\", \"level\": null, \"service\": \"sshd\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"PAM service(sshd) ignoring max retries; 6 > 3\"}"
+    },
+    {
+      "id": "0271b7b35e7a",
+      "source": "Hadoop",
+      "stratum": "sparse",
+      "raw": "2015-10-18 18:01:53,557 INFO [main] org.apache.hadoop.yarn.client.RMProxy: Connecting to ResourceManager at msra-sa-41/10.190.173.170:8030",
+      "pred": {
+        "timestamp": "2015-10-18T18:01:53.557Z",
+        "level": "INFO",
+        "service": "org.apache.hadoop.yarn.client.RMProxy",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Connecting to ResourceManager at msra-sa-41/10.190.173.170:8030"
+      },
+      "raw_output": "{\"timestamp\": \"2015-10-18T18:01:53.557Z\", \"level\": \"INFO\", \"service\": \"org.apache.hadoop.yarn.client.RMProxy\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Connecting to ResourceManager at msra-sa-41/10.190.173.170:8030\"}"
+    },
+    {
+      "id": "e656cdedbea2",
+      "source": "Zookeeper",
+      "stratum": "sparse",
+      "raw": "2015-07-29 21:36:26,000 - INFO  [SessionTracker:ZooKeeperServer@325] - Expiring session 0x24ed9311942002a, timeout of 10000ms exceeded",
+      "pred": {
+        "timestamp": "2015-07-29T21:36:26.000Z",
+        "level": "INFO",
+        "service": "SessionTracker:ZooKeeperServer",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 10000,
+        "message": "Expiring session 0x24ed9311942002a"
+      },
+      "raw_output": "{\"timestamp\": \"2015-07-29T21:36:26.000Z\", \"level\": \"INFO\", \"service\": \"SessionTracker:ZooKeeperServer\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": 10000, \"message\": \"Expiring session 0x24ed9311942002a\"}"
+    },
+    {
+      "id": "10c5ae235a6a",
+      "source": "Proxifier",
+      "stratum": "sparse",
+      "raw": "[10.30 17:52:18] YodaoDict.exe - proxy.cse.cuhk.edu.hk:5070 close, 493 bytes sent, 523 bytes received, lifetime <1 sec",
+      "pred": {
+        "timestamp": "1900-10-30T17:52:18Z",
+        "level": null,
+        "service": "YodaoDict.exe",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 100,
+        "message": "proxy.cse.cuhk.edu.hk:5070 close, 493 bytes sent, 523 bytes received"
+      },
+      "raw_output": "{\"timestamp\": \"1900-10-30T17:52:18Z\", \"level\": null, \"service\": \"YodaoDict.exe\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": 100, \"message\": \"proxy.cse.cuhk.edu.hk:5070 close, 493 bytes sent, 523 bytes received\"}"
+    },
+    {
+      "id": "88966aeef5ab",
+      "source": "Linux",
+      "stratum": "sparse",
+      "raw": "Jul 27 14:42:00 combo kernel: isapnp: Scanning for PnP cards...",
+      "pred": {
+        "timestamp": "1900-07-27T14:42:00Z",
+        "level": null,
+        "service": "kernel",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Scanning for PnP cards..."
+      },
+      "raw_output": "{\"timestamp\": \"1900-07-27T14:42:00Z\", \"level\": null, \"service\": \"kernel\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Scanning for PnP cards...\"}"
+    },
+    {
+      "id": "65cc5511afca",
+      "source": "Hadoop",
+      "stratum": "sparse",
+      "raw": "2015-10-18 18:05:57,009 WARN [ResponseProcessor for block BP-1347369012-10.190.173.170-1444972147527:blk_1073743512_2731] org.apache.hadoop.hdfs.DFSClient: DFSOutputStream ResponseProcessor exception  for block BP-1347369012-10.190.173.170-1444972147527:blk_1073743512_2731",
+      "pred": {
+        "timestamp": "2015-10-18T18:05:57.009Z",
+        "level": "WARNING",
+        "service": "ResponseProcessor for block BP-1347369012-10.190.173.170-1444972147527",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "DFSOutputStream ResponseProcessor exception for block BP-1347369012-10.190.173.170-1444972147527"
+      },
+      "raw_output": "{\"timestamp\": \"2015-10-18T18:05:57.009Z\", \"level\": \"WARNING\", \"service\": \"ResponseProcessor for block BP-1347369012-10.190.173.170-1444972147527\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"DFSOutputStream ResponseProcessor exception for block BP-1347369012-10.190.173.170-1444972147527\"}"
+    },
+    {
+      "id": "3722c6d3fd17",
+      "source": "Zookeeper",
+      "stratum": "sparse",
+      "raw": "2015-07-29 17:43:29,975 - INFO  [WorkerReceiver[myid=3]:FastLeaderElection@542] - Notification: 3 (n.leader), 0x0 (n.zxid), 0x1 (n.round), LOOKING (n.state), 3 (n.sid), 0x0 (n.peerEPoch), LOOKING (my state)",
+      "pred": {
+        "timestamp": "2015-07-29T17:43:29.975Z",
+        "level": "INFO",
+        "service": "WorkerReceiver",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Notification: 3 (n.leader), 0x0 (n.zxid), 0x1 (n.round), LOOKING (n.state), 3 (n.sid), 0x0 (n.peerEPoch), LOOKING (my state)"
+      },
+      "raw_output": "{\"timestamp\": \"2015-07-29T17:43:29.975Z\", \"level\": \"INFO\", \"service\": \"WorkerReceiver\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Notification: 3 (n.leader), 0x0 (n.zxid), 0x1 (n.round), LOOKING (n.state), 3 (n.sid), 0x0 (n.peerEPoch), LOOKING (my state)\"}"
+    },
+    {
+      "id": "6c2fe6ff5f2e",
+      "source": "Apache",
+      "stratum": "sparse",
+      "raw": "[Mon Dec 05 10:26:39 2005] [error] [client 141.153.150.164] Directory index forbidden by rule: /var/www/html/",
+      "pred": {
+        "timestamp": "2005-12-05T10:26:39Z",
+        "level": "ERROR",
+        "service": null,
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Directory index forbidden by rule"
+      },
+      "raw_output": "{\"timestamp\": \"2005-12-05T10:26:39Z\", \"level\": \"ERROR\", \"service\": null, \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Directory index forbidden by rule\"}"
+    },
+    {
+      "id": "b5c634ad136e",
+      "source": "Zookeeper",
+      "stratum": "sparse",
+      "raw": "2015-07-30 16:00:22,001 - INFO  [ProcessThread(sid:2 cport:-1)::PrepRequestProcessor@476] - Processed session termination for sessionid: 0x34ed9ac1c1e0081",
+      "pred": {
+        "timestamp": "2015-07-30T16:00:22.001Z",
+        "level": "INFO",
+        "service": "PrepRequestProcessor",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Processed session termination for sessionid: 0x34ed9ac1c1e0081"
+      },
+      "raw_output": "{\"timestamp\": \"2015-07-30T16:00:22.001Z\", \"level\": \"INFO\", \"service\": \"PrepRequestProcessor\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Processed session termination for sessionid: 0x34ed9ac1c1e0081\"}"
+    },
+    {
+      "id": "0e89666f330d",
+      "source": "Hadoop",
+      "stratum": "sparse",
+      "raw": "2015-10-18 18:04:04,986 INFO [IPC Server handler 27 on 62270] org.apache.hadoop.mapred.TaskAttemptListenerImpl: Progress of TaskAttempt attempt_1445144423722_0020_m_000004_0 is : 0.10680563",
+      "pred": {
+        "timestamp": "2015-10-18T18:04:04.986Z",
+        "level": "INFO",
+        "service": "TaskAttemptListenerImpl",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": 106.80563,
+        "message": "Progress of TaskAttempt attempt_1445144423722_0020_m_000004_0 is : 0.10680563"
+      },
+      "raw_output": "{\"timestamp\": \"2015-10-18T18:04:04.986Z\", \"level\": \"INFO\", \"service\": \"TaskAttemptListenerImpl\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": 106.80563, \"message\": \"Progress of TaskAttempt attempt_1445144423722_0020_m_000004_0 is : 0.10680563\"}"
+    },
+    {
+      "id": "86571f4f12bc",
+      "source": "HealthApp",
+      "stratum": "sparse",
+      "raw": "20171224-0:0:0:218|Step_StandStepCounter|30002312|reStartStepCounter",
+      "pred": {
+        "timestamp": "2017-12-24T00:00:00.218Z",
+        "level": null,
+        "service": "Step_StandStepCounter",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "reStartStepCounter"
+      },
+      "raw_output": "{\"timestamp\": \"2017-12-24T00:00:00.218Z\", \"level\": null, \"service\": \"Step_StandStepCounter\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"reStartStepCounter\"}"
+    },
+    {
+      "id": "184e7673ac61",
+      "source": "OpenStack",
+      "stratum": "rich",
+      "raw": "nova-compute.log.1.2017-05-16_13:55:31 2017-05-16 00:03:17.224 2931 INFO nova.compute.claims [req-2d658d2c-7eff-414e-a68f-3f1c75c9e874 113d3a99c3da401fbd62cc2caa5b96d2 54fadb412c4e40cdbaed9335e4c35a9e - - -] [instance: 7e7cc42f-3cb9-4d91-804c-f5a32d54f1c5] Total vcpu: 16 VCPU, used: 0.00 VCPU",
+      "pred": {
+        "timestamp": "2017-05-16T00:03:17.224Z",
+        "level": "INFO",
+        "service": "nova.compute.claims",
+        "trace_id": "req-2d658d2c-7eff-414e-a68f-3f1c75c9e874",
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Total vcpu: 16 VCPU, used: 0.00 VCPU"
+      },
+      "raw_output": "{\"timestamp\": \"2017-05-16T00:03:17.224Z\", \"level\": \"INFO\", \"service\": \"nova.compute.claims\", \"trace_id\": \"req-2d658d2c-7eff-414e-a68f-3f1c75c9e874\", \"status_code\": null, \"latency_ms\": null, \"message\": \"Total vcpu: 16 VCPU, used: 0.00 VCPU\"}"
+    },
+    {
+      "id": "8896774f1929",
+      "source": "HDFS",
+      "stratum": "rich",
+      "raw": "081109 212904 2174 INFO dfs.DataNode$PacketResponder: Received block blk_8408125361497769001 of size 67108864 from /10.251.70.211",
+      "pred": {
+        "timestamp": "2008-11-09T21:29:04Z",
+        "level": "INFO",
+        "service": "dfs.DataNode$PacketResponder",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Received block blk_8408125361497769001 of size 67108864 from 10.251.70.211"
+      },
+      "raw_output": "{\"timestamp\": \"2008-11-09T21:29:04Z\", \"level\": \"INFO\", \"service\": \"dfs.DataNode$PacketResponder\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Received block blk_8408125361497769001 of size 67108864 from 10.251.70.211\"}"
+    },
+    {
+      "id": "e2df2eb87e9f",
+      "source": "HealthApp",
+      "stratum": "sparse",
+      "raw": "20171223-22:22:37:638|Step_LSC|30002312|processHandleBroadcastAction action:android.intent.action.TIME_TICK",
+      "pred": {
+        "timestamp": "2017-12-23T22:22:37.638Z",
+        "level": null,
+        "service": "Step_LSC",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "processHandleBroadcastAction action:android.intent.action.TIME_TICK"
+      },
+      "raw_output": "{\"timestamp\": \"2017-12-23T22:22:37.638Z\", \"level\": null, \"service\": \"Step_LSC\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"processHandleBroadcastAction action:android.intent.action.TIME_TICK\"}"
+    },
+    {
+      "id": "321e22e4d6f3",
+      "source": "Apache",
+      "stratum": "sparse",
+      "raw": "[Mon Dec 05 03:44:50 2005] [notice] jk2_init() Found child 2824 in scoreboard slot 10",
+      "pred": {
+        "timestamp": "2005-12-05T03:44:50Z",
+        "level": "INFO",
+        "service": null,
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "jk2_init() Found child 2824 in scoreboard slot 10"
+      },
+      "raw_output": "{\"timestamp\": \"2005-12-05T03:44:50Z\", \"level\": \"INFO\", \"service\": null, \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"jk2_init() Found child 2824 in scoreboard slot 10\"}"
+    },
+    {
+      "id": "eb083321ec83",
+      "source": "Linux",
+      "stratum": "sparse",
+      "raw": "Jul 27 14:41:58 combo kernel: Calibrating delay loop... 1445.88 BogoMIPS",
+      "pred": {
+        "timestamp": "1900-07-27T14:41:58Z",
+        "level": null,
+        "service": "kernel",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Calibrating delay loop... 1445.88 BogoMIPS"
+      },
+      "raw_output": "{\"timestamp\": \"1900-07-27T14:41:58Z\", \"level\": null, \"service\": \"kernel\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Calibrating delay loop... 1445.88 BogoMIPS\"}"
+    },
+    {
+      "id": "933b0dd11c63",
+      "source": "OpenSSH",
+      "stratum": "sparse",
+      "raw": "Dec 10 09:11:40 LabSZ sshd[24451]: Failed password for invalid user anonymous from 103.99.0.122 port 54051 ssh2",
+      "pred": {
+        "timestamp": "1900-12-10T09:11:40Z",
+        "level": null,
+        "service": "sshd",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Failed password for invalid user anonymous"
+      },
+      "raw_output": "{\"timestamp\": \"1900-12-10T09:11:40Z\", \"level\": null, \"service\": \"sshd\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Failed password for invalid user anonymous\"}"
+    },
+    {
+      "id": "98303d792517",
+      "source": "Linux",
+      "stratum": "sparse",
+      "raw": "Jul 27 14:41:59 combo kernel: PCI: Using IRQ router PIIX/ICH [8086/2410] at 0000:00:1f.0",
+      "pred": {
+        "timestamp": "1900-07-27T14:41:59Z",
+        "level": null,
+        "service": "kernel",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "PCI: Using IRQ router PIIX/ICH"
+      },
+      "raw_output": "{\"timestamp\": \"1900-07-27T14:41:59Z\", \"level\": null, \"service\": \"kernel\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"PCI: Using IRQ router PIIX/ICH\"}"
+    },
+    {
+      "id": "4702105f24cc",
+      "source": "OpenSSH",
+      "stratum": "sparse",
+      "raw": "Dec 10 07:11:42 LabSZ sshd[24224]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=202.100.179.208",
+      "pred": {
+        "timestamp": "1900-12-10T07:11:42Z",
+        "level": null,
+        "service": "sshd",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "authentication failure"
+      },
+      "raw_output": "{\"timestamp\": \"1900-12-10T07:11:42Z\", \"level\": null, \"service\": \"sshd\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"authentication failure\"}"
+    },
+    {
+      "id": "9d86ea943f9e",
+      "source": "Hadoop",
+      "stratum": "sparse",
+      "raw": "2015-10-18 18:04:04,986 INFO [ContainerLauncher #7] org.apache.hadoop.mapreduce.v2.app.launcher.ContainerLauncherImpl: Processing the event EventType: CONTAINER_REMOTE_LAUNCH for container container_1445144423722_0020_01_000009 taskAttempt attempt_1445144423722_0020_m_000007_0",
+      "pred": {
+        "timestamp": "2015-10-18T18:04:04.986Z",
+        "level": "INFO",
+        "service": "ContainerLauncher",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Processing the event EventType: CONTAINER_REMOTE_LAUNCH for container container_1445144423722_0020_01_000009"
+      },
+      "raw_output": "{\"timestamp\": \"2015-10-18T18:04:04.986Z\", \"level\": \"INFO\", \"service\": \"ContainerLauncher\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Processing the event EventType: CONTAINER_REMOTE_LAUNCH for container container_1445144423722_0020_01_000009\"}"
+    },
+    {
+      "id": "cfad8cd0e95d",
+      "source": "Spark",
+      "stratum": "sparse",
+      "raw": "17/06/09 20:11:09 INFO storage.BlockManager: Found block rdd_42_12 locally",
+      "pred": {
+        "timestamp": "2017-06-09T20:11:09Z",
+        "level": "INFO",
+        "service": "storage.BlockManager",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "Found block rdd_42_12 locally"
+      },
+      "raw_output": "{\"timestamp\": \"2017-06-09T20:11:09Z\", \"level\": \"INFO\", \"service\": \"storage.BlockManager\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"Found block rdd_42_12 locally\"}"
+    },
+    {
+      "id": "2c6db3c6f59a",
+      "source": "HDFS",
+      "stratum": "rich",
+      "raw": "081111 033505 18847 INFO dfs.DataNode$PacketResponder: PacketResponder 1 for block blk_6745520736924802462 terminating",
+      "pred": {
+        "timestamp": "2008-11-11T03:35:05Z",
+        "level": "INFO",
+        "service": "dfs.DataNode$PacketResponder",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "PacketResponder 1 for block blk_6745520736924802462 terminating"
+      },
+      "raw_output": "{\"timestamp\": \"2008-11-11T03:35:05Z\", \"level\": \"INFO\", \"service\": \"dfs.DataNode$PacketResponder\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"PacketResponder 1 for block blk_6745520736924802462 terminating\"}"
+    },
+    {
+      "id": "8a6d77de89f8",
+      "source": "OpenStack",
+      "stratum": "rich",
+      "raw": "nova-api.log.1.2017-05-16_13:53:08 2017-05-16 00:10:39.366 25746 INFO nova.osapi_compute.wsgi.server [req-93ec4346-3e60-4997-8a32-420bab0a390f 113d3a99c3da401fbd62cc2caa5b96d2 54fadb412c4e40cdbaed9335e4c35a9e - - -] 10.11.10.1 \"GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail HTTP/1.1\" status: 200 len: 1874 time: 0.1886330",
+      "pred": {
+        "timestamp": "2017-05-16T00:10:39.366Z",
+        "level": "INFO",
+        "service": "nova.osapi_compute.wsgi.server",
+        "trace_id": "req-93ec4346-3e60-4997-8a32-420bab0a390f",
+        "status_code": 200,
+        "latency_ms": 188.633,
+        "message": "GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail"
+      },
+      "raw_output": "{\"timestamp\": \"2017-05-16T00:10:39.366Z\", \"level\": \"INFO\", \"service\": \"nova.osapi_compute.wsgi.server\", \"trace_id\": \"req-93ec4346-3e60-4997-8a32-420bab0a390f\", \"status_code\": 200, \"latency_ms\": 188.633, \"message\": \"GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail\"}"
+    },
+    {
+      "id": "cdc8e0beb18b",
+      "source": "HDFS",
+      "stratum": "rich",
+      "raw": "081110 121951 30 INFO dfs.FSNamesystem: BLOCK* NameSystem.addStoredBlock: blockMap updated: 10.251.66.3:50010 is added to blk_6547729596040509998 size 67108864",
+      "pred": {
+        "timestamp": "2008-11-10T12:19:51Z",
+        "level": "INFO",
+        "service": "dfs.FSNamesystem",
+        "trace_id": null,
+        "status_code": null,
+        "latency_ms": null,
+        "message": "BLOCK* NameSystem.addStoredBlock: blockMap updated: 10.251.66.3:50010 is added to blk_6547729596040509998 size 67108864"
+      },
+      "raw_output": "{\"timestamp\": \"2008-11-10T12:19:51Z\", \"level\": \"INFO\", \"service\": \"dfs.FSNamesystem\", \"trace_id\": null, \"status_code\": null, \"latency_ms\": null, \"message\": \"BLOCK* NameSystem.addStoredBlock: blockMap updated: 10.251.66.3:50010 is added to blk_6547729596040509998 size 67108864\"}"
+    },
+    {
+      "id": "8ae0b45a2891",
+      "source": "OpenStack",
+      "stratum": "rich",
+      "raw": "nova-api.log.1.2017-05-16_13:53:08 2017-05-16 00:04:07.061 25746 INFO nova.osapi_compute.wsgi.server [req-5de95d80-f71b-490c-8d14-92b6f68286f6 113d3a99c3da401fbd62cc2caa5b96d2 54fadb412c4e40cdbaed9335e4c35a9e - - -] 10.11.10.1 \"GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail HTTP/1.1\" status: 200 len: 1893 time: 0.2795429",
+      "pred": {
+        "timestamp": "2017-05-16T00:04:07.061Z",
+        "level": "INFO",
+        "service": "nova.osapi_compute.wsgi.server",
+        "trace_id": "req-5de95d80-f71b-490c-8d14-92b6f68286f6",
+        "status_code": 200,
+        "latency_ms": 279.5429,
+        "message": "GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail"
+      },
+      "raw_output": "{\"timestamp\": \"2017-05-16T00:04:07.061Z\", \"level\": \"INFO\", \"service\": \"nova.osapi_compute.wsgi.server\", \"trace_id\": \"req-5de95d80-f71b-490c-8d14-92b6f68286f6\", \"status_code\": 200, \"latency_ms\": 279.5429, \"message\": \"GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail\"}"
+    }
+  ]
+}
