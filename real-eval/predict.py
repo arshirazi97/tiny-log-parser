@@ -68,10 +68,18 @@ def arm_model(rows, args):
     return out
 
 
+# OpenRouter list price per 1M tokens, for the run-cost line only. A model
+# missing here still runs; it just reports tokens without a dollar figure.
+PRICES = {"google/gemini-3.1-pro-preview": (2.0, 12.0),
+          "google/gemini-3.1-pro-preview:batch": (1.0, 6.0),
+          "google/gemini-2.5-pro": (1.25, 10.0)}
+
+
 def arm_gemini(rows, args):
     from openai import OpenAI
     client = OpenAI(base_url="https://openrouter.ai/api/v1",
                     api_key=os.environ["OPENROUTER_API_KEY"])
+    used = [0, 0]                    # prompt, completion (reasoning included)
 
     # The baseline gets few-shot examples; the fine-tune gets none. Same
     # deliberate handicap as the v1 comparison. --shots 0 removes it.
@@ -89,6 +97,9 @@ def arm_gemini(rows, args):
                     model=args.gemini_model, temperature=0, max_tokens=8000,
                     messages=[{"role": "user",
                                "content": f"{SPEC_EVAL}{shots}\n\nLog:\n{r['raw']}\nJSON:"}])
+                if getattr(resp, "usage", None):
+                    used[0] += resp.usage.prompt_tokens or 0
+                    used[1] += resp.usage.completion_tokens or 0
                 out.append(parse(resp.choices[0].message.content))
                 break
             except Exception as e:                     # rate limit / transient
@@ -99,6 +110,15 @@ def arm_gemini(rows, args):
                     time.sleep(2 ** attempt)
         if i % 20 == 0:
             print(f"  {i}/{len(rows)}", flush=True)
+
+    done = len(rows)
+    print(f"\ntokens: {used[0]} prompt + {used[1]} completion "
+          f"({used[1]/done:.0f} completion/line -- reasoning tokens included)")
+    if args.gemini_model in PRICES:
+        pin, pout = PRICES[args.gemini_model]
+        cost = used[0] * pin / 1e6 + used[1] * pout / 1e6
+        print(f"cost:   ${cost:.3f}  (${cost/done:.4f}/line, "
+              f"so 127 test lines ~ ${cost/done*127:.2f})")
     return out
 
 
