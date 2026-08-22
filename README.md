@@ -46,6 +46,15 @@ cross-checked against Loghub's own annotations, **scored once**. Full detail in 
 Six-field excludes `message`, the most judgement-dependent field, so a
 formatting quibble does not swamp the extraction result.
 
+> **The rules arm's 92.1% did not survive an independent corpus.** A second
+> corpus (P1) drawn from Loghub-2.0, with labels written independently of the
+> parser's rulebook, puts `rule_parser.py` at **84.4% six-field, 95% CI
+> [76, 90]** (n=96). The pre-registered falsification threshold was 75–80%; the
+> interval contains it and **excludes 92.1%**. `level` held at **100.0%** against those same
+> independent labels, including every gold-null line — the abstention result
+> survives; the extraction accuracy figure does not.
+> Full account: [`real-eval/RESULTS_P1.md`](real-eval/RESULTS_P1.md).
+
 **McNemar's exact test, paired, on six-field match:**
 
 | comparison | discordant pairs | p | result |
@@ -232,6 +241,32 @@ never have been learned at all. That still holds.
 list, so 92.1% is a generous read of that arm even after the S2c correction moved
 10 labels away from it. Only the Gemini arm is fully independent of both the
 labels and the training data.
+
+**A second corpus was built to test that, and the parser scored lower on it.**
+P1 drew 262 fresh lines from Loghub-2.0 with zero template overlap with this
+corpus — see [`real-eval/RESULTS_P1.md`](real-eval/RESULTS_P1.md). Its gold was
+model-written against the same `ADJUDICATION.md` the parser implements, so
+scoring against it returned a meaningless **100.0%**. All 96 records were then
+blind-labelled a second time by hand, independently, and against those labels the
+rules arm scores **84.4% six-field, 95% CI [76, 90]** (72.9% before correcting
+two provable labelling errors — ten HDFS timestamps where the PID column was read
+as sub-seconds, and one transposed trace id).
+
+The pre-registered falsification threshold was 75–80%. The interval contains it
+and excludes 92.1%, so **92.1% is reported as an artefact of a corpus co-developed with the
+parser.** It is not deleted — it is what was measured there — but it is not the
+number to quote for general accuracy.
+
+**Thirteen percent of the gap is one unresolved rule.** A second annotator
+labelled Zookeeper `service` as null on 13 lines where S1b takes the class before
+`@<num>`. Treating those as annotator error instead would put the figure at
+97.9%. They are left standing, because S1b was itself added under pressure from
+this corpus and a second reader did not reproduce it.
+
+**External corroboration is not available for new corpora.** Loghub-2.0's
+structured CSV carries only `LineId, Content, EventId, EventTemplate` — no
+`Level`, no `Component` — so `validate_labels_loghub.py`, which corroborated this
+corpus at 127/127 on `level`, cannot run against Loghub-2.0 lines at all.
 
 **n = 127.** Roughly ±8 points on the six-field numbers. The rules-vs-Gemini
 comparison is genuinely unresolved at this sample size, not a tie.

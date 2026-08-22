@@ -509,3 +509,145 @@ transcription slips rather than differing readings.
 whether `rule_parser.py` generalises. The gold still comes from the parser's own
 rulebook. The spot-check bounds label quality; it does not decouple the labels
 from the arm being scored.
+
+## Extending the blind set to n=96 — declared 2026-08-22, before the extra labels exist
+
+The 25-line spot-check returned 84.0% six-field with a 95% interval of [68, 96],
+which contains both Gate A branches. The remaining **71** of the 96 gold records
+are now blind-labelled by the author so the gate can be decided at full n.
+
+**This is a decision to collect more data taken after seeing a result, and it is
+declared rather than hidden.** Three things make it legitimate here:
+
+1. **It goes to the full set, not to a chosen stopping point.** All 71 remaining
+   records are labelled. There is no n at which the author may stop early, and
+   therefore no discretion to stop on a favourable reading.
+2. **The decision rule was fixed first.** Gate A's thresholds — near 92% versus
+   75–80% — were written before the corpus existed, and are unchanged.
+3. **84.0% fell inside the ambiguous band.** The stopping rule already recorded
+   above resolves the gate outright above 88% or below 82% and extends to the
+   full set in between. 84.0% is in between.
+
+The same shuffle governs: `random.Random(20260822)` over the sorted id list, with
+the first 25 being those already labelled. Verified: the 25 completed records are
+exactly the first 25 of that ordering, and `label_ui.py --spotcheck 96` resumes at
+record 26 without loading or displaying any gold.
+
+**What the result will and will not settle.**
+
+At n=96 independent the 95% interval narrows to roughly ±6pp, which separates 92%
+from 78%. So this decides whether the published 92.1% survives against labels
+that did not come from the parser's own rulebook.
+
+It still does not make the *model-written* gold independent, and Gate A against
+`labels_p1.jsonl` remains uninformative at 100.0%. The figure that counts is the
+parser scored against `spotcheck_p1.jsonl`. That is the number reported as Gate A
+from here, and the 96-record run is reported alongside it as the measure of the
+coupling rather than as a result.
+
+Whichever way it falls is published, including the branch where the README's
+92.1% has to be corrected.
+
+## Gate A result — 2026-08-22
+
+All 96 gold records were blind-labelled a second time by the author, from the raw
+lines alone, with the gold neither loaded nor displayed. The parser was then
+scored against those independent labels.
+
+**`rule_parser.py` vs independent labels, six-field: 72.9% as labelled (n=96),
+84.4% after correcting two provable labelling errors. 95% CI [75.8, 90.3].**
+
+### Adjudication
+
+| | six-field | |
+|---|---|---|
+| as labelled | 72.9% | |
+| correcting the HDFS sub-second error | 83.3% | 10 lines |
+| correcting the trace-id transposition | **84.4%** | 1 line |
+| additionally excluding Zookeeper `service` | 97.9% | 13 lines — **not applied** |
+
+**The HDFS correction is factual, not generous.** On all ten HDFS disagreements
+the author's sub-second digits are the leading digits of the **PID column**
+(`.205` from PID `20570`, `.418` from `4185`, `.016` from `16`, 10/10). HDFS's
+format is `yymmdd hhmmss pid LEVEL component:` and carries no sub-second field,
+so those digits provably come from a different column. Same for the trace id:
+the line reads `46b0`, the author wrote `4b60`.
+
+**The Zookeeper divergence is left standing, and it is the substantive finding.**
+On 13 of 14 remaining `service` disagreements the author labelled Zookeeper
+`service` as null where S1b takes the class before `@<num>` — `Follower`,
+`Environment`, `SessionTrackerImpl`, `FastLeaderElection`, `CommitProcessor`,
+`Leader`, `FileTxnLog`, `QuorumPeer`. The behaviour is consistent across both the
+n=25 and n=96 passes, and the same author filled `service` for Linux, HDFS,
+Spark, Hadoop and HealthApp, so it reads as a position rather than fatigue: in
+`[QuorumPeer[myid=1]/0:0:0:0:0:0:0:0:2181:Follower@118]`, `Follower` is a class
+name inside a thread descriptor and arguably not a service at all.
+
+Recorded as a genuine second-annotator disagreement with S1b. It is **not**
+excluded from the score. If the author later confirms these were uncertainty
+rather than judgment, the figure moves to 97.9% and this section is amended
+rather than rewritten.
+
+### Verdict
+
+Gate A's declared branches were "rules holds near 92% → v3 proceeds" and "rules
+falls to 75–80% → the published 92.1% was fitting; stop and correct the README".
+
+**The falsification branch fires.** 84.4%, Wilson 95% CI [75.8, 90.3], **excludes
+92.1%** and contains the 75–80% band. The published figure does not survive
+contact with labels that did not come from the parser's own rulebook.
+
+The two fields that do survive independently:
+
+| field | vs independent labels |
+|---|---|
+| `level` | **100.0%** (96/96) |
+| `status_code`, `latency_ms` | 100.0% |
+| `trace_id` | 97.9% |
+| `timestamp` | 89.6% → 100% after the PID correction |
+| `service` | 85.4% |
+
+`level` at 96/96 covers every gold-null line across Linux, OpenSSH, HealthApp and
+Proxifier. **The abstention result is the part of this project that survives an
+independent corpus.** The extraction accuracy claim is the part that does not.
+
+### Consequence
+
+The README's 92.1% is corrected, not deleted: it remains the measurement on the
+original corpus, and it is now reported alongside 84.4% on an independent one.
+S2c-style rule ambiguity in S1b is disclosed as an open question rather than
+settled in the parser's favour.
+
+## S1b confirmed as disputed — 2026-08-22
+
+Asked directly whether the 13 Zookeeper `service` nulls were a judgment or
+uncertainty, the author confirmed the reading: **null**, with the qualifier
+"I think". Recorded with that qualifier rather than firmed up.
+
+Consequences:
+
+1. **84.4% stands as the Gate A figure.** The 97.9% variant, which excludes
+   Zookeeper `service`, is not the reported number.
+
+2. **S1b is a disputed rule, not a settled one.** It says take the class
+   immediately before `@<num>`, so
+   `[QuorumPeer[myid=1]/0:0:0:0:0:0:0:0:2181:Follower@118]` yields `Follower`.
+   Re-reading the same lines without seeing the rule's output, the author who
+   wrote S1b labelled those lines null on 12 of 13 occasions. A rule its own
+   author does not reproduce on a blind second pass is not a rule a third party
+   would reproduce either.
+
+3. **`rule_parser.py` is wrong on every Zookeeper line under this reading**, and
+   that single rule accounts for 13 of the 15 remaining field disagreements —
+   most of the gap between 84.4% and 97.9%.
+
+4. **`ADJUDICATION.md` is frozen and is not edited.** The dispute is recorded
+   here. Any resolution belongs in a successor file with its own freeze, and
+   must be declared before it is applied to any score.
+
+This is the same failure mode as S2c, which moved 10 test labels after
+`validate_labels_loghub.py` contradicted the original reading. Two of the
+schema's `service` rules have now failed to survive independent re-reading. The
+honest generalisation is that **`service` is under-specified for
+bracket-nested logger formats**, and that this — not the headline percentage —
+is what a successor schema has to fix.
