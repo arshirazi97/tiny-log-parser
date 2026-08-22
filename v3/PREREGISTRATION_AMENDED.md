@@ -227,3 +227,94 @@ is ever trained.
 ## Budget
 
 ~$2.40 P1 labelling · ~$5 GPU (3 runs) · ~$5.60 baseline API · **~$13 total.**
+
+## P1 sampling parameters — declared 2026-08-22, before the corpus exists
+
+Recorded here rather than left to the sampler's source so the numbers cannot be
+adjusted after seeing how the draw came out.
+
+| parameter | value |
+|---|---|
+| in-distribution lines | **200** (10 systems × 20) |
+| out-of-distribution lines | **100** (4 systems × 25) |
+| seed | `20260822` |
+| one line per `EventId` | longest instance, from at most 5 candidates |
+
+Quotas are ceilings. A system with fewer unspent templates than its quota
+contributes what it has, and the shortfall is reported in `P1_FREEZE.txt`
+rather than backfilled from a system with spare templates — backfilling would
+silently reweight the corpus toward whichever systems happen to be template-rich.
+
+**Blind labelling, enforced by file layout.** `build_corpus_p1.py` writes the
+raw lines to `corpus_p1.jsonl` and Loghub's columns to `p1_sidecar.jsonl`.
+Only the former is opened during labelling. The sidecar exists to measure
+label-vs-Loghub agreement *after* labels are frozen, which is a result, not an
+input. Linux is the clearest reason this matters: its `Level` column holds
+`combo`, the hostname, and a labeller who saw it would be anchored to a value
+`ADJUDICATION.md` says is not a level.
+
+**Holdout.** An `EventId` is dropped if any of its lines' `Content` appears in
+that system's 1.0 `*_2k` annotations; the selected line is dropped if its
+template signature matches a `*_2k` or existing-corpus line. Verified by
+running the sampler against the 1.0 data as if it were 2.0: every template is
+correctly rejected and the draw is empty.
+
+## Reproducibility correction — 2026-08-22
+
+Finding 4's figures above were measured in a session that no longer exists, and
+no script in this repository reproduced them. `v3/measure_loghub2.py` now
+recomputes them, with its operationalisations documented in the source, and
+writes `v3/MEASUREMENTS_P1.txt`. It runs before sampling.
+
+If the recomputed figures disagree with finding 4, the disagreement is recorded
+as a correction and the design decisions that rested on those figures —
+trap mining over trap generation, and the upweighting — are revisited before
+the corpus is drawn. Finding 4 is not edited to match.
+
+## Correction — 2026-08-22: Loghub-2.0 annotates no header fields
+
+Measured on the downloaded release (Zenodo record 8275861), the structured CSV
+for every system checked — Linux, Apache, Proxifier, HPC — has exactly four
+columns:
+
+    LineId,Content,EventId,EventTemplate
+
+Loghub **1.0** ships rich per-system headers (`Linux_2k.csv` is
+`LineId,Month,Date,Time,Level,Component,PID,Content,EventId,EventTemplate`).
+Loghub-2.0 drops all of them. It annotates the message body and the template,
+and nothing else.
+
+**Finding 4 survives this and is confirmed.** Line counts match to the digit —
+Linux 23,921, Apache 51,978, Proxifier 21,320, HPC 429,988 — Proxifier's 11
+templates are confirmed, and header recovery is 100.0% on all three systems
+where it was claimed. One correction to method: recovery must be measured under
+collapsed whitespace, because 2.0 normalises runs of spaces inside `Content`.
+Measured literally, Linux reads 81.6%; the 4,406 mismatches are every one of
+them a doubled space. The 100.0% claim is right and the naive measurement of it
+is wrong.
+
+**What this does change is P2, not P1.** P1 is unaffected: gold is hand-written
+from raw lines against `ADJUDICATION.md`, which never needed Loghub's columns.
+
+The training plan does not survive intact. "Training set: 100% real Loghub-2.0
+lines" assumed those lines carry `level` and `service` annotations. They do not.
+The available sources for a P2 label are:
+
+| field | Loghub-2.0 provides | consequence |
+|---|---|---|
+| `message` | `Content`, directly | genuine third-party annotation |
+| template identity | `EventId` / `EventTemplate` | genuine, and drives holdout |
+| `timestamp`, `level`, `service` | nothing | must be derived from the raw line |
+| `trace_id`, `status_code`, `latency_ms` | nothing | already ours, already disclosed |
+
+Deriving `level` and `service` from the raw line means deriving them by rule,
+which is precisely the coupling finding 1 identified: a model trained on that
+data distils `rule_parser.py`. Scaling from 1.0 to 2.0 does not escape the
+coupling — it deepens it, because 1.0 at least supplied `Level` and `Component`
+from a third party for nine of ten systems, and 2.0 supplies neither for any.
+
+This is recorded now, before P1 runs, because it bears on whether P2 is worth
+running at all. It is not resolved here. **Gate A is unaffected and proceeds** —
+it scores the frozen parser against hand-written labels and needs no training
+data. The P2 label question is settled after Gate A reports, on the evidence
+Gate A produces.
