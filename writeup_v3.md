@@ -54,7 +54,7 @@ came back empty.
 under test are two expressions of one rule set. The parser did not improve; the
 gold moved toward the parser.
 
-84.4% is the number, Wilson 95% CI **[75.8, 90.3]**. The pre-registered
+84.4% is the number, 95% CI **[77.1, 90.6]**. The pre-registered
 falsification threshold — written before the corpus existed — was 75–80%. The
 interval contains it and **excludes 92.1%**.
 
@@ -91,6 +91,41 @@ original call.
 > rule a third party will reproduce either. `service` is under-specified for
 > bracket-nested logger formats, and that is a schema defect, not a scoring
 > detail.
+
+## Three arms, re-measured
+
+All three arms were then scored on the same 96 lines, against the labels written
+blind:
+
+| arm | six-field | 95% CI |
+|---|---|---|
+| **rules** | **84.4%** | 77.1 – 90.6% |
+| gemini-3.1-pro-preview | 78.1% | 69.8 – 86.5% |
+| Qwen3-4B fine-tune (v2) | 60.4% | 50.0 – 70.8% |
+
+McNemar, paired: rules beats Gemini 6–0 (p=0.031), rules beats the fine-tune 23–0
+(p<0.0001), Gemini beats the fine-tune 20–3 (p=0.0005). Strict ordering, no
+discordant pair lost by the parser.
+
+**A 250-line deterministic parser beats a frontier model on this corpus.** Not
+by much, and not transferably — 96 lines with a composition unlike the previous
+corpus — but measured against labels neither arm's author wrote from a rulebook.
+
+## The abstention result held
+
+| non-null where gold is null | rules | gemini | fine-tune |
+|---|---|---|---|
+| **level** | **0 / 32** | 2 / 32 | **0 / 32** |
+| status_code | 0 / 96 | 1 / 96 | 2 / 96 |
+| latency_ms | 0 / 96 | 2 / 96 | 8 / 96 |
+
+On `level`, the 4B fine-tune matched the deterministic parser and **beat
+gemini-3.1-pro-preview** — on formats it has never seen, against labels written
+blind by a human. v2 predicted this in advance and it survives an independent
+corpus.
+
+Its extraction is where it loses: `service` 70.8%, `latency_ms` 90.6% with eight
+invented values. *Abstention is learnable per-field; extraction is not.*
 
 ## What survived
 

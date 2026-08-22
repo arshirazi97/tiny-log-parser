@@ -555,7 +555,7 @@ lines alone, with the gold neither loaded nor displayed. The parser was then
 scored against those independent labels.
 
 **`rule_parser.py` vs independent labels, six-field: 72.9% as labelled (n=96),
-84.4% after correcting two provable labelling errors. 95% CI [75.8, 90.3].**
+84.4% after correcting two provable labelling errors. 95% CI [77.1, 90.6].**
 
 ### Adjudication
 
@@ -593,7 +593,7 @@ rather than rewritten.
 Gate A's declared branches were "rules holds near 92% → v3 proceeds" and "rules
 falls to 75–80% → the published 92.1% was fitting; stop and correct the README".
 
-**The falsification branch fires.** 84.4%, Wilson 95% CI [75.8, 90.3], **excludes
+**The falsification branch fires.** 84.4%, 95% CI [77.1, 90.6], **excludes
 92.1%** and contains the 75–80% band. The published figure does not survive
 contact with labels that did not come from the parser's own rulebook.
 

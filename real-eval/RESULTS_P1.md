@@ -104,7 +104,7 @@ two sittings (25, then the remaining 71). The gold was never loaded or displayed
 |---|---|---|
 | as labelled | 72.9% | n=96 |
 | correcting the HDFS sub-second error | 83.3% | 10 lines |
-| correcting the trace-id transposition | **84.4%** | 1 line — **the reported figure**, 95% CI [75.8, 90.3] |
+| correcting the trace-id transposition | **84.4%** | 1 line — **the reported figure**, 95% CI [77.1, 90.6] |
 | additionally excluding Zookeeper `service` | 97.9% | 13 lines — **not applied** |
 
 **Per field, at the reported adjudication:**
@@ -162,7 +162,7 @@ figure moves to 97.9%.
 Gate A's declared branches: *rules holds near 92% → proceed*; *rules falls to
 75–80% → the published figure was fitting, stop and correct the README*.
 
-**The falsification branch fires.** 84.4%, Wilson 95% CI [75.8, 90.3], **excludes
+**The falsification branch fires.** 84.4%, 95% CI [77.1, 90.6], **excludes
 92.1%** and contains the 75–80% band. The published figure does not survive labels
 that did not come from the parser's own rulebook.
 
@@ -173,6 +173,108 @@ project that holds up on an independent corpus.
 
 **What does not:** the extraction accuracy headline. 92.1% is an artefact of a
 corpus co-developed with the parser, and is reported as such.
+
+---
+
+## Final: three arms on the P1 corpus
+
+96 lines, scored against labels the author wrote blind from the raw lines, with
+the two provable annotation errors corrected (`spotcheck_p1_adjudicated.jsonl`).
+These labels are independent of the parser's rulebook, of the training data, and
+of every arm.
+
+| arm | six-field | 95% CI | unparseable |
+|---|---|---|---|
+| **rules** (`rule_parser.py`) | **84.4%** | 77.1 – 90.6% | 0 |
+| gemini-3.1-pro-preview | 78.1% | 69.8 – 86.5% | 0 |
+| Qwen3-4B fine-tune (v2) | 60.4% | 50.0 – 70.8% | 1 |
+
+**McNemar's exact test, paired, on six-field match:**
+
+| comparison | discordant | p | result |
+|---|---|---|---|
+| rules vs gemini | 6 – 0 | 0.031 | rules |
+| rules vs fine-tune | 23 – 0 | < 0.0001 | rules |
+| gemini vs fine-tune | 20 – 3 | 0.0005 | gemini |
+
+The ordering is strict and every pair separates. Rules lost no discordant pair to
+either arm.
+
+### Per field
+
+| field | rules | gemini | fine-tune |
+|---|---|---|---|
+| timestamp | 100.0% | 100.0% | 99.0% |
+| level | **100.0%** | 97.9% | 99.0% |
+| service | 85.4% | 83.3% | 70.8% |
+| trace_id | 99.0% | 99.0% | 97.9% |
+| status_code | 100.0% | 99.0% | 96.9% |
+| latency_ms | 100.0% | 97.9% | 90.6% |
+
+`message` reads 0.0% for all three: the blind pass collected only the six
+judgement fields, so there is no gold `message` to score against. Six-field is
+the figure throughout.
+
+### Abstention — non-null emitted where the gold is null
+
+| field | rules | gemini | fine-tune |
+|---|---|---|---|
+| **level** | **0 / 32** | 2 / 32 | **0 / 32** |
+| status_code | 0 / 96 | 1 / 96 | 2 / 96 |
+| latency_ms | 0 / 96 | 2 / 96 | 8 / 96 |
+| service | 13 / 24 | 15 / 24 | 14 / 24 |
+
+**The v2 abstention result survives an independent corpus.** On `level` the 4B
+fine-tune matched the deterministic parser at 0/32 and beat the frontier model,
+on log formats it has never seen, against labels written blind. That was the
+prediction v2 was built to test, and it holds.
+
+Its extraction does not: `service` at 70.8% and `latency_ms` with 8 invented
+values are why it finishes 24 points behind the parser. *Abstention is learnable
+per-field from nulls in the training distribution; extraction is not* — the v2
+conclusion, now confirmed on data from a different generative process.
+
+`service` hallucination is high for all three because the annotator labelled
+Zookeeper `service` null on 13 lines where S1b takes the class before `@<num>`.
+Every arm follows S1b. That column measures the disputed rule, not the arms.
+
+### The fine-tune's failure taxonomy, and the P0 prediction
+
+`v3/PREREGISTRATION.md`, written before this corpus existed, diagnosed v2's
+errors as concentrating in two families: Hadoop nesting a logger class inside a
+thread bracket, and durations in prose read as latency. On P1, the fine-tune's
+23 field errors break down as:
+
+| failure | n |
+|---|---|
+| `service` = the thread token, or the dotted logger shortened to its last segment (S1) | 12 |
+| `latency_ms` invented from a duration in the message text (F5 / P1) | 8 |
+| `status_code` invented (P1) | 2 |
+| unparseable JSON | 1 |
+
+Same two families, same rank order, on a corpus from a different Loghub release
+with zero template overlap. The diagnosis in the original pre-registration was
+correct and is stable across corpora.
+
+```
+gold  org.apache.hadoop.ipc.Server       pred  "Socket Reader #1 for port 32070"
+gold  org.apache.hadoop.mapred.MapTask   pred  "main"
+gold  org.apache.hadoop.ipc.Client       pred  "communication thread"
+```
+
+One of the two `status_code` errors is a pure hallucination rather than a
+misplacement: on `[error] [client ...] Invalid URI in request GET  HTTP/1.1` the
+model emitted `status_code: 400`. No `400` appears anywhere in that line — it was
+inferred from the semantics of an invalid request. That is the abstention failure
+this schema exists to measure, caught in the act.
+
+### On the published comparison
+
+This does **not** cleanly overturn the `p = 0.27` indistinguishability reported
+on the previous corpus. That was 127 lines with 24 OpenStack records; this is 96
+lines with 2. The compositions differ too much for a direct read-across. The
+defensible claim is the standalone one: **on this corpus, against these labels, a
+250-line deterministic parser beats gemini-3.1-pro-preview, p = 0.031.**
 
 ## Incidental findings
 

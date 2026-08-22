@@ -163,3 +163,29 @@ paragraph as the number.
 
 ~$5 GPU (RunPod, ~2.5 h) · $0 scoring (rules and Gemini predictions already
 exist) · **~$5 total.**
+
+## P3 training budget — declared 2026-08-23, before the run
+
+**3 epochs**, `--bs 2 --accum 8`, `--spec v2`, base `unsloth/Qwen3-4B`. Adapter
+pushed to `arshirazi/tiny-log-parser-v3`; v2 is left intact so the v2-vs-v3
+comparison remains meaningful.
+
+**Why not the documented 2.** v2 trained on 20,000 examples for 2 epochs — 40,000
+example-passes (`train.log`: `loaded 20000 examples`). v3's set is 10,728
+records, so 2 epochs would give 21,456 passes, roughly half v2's optimisation
+budget. A v3 that underperformed then could not be distinguished from a v3 that
+was simply under-trained, and the comparison would be unfair to the
+intervention.
+
+3 epochs gives 32,184 passes, about 80% of v2's budget. Full parity would need
+~3.7, and is deliberately not taken: a quarter of v3's data is narrow repetitive
+synthetic targeting two patterns, and four passes over it risks memorising the
+renderer rather than the convention — which is the v1 failure mode.
+
+**Fixed before training, and not revisited.** If v3 underperforms, the epoch
+count is not adjusted and the run repeated; that would be selecting a
+hyperparameter on the test set. One run, scored once, whatever it gives.
+
+**`--spec v2` is retained deliberately.** Both LLM arms receive `SPEC_EVAL` at
+evaluation; changing the training spec now would confound v2-vs-v3 with a prompt
+change.

@@ -46,10 +46,17 @@ cross-checked against Loghub's own annotations, **scored once**. Full detail in 
 Six-field excludes `message`, the most judgement-dependent field, so a
 formatting quibble does not swamp the extraction result.
 
+> **Re-measured on a second corpus with independent labels: rules 84.4%,
+> gemini-3.1-pro-preview 78.1%, the 4B fine-tune 60.4%** (n=96). The ordering is
+> strict and every pair separates — rules vs Gemini p=0.031, rules vs fine-tune
+> p<0.0001. On `level` the fine-tune hallucinated **0/32** on gold-null lines,
+> matching the parser and beating the frontier model. Abstention held; extraction
+> did not.
+>
 > **The rules arm's 92.1% did not survive an independent corpus.** A second
 > corpus (P1) drawn from Loghub-2.0, with labels written independently of the
 > parser's rulebook, puts `rule_parser.py` at **84.4% six-field, 95% CI
-> [76, 90]** (n=96). The pre-registered falsification threshold was 75–80%; the
+> [77.1, 90.6]** (n=96). The pre-registered falsification threshold was 75–80%; the
 > interval contains it and **excludes 92.1%**. `level` held at **100.0%** against those same
 > independent labels, including every gold-null line — the abstention result
 > survives; the extraction accuracy figure does not.
@@ -248,7 +255,7 @@ corpus — see [`real-eval/RESULTS_P1.md`](real-eval/RESULTS_P1.md). Its gold wa
 model-written against the same `ADJUDICATION.md` the parser implements, so
 scoring against it returned a meaningless **100.0%**. All 96 records were then
 blind-labelled a second time by hand, independently, and against those labels the
-rules arm scores **84.4% six-field, 95% CI [76, 90]** (72.9% before correcting
+rules arm scores **84.4% six-field, 95% CI [77.1, 90.6]** (72.9% before correcting
 two provable labelling errors — ten HDFS timestamps where the PID column was read
 as sub-seconds, and one transposed trace id).
 
