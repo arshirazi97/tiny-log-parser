@@ -28,13 +28,15 @@ definition rather than to the data:
                     "SELinux: Initializing.". On Linux that alone accounts for
                     4,406 of 23,921 rows -- 81.6% raw vs 100.0% normalised.
 
-  T1 trap           system's header carries no year AND Content contains a
-                    4-digit year -> gold timestamp is the 1900 sentinel while
-                    a year sits in the prose.
+  T1 trap           system is in YEARLESS AND Content contains a 4-digit year
+                    -> gold timestamp is the 1900 sentinel while a year sits in
+                    the prose.
 
-  L3 / P1 level     system's header carries no Level column AND Content
-                    contains a severity word -> gold level is null while a
-                    severity word sits in the prose.
+  L3 / P1 level     system's header carries no REAL Level (see header_schema:
+                    a Level column whose values never normalise into LEVELS
+                    does not count) AND Content contains a severity word, in
+                    any case -> gold level is null while a severity word sits
+                    in the prose.
 
   P1 latency        non-OpenStack AND Content contains a duration -> gold
                     latency_ms is null while a duration sits in the prose.
@@ -53,16 +55,17 @@ IN_DIST = ["HDFS", "OpenStack", "Linux", "OpenSSH", "Proxifier",
 OOD = ["BGL", "Thunderbird", "Mac", "HPC"]
 
 SEVERITY = re.compile(
-    r"\b(TRACE|DEBUG|INFO|NOTICE|WARN|WARNING|ERROR|ERR|SEVERE|FATAL|CRITICAL|CRIT)\b")
+    r"\b(TRACE|DEBUG|INFO|NOTICE|WARN|WARNING|ERROR|ERR|SEVERE|FATAL|CRITICAL|CRIT)\b",
+    re.I)      # case-insensitive: real severity words in prose are lowercase
+               # ("error : connection refused", "*** info [mice.c]"). Measured
+               # case-sensitively, Linux and Proxifier both read 0; the true
+               # counts are 66 and 983.
 YEAR = re.compile(r"\b(19|20)\d\d\b")
 DURATION = re.compile(
     r"\b\d+(?:\.\d+)?\s*(?:ms|msec|millisecond|milliseconds|s|sec|secs|second|seconds)\b",
     re.I)
 STATUS_CTX = re.compile(
     r"(?:\bstatus(?:[ _-]?code)?\b\s*[:=]?\s*|HTTP/1\.[01]\"?\s+)([1-5]\d\d)\b", re.I)
-
-# columns that are header fields rather than the message body
-NON_CONTENT = {"LineId", "Content", "EventId", "EventTemplate"}
 
 WS = re.compile(r"\s+")
 
@@ -87,9 +90,29 @@ def find_files(data: Path, system: str):
 LEVELS = {"TRACE", "DEBUG", "INFO", "NOTICE", "WARN", "WARNING",
           "ERROR", "ERR", "SEVERE", "FATAL", "CRITICAL", "CRIT"}
 
+# Systems whose header carries no year, so gold timestamp takes the T1 1900
+# sentinel. Declared explicitly rather than sniffed.
+#
+# Sniffing for /(19|20)\d\d/ over the 1.0 columns fails in both directions and
+# was doing so: Spark's `17/06/09` and HealthApp's `20171223-22:15:29:606` are
+# real years that the pattern misses (no word boundary), which credited them
+# with 748,231 T1 traps they do not have; and HDFS was credited as year-bearing
+# only because a PID happened to read `1946`. HDFS does carry a year, in
+# `081109` -- the right answer for the wrong reason.
+#
+# In-distribution entries are taken from build_train_real.py's ts(), which is
+# frozen and is the authority on which systems get the 1900 sentinel. OOD
+# entries are read off the 1.0 column schema: Mac is Month/Date/Time, while
+# BGL and Thunderbird carry a Date and HPC an epoch.
+YEARLESS = {"Linux", "OpenSSH", "Proxifier", "Mac"}
+
 
 def header_schema(system: str, cache: Path):
     """Does this system's header carry a year, and a real Level?
+
+    The year comes from the YEARLESS table above; it is declared, not sniffed.
+    The level is measured: a Level column whose values normalise into LEVELS
+    counts as a real level, and one whose values never do is not a level.
 
     Loghub-2.0's structured CSV is LineId,Content,EventId,EventTemplate only --
     it annotates the message body and the template, and drops every header
@@ -108,9 +131,7 @@ def header_schema(system: str, cache: Path):
         rows = list(csv.DictReader(fh))
     if not rows:
         return None, None
-    has_year = any(
-        YEAR.search(" ".join(str(v) for k, v in r.items() if k not in NON_CONTENT))
-        for r in rows[:400])
+    has_year = system not in YEARLESS
     has_level = "Level" in rows[0] and any(
         (r.get("Level") or "").strip().upper() in LEVELS for r in rows[:400])
     return has_year, has_level
@@ -182,8 +203,8 @@ def measure(system: str, csv_path: Path, log_path: Path, cache: Path, out):
     print(f"\n[{system}]", file=out)
     print(f"  annotated lines      {n:,}", file=out)
     print(f"  distinct EventIds    {len(templates):,}", file=out)
-    print(f"  header has year      {has_year}   (from 1.0 schema)", file=out)
-    print(f"  header has Level     {has_level}   (from 1.0 schema)", file=out)
+    print(f"  header has year      {has_year}   (from YEARLESS table)", file=out)
+    print(f"  header has Level     {has_level}   (measured on 1.0 schema)", file=out)
     print(f"  header recovery      {rec}  ({recovered:,}/{checked:,})", file=out)
     for k in ("T1_year_in_prose", "L3_severity_in_prose",
               "P1_duration_in_prose", "P1_status_in_prose"):
