@@ -65,7 +65,7 @@ PROSE_DUR = [
     "{ms} millis timeout left", "{ms} millis timeout while waiting for channel",
     "Sleeping for {ms}ms before retrying again", "timeout of {ms}ms exceeded",
     "elapsedRealtime(): {ms}", "Commit interval {sec} seconds",
-    "retry in {sec}s", "lifetime {mm}:{ss}", "took about {sec} seconds to settle",
+    "retry in {sec}s", "lifetime {mm}:{ss}", "backoff {sec}s before next attempt",
 ]
 # F2 counterpart: a structural duration -- gold latency_ms IS set.
 #
@@ -199,19 +199,22 @@ def f2_structural_duration():
     # can land on 5344.400000000001 for a decimal that F4 says should read
     # 5344.4. Only emit durations that survive that arithmetic exactly, so the
     # label is both clean and identical to what the teacher produces.
+    # Exactly 7 decimals: that is what real OpenStack emits (`time: 0.2598419`),
+    # and validate_v2 can only verify a duration rendered at 3 or 7 dp.
     for _ in range(64):
-        secs = round(random.uniform(0.0001, 30), random.randint(3, 7))
-        prod = float(repr(secs)) * 1000
+        secs_txt = f"{random.uniform(0.0001, 30):.7f}"
+        prod = float(secs_txt) * 1000
         if prod == round(prod, 6):
             break
     lat = prod
     lat = int(lat) if lat == int(lat) else lat
 
     status = random.choice([200, 200, 201, 204, 400, 404, 500]) if random.random() < 0.65 else None
-    body = (f"{random.choice(['GET','POST','DELETE'])} /v2/{random.randint(10**6,10**7)}/servers "
-            f"HTTP/1.1")
+    # real OpenStack quotes the request line: "GET /v2/... HTTP/1.1"
+    body = (f'"{random.choice(["GET", "POST", "DELETE"])} '
+            f'/v2/{random.randint(10**6, 10**7)}/servers HTTP/1.1"')
     tail = f"status: {status} len: {random.randint(200, 9000)} " if status else ""
-    msg = f"{body} {tail}time: {secs}".strip()
+    msg = f"{body} {tail}time: {secs_txt}".strip()
     line = f"{head} {lvl} {svc} [{req} - - - - -] {msg}"
 
     r = rec(line, iso, lvl, svc, msg, lat=lat)
