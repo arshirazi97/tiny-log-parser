@@ -1,0 +1,35 @@
+# v3 P0 freeze -- 2026-08-22
+
+Every artefact that could otherwise be tuned against the new corpus, hashed
+BEFORE that corpus exists. Any later change to these files invalidates the run
+and must be recorded as a new freeze, not an edit to this one.
+
+sha256                                                            file
+----------------------------------------------------------------  ----
+3036c6433b371872dd4b52fb23e738f10a67e22f1c54cd404b70bfe88eaa0358  real-eval/rule_parser.py
+ea8a27fbea13dbd46ab7c70125a785b8d11891dee6deacf34f0e21ee49939467  v3/build_train_real.py
+c51043c98ee38edaa59d8a10e8ceb6bb35679e6645bbad504cd259b4aadf58bb  schema_v2.py
+d0f71b3214f46f4a06de374a111292b465cb8280eea20c406daa4a53b6ba481b  real-eval/score_arms.py
+8c73d4a34ddf6bb9cf7eeed705e4ce84c181264ba7ee6be4b271c6d34924c63d  real-eval/ADJUDICATION.md
+04fe11f5396995273c71d492519a6f28e1fe7ec158609bb34b720e319f1defd9  generate_v2.py
+
+Why each is here:
+
+  rule_parser.py        an arm, and the system the new corpus must judge
+                        independently. Frozen so it cannot be quietly improved
+                        after seeing which lines it fails.
+  build_train_real.py   its normalisation layer is the training LABEL function.
+                        Frozen because that layer is what the coupling finding
+                        is about.
+  schema_v2.py          holds SPEC_EVAL, the text both LLM arms receive.
+                        Frozen so neither arm's prompt drifts mid-experiment.
+  score_arms.py         the metric definitions. Frozen so "exact" and
+                        "six-field" cannot be redefined after the fact.
+  ADJUDICATION.md       the labelling rules. Frozen because the P1 corpus is
+                        labelled against them and they must not move to fit
+                        what labelling turns up.
+  generate_v2.py        the synthetic renderers. Frozen as the v2 baseline;
+                        the P2 generator additions land in a NEW file.
+
+Verify with:
+    shasum -a 256 -c <(awk '/^[0-9a-f]{64}/ {print $1 "  " $2}' v3/FREEZE_P0.txt)
