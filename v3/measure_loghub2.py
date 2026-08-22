@@ -117,56 +117,70 @@ def header_schema(system: str, cache: Path):
 
 
 def measure(system: str, csv_path: Path, log_path: Path, cache: Path, out):
-    """One pass over the structured CSV, plus a streamed pass over the raw log."""
-    with csv_path.open(errors="replace", newline="") as fh:
-        rows = list(csv.DictReader(fh))
-    if not rows:
-        print(f"{system:12} EMPTY CSV -- skipped", file=sys.stderr)
-        return None
+    """One streaming pass over the structured CSV, joined to the raw log.
 
+    Nothing is materialised. Loghub-2.0's largest system is Thunderbird at
+    16.6M annotated lines; holding those as dicts needs several GB and OOMs a
+    stock Colab CPU runtime. LineId is sequential, so the CSV and the raw log
+    are walked in parallel and the join costs no memory at all.
+    """
     has_year, has_level = header_schema(system, cache)
     if has_year is None:
-        print(f"{system:12} no 1.0 annotations in {cache} -- trap counts skipped",
+        print(f"{system:12} no 1.0 annotations in {cache} -- traps skipped",
               file=sys.stderr)
     is_openstack = system == "OpenStack"
 
-    templates = {r.get("EventId") for r in rows if r.get("EventId")}
+    templates = set()
     traps = Counter()
-    for r in rows:
-        if has_year is None:
-            break
-        content = (r.get("Content") or "")
-        if not has_year and YEAR.search(content):
-            traps["T1_year_in_prose"] += 1
-        if not has_level and SEVERITY.search(content):
-            traps["L3_severity_in_prose"] += 1
-        if not is_openstack and DURATION.search(content):
-            traps["P1_duration_in_prose"] += 1
-        if not is_openstack and STATUS_CTX.search(content):
-            traps["P1_status_in_prose"] += 1
+    n = recovered = checked = 0
 
-    # header recovery: stream the raw log, join on LineId, no full load
-    recovered = checked = 0
-    if log_path and log_path.exists():
-        want = {}
-        for r in rows:
+    log_fh = log_path.open(errors="replace") if log_path and log_path.exists() else None
+    log_pos = 0
+
+    with csv_path.open(errors="replace", newline="") as fh:
+        for r in csv.DictReader(fh):
+            n += 1
+            eid = r.get("EventId")
+            if eid:
+                templates.add(eid)
+            content = r.get("Content") or ""
+
+            if has_year is not None:
+                if not has_year and YEAR.search(content):
+                    traps["T1_year_in_prose"] += 1
+                if not has_level and SEVERITY.search(content):
+                    traps["L3_severity_in_prose"] += 1
+                if not is_openstack and DURATION.search(content):
+                    traps["P1_duration_in_prose"] += 1
+                if not is_openstack and STATUS_CTX.search(content):
+                    traps["P1_status_in_prose"] += 1
+
+            # advance the raw log to this LineId; both are in LineId order
             lid = r.get("LineId")
-            if lid and lid.isdigit():
-                want[int(lid)] = (r.get("Content") or "").strip()
-        with log_path.open(errors="replace") as fh:
-            for i, line in enumerate(fh, 1):
-                c = want.pop(i, None)
-                if c is None:
-                    continue
-                checked += 1
-                if c and norm(line).endswith(norm(c)):
-                    recovered += 1
-                if not want:
-                    break
-    rec = f"{recovered / checked:.1%}" if checked else "n/a (no raw log)"
+            if log_fh and lid and lid.isdigit():
+                target = int(lid)
+                line = None
+                while log_pos < target:
+                    line = log_fh.readline()
+                    if not line:
+                        break
+                    log_pos += 1
+                if line is not None and log_pos == target:
+                    c = content.strip()
+                    checked += 1
+                    if c and norm(line).endswith(norm(c)):
+                        recovered += 1
 
+    if log_fh:
+        log_fh.close()
+
+    if not n:
+        print(f"{system:12} EMPTY CSV -- skipped", file=sys.stderr)
+        return None
+
+    rec = f"{recovered / checked:.1%}" if checked else "n/a (no raw log)"
     print(f"\n[{system}]", file=out)
-    print(f"  annotated lines      {len(rows):,}", file=out)
+    print(f"  annotated lines      {n:,}", file=out)
     print(f"  distinct EventIds    {len(templates):,}", file=out)
     print(f"  header has year      {has_year}   (from 1.0 schema)", file=out)
     print(f"  header has Level     {has_level}   (from 1.0 schema)", file=out)
@@ -174,7 +188,7 @@ def measure(system: str, csv_path: Path, log_path: Path, cache: Path, out):
     for k in ("T1_year_in_prose", "L3_severity_in_prose",
               "P1_duration_in_prose", "P1_status_in_prose"):
         print(f"  {k:24} {traps[k]:,}", file=out)
-    return {"system": system, "lines": len(rows), "templates": len(templates),
+    return {"system": system, "lines": n, "templates": len(templates),
             "traps": traps}
 
 
