@@ -1,0 +1,163 @@
+Loghub-2.0 measurements, recomputed for P1
+Operationalisations are documented in v3/measure_loghub2.py.
+
+[HDFS]
+  annotated lines      11,167,740
+  distinct EventIds    46
+  header has year      True   (from YEARLESS table)
+  header has Level     True   (measured on 1.0 schema)
+  header recovery      100.0%  (11,167,740/11,167,740)
+  T1_year_in_prose         0
+  L3_severity_in_prose     0
+  P1_duration_in_prose     0
+  P1_status_in_prose       0
+
+[OpenStack]
+  annotated lines      207,632
+  distinct EventIds    48
+  header has year      True   (from YEARLESS table)
+  header has Level     True   (measured on 1.0 schema)
+  header recovery      100.0%  (207,632/207,632)
+  T1_year_in_prose         0
+  L3_severity_in_prose     0
+  P1_duration_in_prose     0
+  P1_status_in_prose       0
+
+[Linux]
+  annotated lines      23,921
+  distinct EventIds    338
+  header has year      False   (from YEARLESS table)
+  header has Level     False   (measured on 1.0 schema)
+  header recovery      100.0%  (23,921/23,921)
+  T1_year_in_prose         3,674
+  L3_severity_in_prose     66
+  P1_duration_in_prose     52
+  P1_status_in_prose       0
+
+[OpenSSH]
+  annotated lines      638,947
+  distinct EventIds    38
+  header has year      False   (from YEARLESS table)
+  header has Level     False   (measured on 1.0 schema)
+  header recovery      100.0%  (638,947/638,947)
+  T1_year_in_prose         434
+  L3_severity_in_prose     2,175
+  P1_duration_in_prose     0
+  P1_status_in_prose       0
+
+[Proxifier]
+  annotated lines      21,320
+  distinct EventIds    11
+  header has year      False   (from YEARLESS table)
+  header has Level     False   (measured on 1.0 schema)
+  header recovery      100.0%  (21,320/21,320)
+  T1_year_in_prose         334
+  L3_severity_in_prose     983
+  P1_duration_in_prose     2,625
+  P1_status_in_prose       233
+
+[Spark]
+  annotated lines      16,075,117
+  distinct EventIds    236
+  header has year      True   (from YEARLESS table)
+  header has Level     True   (measured on 1.0 schema)
+  header recovery      100.0%  (16,075,117/16,075,117)
+  T1_year_in_prose         0
+  L3_severity_in_prose     0
+  P1_duration_in_prose     532,298
+  P1_status_in_prose       14
+
+[HealthApp]
+  annotated lines      212,394
+  distinct EventIds    156
+  header has year      True   (from YEARLESS table)
+  header has Level     False   (measured on 1.0 schema)
+  header recovery      100.0%  (212,394/212,394)
+  T1_year_in_prose         0
+  L3_severity_in_prose     0
+  P1_duration_in_prose     0
+  P1_status_in_prose       0
+
+[Zookeeper]
+  annotated lines      74,273
+  distinct EventIds    89
+  header has year      True   (from YEARLESS table)
+  header has Level     True   (measured on 1.0 schema)
+  header recovery      100.0%  (74,273/74,273)
+  T1_year_in_prose         0
+  L3_severity_in_prose     0
+  P1_duration_in_prose     1,762
+  P1_status_in_prose       0
+
+[Apache]
+  annotated lines      51,978
+  distinct EventIds    29
+  header has year      True   (from YEARLESS table)
+  header has Level     True   (measured on 1.0 schema)
+  header recovery      100.0%  (51,978/51,978)
+  T1_year_in_prose         0
+  L3_severity_in_prose     0
+  P1_duration_in_prose     0
+  P1_status_in_prose       0
+
+[Hadoop]
+  annotated lines      179,993
+  distinct EventIds    236
+  header has year      True   (from YEARLESS table)
+  header has Level     True   (measured on 1.0 schema)
+  header recovery      100.0%  (179,993/179,993)
+  T1_year_in_prose         0
+  L3_severity_in_prose     0
+  P1_duration_in_prose     8,974
+  P1_status_in_prose       0
+
+[BGL]
+  annotated lines      4,631,261
+  distinct EventIds    320
+  header has year      True   (from YEARLESS table)
+  header has Level     True   (measured on 1.0 schema)
+  header recovery      100.0%  (4,631,257/4,631,261)
+  T1_year_in_prose         0
+  L3_severity_in_prose     0
+  P1_duration_in_prose     32,732
+  P1_status_in_prose       0
+
+[Thunderbird]
+  annotated lines      16,601,745
+  distinct EventIds    1,241
+  header has year      True   (from YEARLESS table)
+  header has Level     False   (measured on 1.0 schema)
+  header recovery      100.0%  (16,601,745/16,601,745)
+  T1_year_in_prose         0
+  L3_severity_in_prose     2,124,676
+  P1_duration_in_prose     49,574
+  P1_status_in_prose       3
+
+[Mac]
+  annotated lines      100,314
+  distinct EventIds    626
+  header has year      False   (from YEARLESS table)
+  header has Level     False   (measured on 1.0 schema)
+  header recovery      100.0%  (100,294/100,314)
+  T1_year_in_prose         6,304
+  L3_severity_in_prose     12,157
+  P1_duration_in_prose     10,451
+  P1_status_in_prose       0
+
+[HPC]
+  annotated lines      429,988
+  distinct EventIds    74
+  header has year      True   (from YEARLESS table)
+  header has Level     False   (measured on 1.0 schema)
+  header recovery      100.0%  (429,988/429,988)
+  T1_year_in_prose         0
+  L3_severity_in_prose     61,006
+  P1_duration_in_prose     1
+  P1_status_in_prose       0
+
+[TOTAL over 14 systems]
+  annotated lines      50,416,623
+  L3_severity_in_prose     2,201,063
+  P1_duration_in_prose     638,469
+  P1_status_in_prose       250
+  T1_year_in_prose         10,746

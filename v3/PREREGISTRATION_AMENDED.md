@@ -318,3 +318,91 @@ running at all. It is not resolved here. **Gate A is unaffected and proceeds** �
 it scores the frozen parser against hand-written labels and needs no training
 data. The P2 label question is settled after Gate A reports, on the evidence
 Gate A produces.
+
+## Correction — 2026-08-22: finding 4's trap counts, recomputed
+
+Full output in `v3/MEASUREMENTS_P1.txt`, over all 50,416,623 annotated lines of
+Loghub-2.0. Restricted to the ten in-distribution systems — the only ones a v3
+training mix may draw from — against finding 4's table:
+
+| trap | finding 4 | measured (in-dist) | |
+|---|---|---|---|
+| T1 year in prose | 4,442 | **4,442** | exact |
+| P1 duration in prose | 21,531 | 545,711 | 25× |
+| P1 status in prose | 1,265 | 247 | 0.2× |
+| L3 severity in prose | 441,478 | **3,224** | 0.007× |
+
+**T1 reproduces exactly**, which is strong evidence the original measurement
+was sound and ran over the full data. It also settles the denominator: finding
+4 says "counts over 1.94M annotated lines across ten systems", but the ten
+in-distribution systems hold **28,653,315** annotated lines, and T1's 4,442
+requires all of Linux, OpenSSH and Proxifier. The 1.94M is a mis-stated
+denominator, not a different measurement.
+
+**Duration and status are definitional.** Duration differs by roughly the
+denominator ratio; the matches are genuine trap candidates — Proxifier's
+`lifetime <1 sec` (the exact `lifetime`-as-latency family) and Linux's
+`Commit interval 5 seconds`. Status is narrower here, requiring a
+`status`-keyword or `HTTP/1.x` context rather than a bare three-digit number.
+
+**L3 does not reconcile, and this one changes a design decision.** 3,224
+candidates across 28.65M in-distribution lines is a density of **0.011%**.
+441,478 from 1.94M lines requires 22.8%, and no system in Loghub-2.0 reaches
+it — the highest are HPC at 14.2%, Thunderbird at 12.8%, Mac at 12.1%, all
+three of them **out-of-distribution systems v3 is forbidden to train on**. The
+in-distribution systems that carry a real `Level` column contribute zero by
+construction, because their gold `level` is not null.
+
+Consequence: **the claim that severity-in-prose traps are abundant enough to
+mine rather than generate is not supported for `level` on in-distribution
+data.** The earlier draft's assumption — that real logs contain too few, and
+the traps must be generated — was rejected in this amendment on the strength of
+the 441,478 figure. That figure does not survive recomputation, so the
+rejection does not stand.
+
+This matters more than the other three because `level` is the field the v2
+abstention result was about, and `level` hallucination above 2/53 is a declared
+shipping blocker. A training mix that teaches "always null" for `level` is the
+specific failure the upweighting existed to prevent.
+
+**Not resolved here, and deliberately so.** P1 and Gate A do not depend on any
+of this: the corpus is sampled by `EventId` quota and gold is hand-written.
+The P2 mix is designed after Gate A reports, against these numbers rather than
+the originals.
+
+## How Gate A is read — declared 2026-08-22, before labelling
+
+The P1 corpus is drawn: **262 lines, 162 in-distribution and 100 OOD.** Three
+systems came in under quota, as the ceiling rule anticipated: OpenStack 5/20,
+OpenSSH 16/20, Proxifier 1/20. OpenStack and Proxifier are structural — they
+hold 48 and 11 templates in all of Loghub-2.0, and the existing corpus already
+spent 43 and 6. No sampling change recovers them.
+
+**OpenStack's shortfall is not a lost 15 lines, it is three fields.** On the
+existing test set `trace_id` (24/127), `status_code` (14/127) and `latency_ms`
+(14/127) are non-null *only* on OpenStack lines, and OpenStack was 18.9% of
+that corpus. In P1 it is 1.9%. P1 will carry roughly five lines with a
+`trace_id` and three each with a `status_code` and a `latency_ms`.
+
+Declared now, before any label is written:
+
+1. **Gate A is reported per-field and per-system, not as a single number.**
+   The published 92.1% was measured on a differently-composed corpus, so a
+   headline-to-headline comparison confounds generalisation with composition.
+   The per-system table is the comparison that means something.
+
+2. **On P1, `trace_id`/`status_code`/`latency_ms` test abstention, not
+   extraction.** Roughly 257 of 262 lines are gold-null for them. Whether the
+   parser invents a latency from Proxifier's `lifetime <1 sec` is exactly the
+   P1 trap and is worth measuring. Whether it can *extract* those fields is not
+   evidenced by this corpus, and the existing test set remains the only
+   evidence for it. Any v3 claim about those three fields says so.
+
+3. **The Gate A threshold applies to the fields P1 actually exercises** —
+   `timestamp`, `level`, `service`, `message`. "Rules holds near 92%" is judged
+   there. A seven-field number is also reported, and is not the gate.
+
+None of this is a reason to re-draw. Re-drawing a corpus after seeing its
+composition is the post-hoc adjustment this document exists to prevent, and the
+quotas were declared as ceilings precisely so a shortfall would be reported
+rather than engineered away.

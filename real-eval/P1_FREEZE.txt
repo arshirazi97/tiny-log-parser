@@ -1,0 +1,6 @@
+# P1 corpus freeze
+seed	20260822
+in-dist	162
+ood	100
+53817e4f1d77f11eca739cfb895a00a7b5c1ee8a88d133f0545f86cea1218dbc  corpus_p1.jsonl
+0b091f619100cafc4b73fcada0859f3a922cfc3636b3d65d5cf2853fb766f337  p1_sidecar.jsonl
