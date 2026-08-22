@@ -1,0 +1,58 @@
+<!doctype html><html><head><meta charset="utf-8"><title>tiny-log-parser</title><style>
+@page { size: A4; margin: 18mm 16mm; }
+body { font: 10.5pt/1.55 -apple-system, "Helvetica Neue", Arial, sans-serif;
+       color: #111; max-width: 46em; margin: 0 auto; padding: 2em 1em; }
+h1 { font-size: 22pt; margin: 0 0 .6em; letter-spacing: -.01em; }
+h2 { font-size: 13pt; margin: 1.9em 0 .1em; padding-bottom: .3em;
+     border-bottom: 1px solid #ccc; page-break-after: avoid; }
+h3 { font-size: 11pt; margin: 1.3em 0 .2em; page-break-after: avoid; }
+p, ul { margin: .55em 0; }
+li { margin: .25em 0; }
+code { font: 9.2pt/1 ui-monospace, "SF Mono", Menlo, monospace;
+       background: #f2f2f2; padding: .1em .35em; border-radius: 3px; }
+a { color: #1a56b8; text-decoration: none; word-break: break-all; }
+table { border-collapse: collapse; width: 100%; margin: .9em 0; font-size: 9.6pt;
+        page-break-inside: avoid; }
+th, td { border: 1px solid #d5d5d5; padding: .42em .6em; text-align: left; }
+th { background: #f2f2f2; font-weight: 600; }
+hr { border: 0; border-top: 1px solid #ccc; margin: 1.6em 0; }
+strong { font-weight: 650; }
+@media print { a { color: #111; } body { padding: 0; } }
+</style></head><body>
+<h1>tiny-log-parser</h1>
+<p><strong>Repo:</strong> <a href="https://github.com/arshirazi97/tiny-log-parser">https://github.com/arshirazi97/tiny-log-parser</a> <strong>Weights:</strong> <a href="https://huggingface.co/arshirazi/tiny-log-parser-v2">https://huggingface.co/arshirazi/tiny-log-parser-v2</a> (v1 kept at <code>arshirazi/tiny-log-parser</code>) <strong>Runnable demo (Colab, free T4):</strong> <a href="https://colab.research.google.com/github/arshirazi97/tiny-log-parser/blob/main/demo.ipynb">https://colab.research.google.com/github/arshirazi97/tiny-log-parser/blob/main/demo.ipynb</a></p>
+<hr>
+<h2>The task</h2>
+<p>Take a log line and emit one canonical JSON record with exactly seven fields: <code>timestamp</code>, <code>level</code>, <code>service</code>, <code>trace_id</code>, <code>status_code</code>, <code>latency_ms</code>, <code>message</code>.</p>
+<p>The same information sits in a different place in every format, with different level vocabularies (<code>FATAL</code>, <code>err</code>, <code>W</code>, syslog severity <code>3</code>), different time units (<code>4.775s</code>, <code>234000us</code>, <code>rt=1.500</code>), and different timezone conventions. On real logs there is a second problem that matters more: <strong>most fields are absent on most lines</strong>, and a system that cannot emit <code>null</code> fails them by construction.</p>
+<h2>What v1 claimed, and why it is withdrawn</h2>
+<p>v1 reported <strong>100% vs 83.5% exact match</strong> against <code>gemini-3.1-pro-preview</code>, and that number should not be used. <code>generate.py</code> produced the training set, the test set and the scoring rubric. &quot;Held-out&quot; meant different rows from the same generative process, so the comparison measured how well a fine-tune memorizes a rulebook against how well a frontier model reads one once.</p>
+<h2>The evaluation, rebuilt</h2>
+<p><strong>Independent inputs.</strong> 127 test lines from ten real production systems (Loghub: HDFS, OpenStack, OpenSSH, Linux, Hadoop, Spark, Zookeeper, Apache, HealthApp, Proxifier), deduplicated by template signature, frozen by SHA-256, split from a 50-line dev set. Nothing from the generator.</p>
+<p><strong>Labels, stated exactly.</strong> Drafted by a model from a written rule list (<code>ADJUDICATION.md</code>) and reviewed — not hand-annotated from scratch. They are then cross-checked against Loghub&#x27;s own <code>*_2k.log_structured.csv</code> annotations, produced by the logpai authors years earlier: <strong><code>level</code> agrees 127/127</strong>, <code>service</code> 111/127. All 53 null levels fall in the four sources whose Loghub schema carries no level column.</p>
+<p><strong>A correction that cost us.</strong> That cross-check found 10 Proxifier labels that had dropped the <code>*64</code> marker from <code>chrome.exe *64</code>. Corrected before any scoring: it cost the rules arm 7.9 points and the fine-tune 3.9, and gave Gemini 7.1.</p>
+<p><strong>Sealed.</strong> <code>predict.py</code> refuses the test corpus without <code>--allow-test</code>. Scored once.</p>
+<h2>Results</h2>
+<table><thead><tr><th>arm</th><th>exact (7 fields)</th><th>six-field</th><th>95% CI (six)</th><th>valid JSON</th></tr></thead><tbody><tr><td>rules parser (250 lines of Python)</td><td>92.1%</td><td>92.1%</td><td>87.4–96.9%</td><td>100%</td></tr><tr><td>Qwen3-4B fine-tune (v2)</td><td>40.2%</td><td>73.2%</td><td>65.4–80.3%</td><td>100%</td></tr><tr><td><strong>gemini-3.1-pro-preview</strong></td><td><strong>81.1%</strong></td><td><strong>96.1%</strong></td><td>92.1–99.2%</td><td>100%</td></tr></tbody></table>
+<p>McNemar&#x27;s exact test, paired, on six-field match: <strong>Gemini beats the fine-tune 29–0</strong> on discordant pairs, p &lt; 0.0001. It does not recover under any split — on the 91 sparse lines it is 63.7% against Gemini&#x27;s 95.6%. Rules vs Gemini is 4–9, p = 0.27: unresolved at this sample size, not a tie.</p>
+<p><strong>The fine-tune is not competitive at extraction on real logs.</strong> The baseline still receives three few-shot examples and the fine-tune none, so every asymmetry points at the baseline, and the baseline still wins.</p>
+<h2>What survives: the model learned to abstain</h2>
+<p>A label-free probe found v1 emitting a <strong>non-null <code>level</code> on 50 of 50</strong> real dev lines, including all 16 carrying no level token — a 100% hallucination rate where abstention was required. The cause was in the data: all 20,000 v1 training examples had a level, and abstention is learned per-field from nulls.</p>
+<p>Predicted before the retrain: adding explicit nulls moves <code>level</code> to 70–90% abstention with hallucination falling from 100%. Result: <strong>34% abstention, 0/16 hallucinations</strong> on dev; <strong>1 of 53</strong> on the test set, and <code>trace_id</code> <strong>0 of 103</strong>. Undercorrected against the prediction, and reported as such.</p>
+<p>That single level failure is a Proxifier line containing the word &quot;error&quot; in its message body. <code>gemini-3.1-pro</code> gets it wrong in exactly the same way.</p>
+<h2>Why the fine-tune lost</h2>
+<p>It misses six-field on 34 of 127 lines, 42 field errors: <code>service</code> 25, <code>latency_ms</code> 10, <code>timestamp</code> 5, <code>level</code> 1, <code>status_code</code> 1. Two families dominate:</p>
+<ul><li><strong>Nested logger vs thread bracket.</strong> Hadoop writes <code>[IPC Server handler 27 on 62270] org.apache.hadoop.mapred.TaskAttemptListenerImpl:</code>. The model takes the thread.</li><li><strong>Duration is not latency.</strong> Proxifier&#x27;s <code>lifetime 00:01</code> is not the measured time of the logged event. The model reads it as <code>60000</code>.</li></ul>
+<p><strong>It was trained on 11 invented synthetic formats and tested on ten real systems it had never seen.</strong> Neither convention exists in any synthetic renderer. The evidence points at a training-distribution gap rather than a capability limit — the same model learned abstention from synthetic data and carried it to real logs cleanly — but that is an explanation consistent with the results, not one this evaluation establishes.</p>
+<h2>Cost</h2>
+<table><thead><tr><th></th><th>per line</th><th>per 1M lines</th><th>latency</th></tr></thead><tbody><tr><td>gemini-3.1-pro-preview</td><td>$0.0159</td><td>~$15,900</td><td>8.8 s</td></tr><tr><td>Qwen3-4B fine-tune, self-hosted</td><td>~$0.000003</td><td>~$3</td><td>~4.2 s</td></tr><tr><td>rules parser</td><td>0</td><td>0</td><td>&lt; 1 ms</td></tr></tbody></table>
+<p>Gemini spent <strong>1,103 completion tokens per line</strong> — roughly 11× the record it emits — because reasoning tokens bill at output rate.</p>
+<h2>What this does not show</h2>
+<p><strong>The rules arm shares an author with the labels</strong>, so 92.1% is a generous read even after the correction moved 10 labels off the parser. Only Gemini is independent of both the labels and the training data.</p>
+<p><strong>n = 127</strong>, roughly ±8 points. <strong>Only <code>level</code> and <code>service</code> are externally corroborated</strong>; the other five fields remain self-attested. <strong>Single-line only</strong> — no multi-line stack traces, no formats outside these ten sources.</p>
+<p><strong>The eval tests cross-system generalization from synthetic training</strong>, which is harder than the realistic deployment where a model is fine-tuned on the formats it will see.</p>
+<h2>Use of AI assistance</h2>
+<p>I built this with Claude as a coding and research assistant. LLM fine-tuning and much of the Python were new to me; my background is primarily frontend development.</p>
+<p>Claude wrote most of the evaluation harness and <strong>drafted the corpus labels</strong> from my rule list — which is why the labels are cross-checked against a third party&#x27;s annotations rather than presented as hand-annotated ground truth.</p>
+<p>The decisions were mine: withdrawing the v1 result, sealing the test set, correcting labels against my own arms&#x27; interest before scoring, and reporting a losing result rather than tuning until it won.</p>
+</body></html>

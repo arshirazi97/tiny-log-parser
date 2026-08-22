@@ -1,0 +1,6 @@
+{"id": "4702105f24cc", "source": "OpenSSH", "stratum": "sparse", "raw": "Dec 10 07:11:42 LabSZ sshd[24224]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=202.100.179.208"}
+{"id": "88966aeef5ab", "source": "Linux", "stratum": "sparse", "raw": "Jul 27 14:42:00 combo kernel: isapnp: Scanning for PnP cards..."}
+{"id": "6fdf6eb037e6", "source": "Proxifier", "stratum": "sparse", "raw": "[10.30 16:49:10] chrome.exe - proxy.cse.cuhk.edu.hk:5070 close, 1093 bytes (1.06 KB) sent, 1006 bytes received, lifetime 00:01"}
+{"id": "23f056a103ac", "source": "HealthApp", "stratum": "sparse", "raw": "20171223-22:31:59:725|Step_LSC|30002312|timeStamp back,extendReportTimeStamp=1514039575000"}
+{"id": "93418bafbdce", "source": "HDFS", "stratum": "rich", "raw": "081110 222512 16222 INFO dfs.DataNode$PacketResponder: PacketResponder 0 for block blk_708101772844351082 terminating"}
+{"id": "0245d562d619", "source": "Zookeeper", "stratum": "sparse", "raw": "2015-08-20 17:14:24,000 - INFO  [SessionTracker:ZooKeeperServer@325] - Expiring session 0x24f3fdaf7380008, timeout of 10000ms exceeded"}
