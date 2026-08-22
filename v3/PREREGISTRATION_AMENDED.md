@@ -406,3 +406,106 @@ None of this is a reason to re-draw. Re-drawing a corpus after seeing its
 composition is the post-hoc adjustment this document exists to prevent, and the
 quotas were declared as ceilings precisely so a shortfall would be reported
 rather than engineered away.
+
+## Label provenance — recorded 2026-08-22, before Gate A runs
+
+The P1 gold labels are **not hand-written**, and the results say so.
+
+| field | source | n |
+|---|---|---|
+| `message` | Loghub-2.0 `Content` column | 96 |
+| timestamp, level, service, trace_id, status_code, latency_ms | Claude (Opus 5) applying `ADJUDICATION.md` | 94 records |
+| the same six | hand-written by the author | 2 records |
+
+Recorded per field per record in `label_source`, so the split is legible in the
+data and not only here.
+
+**What this costs Gate A.** `rule_parser.py` implements `ADJUDICATION.md`. A
+model applying that same document produces labels that agree with the parser
+wherever the parser implements its spec. Gate A therefore **cannot test whether
+the parser generalises to unseen templates** — it tests spec-conformance, which
+was never in doubt. This is finding 2 of this amendment reappearing in a new
+place, and it is stated rather than worked around.
+
+Consequence for the README: the published **92.1% is not evidenced by P1**. It
+stays as it is, or it is softened. It is not upgraded on the strength of a Gate
+A run against labels written from its own rulebook.
+
+**Why no third-party check offsets this.** Loghub-2.0's structured CSV is
+`LineId, Content, EventId, EventTemplate` only. It annotates no `Level` and no
+`Component`, so `validate_labels_loghub.py` — the independent corroboration that
+supported the previous corpus at 127/127 on `level` — **cannot run on P1 at
+all**. `message` is the single field with third-party provenance, and it is
+taken directly rather than checked.
+
+**Author review, and its weight.** All 96 records were reviewed by the author in
+`review_ui.py`: 95 approved unchanged, 1 edited and then restored to its
+original value. That is a **review agreement of 96/96**, and it is reported as
+review agreement, not as independent agreement. A reviewer shown a proposed
+value tends to assent to it; the number bounds gross error, not systematic
+error. If `S1b` was read wrongly, review would not catch it.
+
+**The blind spot-check, declared before it runs.** 25 of the 96 records, drawn
+by `random.Random(20260822).shuffle` over the sorted id list, are re-labelled by
+the author from the raw lines alone. `label_ui.py --spotcheck 25` neither loads
+nor displays the gold, and writes to a separate `spotcheck_p1.jsonl`.
+`spotcheck_compare.py` then reports six-field exact agreement and per-field
+agreement.
+
+That figure is published with the results whichever way it falls. It is the only
+independent measure of label quality this corpus admits. It does not restore
+Gate A's ability to test generalisation — nothing can, given the label
+provenance — but it bounds how much weight the gold can carry.
+
+**Four in-distribution lines could not be labelled** and are in
+`ambiguous_p1.jsonl` rather than guessed: three HealthApp lines whose date is
+`201812`, six digits where the format is `yyyymmdd`, and one Spark line that is
+a Java stack-trace continuation with no timestamp, level or logger position.
+Both are properties of Loghub-2.0 that the ten-system corpus never surfaced, and
+both are reported.
+
+## Blind spot-check result — 2026-08-22, before Gate A was run
+
+25 of the 96 gold records, drawn by `random.Random(20260822)` over the sorted id
+list, re-labelled by the author from the raw lines alone. The gold was neither
+loaded nor sent to the browser.
+
+**Six-field exact agreement: 21/25 (84.0%).**
+
+| field | agreement |
+|---|---|
+| timestamp | 25/25 |
+| level | **25/25** |
+| status_code | 25/25 |
+| latency_ms | 25/25 |
+| trace_id | 24/25 |
+| service | 22/25 |
+
+`level` at 25/25 covers every line whose correct value is null — Linux, OpenSSH,
+HealthApp — including two OpenSSH lines carrying `error:` in the message text.
+The L1/L3 abstention call was reproduced independently.
+
+**The four disagreements, adjudicated against the raw lines:**
+
+| line | gold | spot-check | resolution |
+|---|---|---|---|
+| OpenStack trace | `…-46b0-…` | `…-4b60-…` | **transcription slip** — the line reads `46b0`; gold matches, spot-check does not |
+| Linux `named[2305]:` | `named` | null | **slip** — service was filled on the other three Linux lines |
+| Zookeeper `…:Environment@100]` | `Environment` | null | **slip** — filled on the other Zookeeper line |
+| Zookeeper `[main:QuorumPeer@959]` | `QuorumPeer` | `main:QuorumPeer@959` | **genuine rule disagreement** |
+
+Only the last is a difference of reading. S1b says take the class immediately
+before `@<line>`, so the written rule favours the gold — but S1b was itself added
+after the previous corpus forced it, and it is evidently not self-evident on
+first encounter. Recorded as a known ambiguity in the rule rather than as
+labeller error.
+
+**What this supports.** The gold is model-written; an independent human pass over
+a seeded random quarter of it agrees on 84% of six-field records and 100% of
+`timestamp` and `level`, with three of the four disagreements being
+transcription slips rather than differing readings.
+
+**What it does not support.** It does not restore Gate A's ability to test
+whether `rule_parser.py` generalises. The gold still comes from the parser's own
+rulebook. The spot-check bounds label quality; it does not decouple the labels
+from the arm being scored.
