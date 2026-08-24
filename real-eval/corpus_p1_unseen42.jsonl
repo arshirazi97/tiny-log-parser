@@ -1,0 +1,42 @@
+{"id": "ce526d5f6467", "raw": "2015-07-29 17:41:41,649 - INFO  [main:QuorumPeer@959] - initLimit set to 10", "source": "Zookeeper", "stratum": "sparse"}
+{"id": "59de5833c40a", "raw": "Dec 11 00:55:49 LabSZ sshd[20225]: Bad packet length 1819045217. [preauth]", "source": "OpenSSH", "stratum": "sparse"}
+{"id": "284b05778a6c", "raw": "[Tue Nov 29 06:09:53 2005] [error] [client 210.245.233.251] Invalid URI in request GET  HTTP/1.1", "source": "Apache", "stratum": "sparse"}
+{"id": "e5e58c7f495e", "raw": "2015-10-17 22:01:25,583 INFO [Thread-147] org.apache.hadoop.mapreduce.jobhistory.JobHistoryEventHandler: Stopping JobHistoryEventHandler. Size of the outstanding queue size is 0", "source": "Hadoop", "stratum": "sparse"}
+{"id": "78ee24547106", "raw": "2015-07-29 17:42:28,549 - INFO  [QuorumPeer[myid=1]/0:0:0:0:0:0:0:0:2181:Environment@100] - Server environment:java.version=1.7.0_79", "source": "Zookeeper", "stratum": "sparse"}
+{"id": "3e76934a87d7", "raw": "17/05/08 10:44:46 INFO TaskSetManager: Lost task 0.0 in stage 5.0 (TID 8) on executor mesos-slave-21: java.lang.OutOfMemoryError (null) [duplicate 1]", "source": "Spark", "stratum": "sparse"}
+{"id": "6fc3316e75d3", "raw": "Dec 19 15:22:04 LabSZ sshd[11231]: Received disconnect from 58.218.213.45: 11: disconnect [preauth]", "source": "OpenSSH", "stratum": "sparse"}
+{"id": "53708afc21b3", "raw": "20171224-15:32:58:336|Step_ReportController|30002312|FAILED_ERROR_DATA", "source": "HealthApp", "stratum": "sparse"}
+{"id": "9923992f51ab", "raw": "17/05/08 12:28:59 ERROR python.PythonRunner: This may have been caused by a prior exception:", "source": "Spark", "stratum": "sparse"}
+{"id": "87f073baca8c", "raw": "2015-07-29 17:41:41,680 - INFO  [main:QuorumPeer@429] - currentEpoch not found! Creating with a reasonable default of 0. This should only happen when you are upgrading your installation", "source": "Zookeeper", "stratum": "sparse"}
+{"id": "c6ebda6273b8", "raw": "2015-07-30 23:43:24,000 - INFO  [SessionTracker:SessionTrackerImpl@162] - SessionTrackerImpl exited loop!", "source": "Zookeeper", "stratum": "sparse"}
+{"id": "64bfff5560e5", "raw": "17/05/08 12:45:42 WARN TaskSetManager: Lost task 0.1 in stage 5.1 (TID 17, mesos-master-1): ExecutorLostFailure (executor 3 exited caused by one of the running tasks) Reason: Container marked as failed: container_1485248649253_0076_02_000004 on host: mesos-master-1. Exit status: 52. Diagnostics: Exception from container-launch.", "source": "Spark", "stratum": "sparse"}
+{"id": "52420685f207", "raw": "20171224-15:32:58:358|Step_StepCounterManager|30002312|initStepCounter : deviceType 1", "source": "HealthApp", "stratum": "sparse"}
+{"id": "3d1510d4f3a0", "raw": "2015-10-17 16:53:15,512 INFO [main] org.apache.hadoop.metrics2.impl.MetricsSystemImpl: Stopping MapTask metrics system...", "source": "Hadoop", "stratum": "sparse"}
+{"id": "bd88a145b0c4", "raw": "2015-07-29 17:41:41,683 - INFO  [main:QuorumPeer@444] - acceptedEpoch not found! Creating with a reasonable default of 0. This should only happen when you are upgrading your installation", "source": "Zookeeper", "stratum": "sparse"}
+{"id": "8b79fd40444e", "raw": "Jun  9 06:06:26 combo kernel: kjournald starting.  Commit interval 5 seconds", "source": "Linux", "stratum": "sparse"}
+{"id": "17c0ab95cd16", "raw": "17/05/08 12:37:40 INFO DAGScheduler: Resubmitting ShuffleMapStage 4 (reduceByKey at pnmf4.py:371) because some of its tasks had failed: 0", "source": "Spark", "stratum": "sparse"}
+{"id": "2069845abac8", "raw": "20171224-15:32:58:333|Step_SPUtils|30002312| getStepsTarget= 10000", "source": "HealthApp", "stratum": "sparse"}
+{"id": "a5aecf421088", "raw": "2015-07-29 17:42:28,551 - INFO  [QuorumPeer[myid=1]/0:0:0:0:0:0:0:0:2181:Environment@100] - Server environment:user.home=/var/lib/zookeeper", "source": "Zookeeper", "stratum": "sparse"}
+{"id": "252954f1748c", "raw": "2015-10-17 21:48:16,712 INFO [main] org.apache.hadoop.mapred.YarnChild: Sleeping for 0ms before retrying again. Got null now.", "source": "Hadoop", "stratum": "sparse"}
+{"id": "3e4516a2876d", "raw": "20171224-15:32:58:380|Step_UploadStaticAlarmUtil|30002312|setActionRestartSensorAlarm=1514131087050", "source": "HealthApp", "stratum": "sparse"}
+{"id": "4dc2f04265c2", "raw": "[Tue Nov 29 06:09:51 2005] [error] uriMap.mapUri() uri must start with /", "source": "Apache", "stratum": "sparse"}
+{"id": "c5482e5bf406", "raw": "081111 033342 18865 INFO dfs.DataNode$DataXceiver: writeBlock blk_1684134505299265593 received exception java.net.NoRouteToHostException: No route to host", "source": "HDFS", "stratum": "rich"}
+{"id": "7ff2010cf5e8", "raw": "[Thu Sep 22 12:48:47 2005] [error] [client 210.245.151.81] Attempt to serve directory: /var/www/html/", "source": "Apache", "stratum": "sparse"}
+{"id": "7e7eda02169a", "raw": "2015-10-19 14:26:45,232 INFO [RMCommunicator Allocator] org.apache.hadoop.mapreduce.v2.app.rm.RMContainerAllocator: Assigned from earlierFailedMaps", "source": "Hadoop", "stratum": "sparse"}
+{"id": "382a83ea422b", "raw": "Nov 22 07:36:45 combo kernel:  [<02143014>] __getblk_slow+0xa1/0xcb", "source": "Linux", "stratum": "sparse"}
+{"id": "73a602a680f6", "raw": "Dec 14 19:46:58 LabSZ sshd[10735]: Received disconnect from 173.239.228.96: 11: Client disconnecting normally [preauth]", "source": "OpenSSH", "stratum": "sparse"}
+{"id": "fbe5bbc86d54", "raw": "2015-07-29 17:42:28,551 - INFO  [QuorumPeer[myid=1]/0:0:0:0:0:0:0:0:2181:Environment@100] - Server environment:os.version=3.16.0-30-generic", "source": "Zookeeper", "stratum": "sparse"}
+{"id": "f7286c43103a", "raw": "Nov 22 07:36:52 combo kernel:  [<02118726>] __call_console_drivers+0x36/0x42", "source": "Linux", "stratum": "sparse"}
+{"id": "13d9d15f36a7", "raw": "17/03/14 21:41:18 INFO executor.CoarseGrainedExecutorBackend: Driver commanded a shutdown", "source": "Spark", "stratum": "sparse"}
+{"id": "70e147f9f23f", "raw": "17/03/28 11:34:18 ERROR LiveListenerBus: SparkListenerBus has already stopped! Dropping event SparkListenerBlockUpdated(BlockUpdatedInfo(BlockManagerId(21, mesos-slave-13, 57719),broadcast_5_piece323,StorageLevel(false, true, false, false, 1),4194304,0,0))", "source": "Spark", "stratum": "sparse"}
+{"id": "0e35634a9447", "raw": "17/03/29 23:40:18 INFO DAGScheduler: ResultStage 8 (count at pnmf_dblp.py:425) failed in 147.881 s", "source": "Spark", "stratum": "sparse"}
+{"id": "942861077f94", "raw": "2015-10-17 21:51:14,311 INFO [Socket Reader #1 for port 32070] org.apache.hadoop.ipc.Server: Socket Reader #1 for port 32070: readAndProcess from client 10.86.164.9 threw exception [java.io.IOException: An existing connection was forcibly closed by the remote host]", "source": "Hadoop", "stratum": "sparse"}
+{"id": "1fa86ea00fb4", "raw": "[Sun Nov 20 14:36:29 2005] [error] [client 219.239.227.58] mod_security: Access denied with code 403. Error reading POST data, error_code=104 [hostname \"63.126.79.67\"] [uri \"/xmlrpc.php\"]", "source": "Apache", "stratum": "sparse"}
+{"id": "c2a02dfdbfd6", "raw": "17/07/27 14:36:10 WARN netty.NettyRpcEnv: Ignored failure: java.io.IOException: Connection from mesos-master-1/10.10.34.11:34641 closed", "source": "Spark", "stratum": "sparse"}
+{"id": "5e95b863bf58", "raw": "20171224-15:32:58:381|Step_DaemonService|30002312|onStartCommand Intent { cmp=com.huawei.health/.manager.DaemonService }", "source": "HealthApp", "stratum": "sparse"}
+{"id": "03c8f8145b41", "raw": "20171230-10:13:22:851|HiH_HiHealthBinder|30002312|getStringHuid() who is com.huawei.health", "source": "HealthApp", "stratum": "sparse"}
+{"id": "f5835227ccc9", "raw": "Jan  4 01:49:54 LabSZ sshd[10794]: Received disconnect from 111.222.107.90: 11: Disconnect requested by Windows SSH Client.", "source": "OpenSSH", "stratum": "sparse"}
+{"id": "30515ccc8ad2", "raw": "2015-07-30 17:52:38,196 - INFO  [CommitProcessor:1:CommitProcessor@150] - CommitProcessor exited loop!", "source": "Zookeeper", "stratum": "sparse"}
+{"id": "ec14a601497d", "raw": "Dec 11 05:59:04 LabSZ sshd[21844]: Received disconnect from 82.209.247.10: 11:  [preauth]", "source": "OpenSSH", "stratum": "sparse"}
+{"id": "2ceafcbb293d", "raw": "Dec 11 00:55:49 LabSZ sshd[20225]: Disconnecting: Packet corrupt [preauth]", "source": "OpenSSH", "stratum": "sparse"}
+{"id": "2686d0b1514d", "raw": "2015-07-30 17:52:38,191 - WARN  [QuorumPeer[myid=1]/0:0:0:0:0:0:0:0:2181:Follower@89] - Exception when following the leader", "source": "Zookeeper", "stratum": "sparse"}

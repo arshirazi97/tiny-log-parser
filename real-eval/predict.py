@@ -72,7 +72,10 @@ def arm_model(rows, args):
 # missing here still runs; it just reports tokens without a dollar figure.
 PRICES = {"google/gemini-3.1-pro-preview": (2.0, 12.0),
           "google/gemini-3.1-pro-preview:batch": (1.0, 6.0),
-          "google/gemini-2.5-pro": (1.25, 10.0)}
+          "google/gemini-2.5-pro": (1.25, 10.0),
+          "anthropic/claude-opus-4.8": (5.0, 25.0),
+          "anthropic/claude-opus-4.8:batch": (2.5, 12.5),
+          "openai/gpt-5.2": (1.75, 14.0)}
 
 
 def arm_gemini(rows, args):

@@ -303,6 +303,111 @@ a Java stack-trace continuation with no timestamp, level or logger position.
 
 ---
 
+## Unseen templates — five arms, and a label defect that ate the result
+
+A 42-line slice of P1 restricted to templates no arm had seen
+(`corpus_p1_unseen42.jsonl`), scored against
+`spotcheck_p1_adjudicated_unseen_template.jsonl`. Two arms are new:
+`anthropic/claude-opus-4.8` and `openai/gpt-5.2`, both given the same
+`SPEC_EVAL` text as the Gemini arm.
+
+Scored as adjudicated, the slice reads:
+
+| arm | six-field | 95% CI |
+|---|---|---|
+| rules | 78.6% | 66.7 – 90.5 |
+| v3 | 76.2% | 64.3 – 88.1 |
+| gemini | 73.8% | 59.5 – 85.7 |
+| claude | 73.8% | 59.5 – 85.7 |
+| gpt | 73.8% | 59.5 – 85.7 |
+
+**Those numbers are wrong, and the cause is the labels, not the arms.** All five
+arms lose on the same 9 rows, every one of them Zookeeper, and on the same
+field — `service`. The adjudicated labels for those 9 contradict **S1b**, the
+project's own rule for a logger nested inside a thread bracket ("take the class
+immediately before `@<line>`"):
+
+```
+bracket                                  gold                  every arm
+main:QuorumPeer@959                      main:QuorumPeer@959   QuorumPeer
+main:QuorumPeer@429                      null                  QuorumPeer
+SessionTracker:SessionTrackerImpl@162    null                  SessionTrackerImpl
+CommitProcessor:1:CommitProcessor@150    null                  CommitProcessor
+QuorumPeer[myid=1]/...:Environment@100   null                  Environment
+```
+
+The labels are not merely wrong, they are **inconsistent with each other**: the
+identical `main:QuorumPeer@<line>` template is labelled with the raw unparsed
+bracket in one row and `null` in two others, and neither is S1b's answer,
+`QuorumPeer`. Rules, v3, gemini, claude and gpt all emit exactly what S1b
+prescribes on all 9, and all five are marked wrong for it.
+
+Repairing the 9 labels to S1b (`spotcheck_p1_unseen42_s1b.jsonl`, which keeps
+the original as `_s1b_was`) gives the corrected table:
+
+| arm | six-field | 95% CI | service halluc. |
+|---|---|---|---|
+| rules | 100.0% | 100 – 100 | 0/4 |
+| v3 | 97.6% | 92.9 – 100 | 0/4 |
+| gemini | 95.2% | 88.1 – 100 | 1/4 |
+| claude | 95.2% | 88.1 – 100 | 0/4 |
+| gpt | 95.2% | 88.1 – 100 | 0/4 |
+
+`service` abstention opportunities drop from 12 to 4 under the repair — the 8
+spurious nulls were the defect.
+
+### `spotcheck_p1_clean33.jsonl` reaches the same place the wrong way
+
+The clean-33 subset drops 9 rows and reports rules at 100.0%. Those 9 rows are
+exactly the 9 Zookeeper rows above — the exclusion is co-extensive with the
+source carrying the defect, and it removes **100% of the rules arm's errors**.
+It lands on the same answer as the repair, which is reassuring, but as a method
+it is a post-hoc filter that deletes a whole system from the corpus and returns
+a perfect score. The S1b repair is the one to use: it keeps all 42 rows and
+keeps Zookeeper in the evaluation. Clean-33 should not be reported.
+
+### The result, stated honestly
+
+**Nothing separates on this slice.** Every pairwise McNemar is p ≥ 0.5 — rules
+vs each LLM is 2 discordant pairs in one direction, p = 0.50; rules vs v3 is 1
+pair, p = 1.0. `100.0%` with a 100–100 bootstrap CI is what zero errors at
+n = 42 looks like, not evidence the parser is exact.
+
+The entire residual gap between rules and the LLM arms is **two rows**, and both
+are contestable label calls rather than clear model failures:
+
+- **Spark** `ResultStage 8 (count at pnmf_dblp.py:425) failed in 147.881 s` —
+  gold `latency_ms: null`; gemini, claude and gpt emit `147881`. F5 excludes a
+  *configured timeout* and a *connection lifetime*; this is neither. It is the
+  measured time of the event the line reports, which is F5's own definition of a
+  latency. **The models look right and the gold looks wrong.**
+- **Apache** `mod_security: Access denied with code 403` — gold
+  `status_code: null`; all four LLMs emit `403`. The schema says "integer HTTP
+  status, or null if not an HTTP event", and this is an Apache *error* log, not
+  an access log. Defensible either way. Note this is a different failure class
+  from the `Invalid URI ... GET  HTTP/1.1` → `400` case above: there the `400`
+  appears nowhere in the line, here the `403` is on it.
+
+Both are left unrepaired and flagged rather than corrected, because unlike S1b
+they are judgment calls, not contradictions of a written rule.
+
+### Claude and GPT are the same system on this task
+
+Across all 42 rows, `claude-opus-4.8` and `gpt-5.2` produce **byte-identical
+values on all six scored fields** — zero discordant pairs. They differ on three
+rows, all in `message`, which the six-field metric excludes and which this label
+file leaves null:
+
+```
+Apache     claude "Invalid URI in request GET  HTTP/1.1"  gpt "... GET HTTP/1.1"
+HealthApp  claude "FAILED_ERROR_DATA"          gpt "30002312 FAILED_ERROR_DATA"
+HealthApp  claude "setActionRestartSensor..."  gpt "30002312|setActionRestart..."
+```
+
+Gemini differs from both on only one scored row. Three frontier models from
+three labs, given the same spec, converge to one output — which is a reason to
+treat "the LLM arm" as a single arm on this task rather than three.
+
 ## Reproducing
 
 ```bash
@@ -313,6 +418,11 @@ python3 v3/build_corpus_p1.py --data loghub2 --out real-eval
 python3 real-eval/score_arms.py --labels real-eval/labels_p1.jsonl   rules
 python3 real-eval/score_arms.py --labels real-eval/spotcheck_p1.jsonl rules
 python3 real-eval/spotcheck_compare.py
+
+# unseen-template slice, five arms, S1b-repaired labels
+python3 real-eval/score_arms.py --labels real-eval/spotcheck_p1_unseen42_s1b.jsonl \
+    rules v3=real-eval/preds_p1_v3.jsonl gemini=real-eval/preds_p1_gemini.jsonl \
+    claude=real-eval/preds_p1_unseen42_claude.jsonl gpt=real-eval/preds_p1_unseen42_gpt.jsonl
 ```
 
 `message` is null in `spotcheck_p1.jsonl` — the spot-check collected only the six
