@@ -35,11 +35,15 @@ including one in the sealed test set. The headline eval set turned out to be
 | corpus | contamination | v3 | gemini-3.1-pro | rules |
 |---|---|---|---|---|
 | `labels_p1` (n=96) | 22% | **99.0%** | 90.6% | 100% |
-| `heldout50` (n=50) | **0%** | **92.0%** | **98.0%** | 100% |
+| `heldout50` (n=50) | **0%** | 92.0% | 98.0% | 100% |
+| `+ demo10` (n=10) | **0%** | 80.0% | 90.0% | 100% |
+| **pooled (n=60)** | **0%** | **90.0%** | **96.7%** | **100%** |
 
 A 15-point swing when the contamination is removed. Every discordant pair (0–3)
-favours Gemini. McNemar p = 0.25 — not significant at n=50, but the direction is
-against the fine-tune.
+favours Gemini. Pooled over all 60 lines: **0 discordant pairs for v3, 4 for
+Gemini, McNemar p = 0.125** — not significant, but every contested line went the
+same way. The two samples were drawn with different weighting, so the pool is
+indicative rather than a single clean experiment.
 
 One confound: the clean corpus is also stratified 5-per-system, which
 over-weights the weakest systems (Proxifier is 10% here vs 1% before). So the whole swing cannot be attributed to contamination. On this corpus v3 loses
