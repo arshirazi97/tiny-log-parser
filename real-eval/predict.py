@@ -54,17 +54,33 @@ def arm_model(rows, args):
         [{"role": "system", "content": SPEC_EVAL}, {"role": "user", "content": r["raw"]}],
         tokenize=False, add_generation_prompt=True, enable_thinking=False) for r in rows]
 
-    out = []
-    for i in range(0, len(prompts), args.batch):
-        enc = tok(prompts[i:i + args.batch], return_tensors="pt",
-                  padding=True).to(model.device)
+    # SPEC_EVAL is ~815 tokens and rides in EVERY prompt, so activation memory
+    # is batch * ~900 tokens regardless of how short the log lines are. A T4
+    # (14.5 GiB) OOMs around batch 32. Rather than make the caller guess the
+    # ceiling for their GPU, halve the batch and retry -- the run completes
+    # slower instead of dying 40 minutes in.
+    def run(chunk):
+        enc = tok(chunk, return_tensors="pt", padding=True).to(model.device)
         with torch.no_grad():
             gen = model.generate(**enc, max_new_tokens=args.max_new,
                                  do_sample=False, pad_token_id=tok.pad_token_id)
-        for o in gen:
-            out.append(parse(tok.decode(o[enc.input_ids.shape[-1]:],
-                                        skip_special_tokens=True)))
-        print(f"  {min(i + args.batch, len(prompts))}/{len(prompts)}", flush=True)
+        return [parse(tok.decode(o[enc.input_ids.shape[-1]:],
+                                 skip_special_tokens=True)) for o in gen]
+
+    out, batch, i = [], args.batch, 0
+    while i < len(prompts):
+        chunk = prompts[i:i + batch]
+        try:
+            out += run(chunk)
+        except torch.OutOfMemoryError:
+            torch.cuda.empty_cache()
+            if batch == 1:
+                raise
+            batch = max(1, batch // 2)
+            print(f"  OOM -- retrying at batch {batch}", flush=True)
+            continue
+        i += len(chunk)
+        print(f"  {i}/{len(prompts)}", flush=True)
     return out
 
 
