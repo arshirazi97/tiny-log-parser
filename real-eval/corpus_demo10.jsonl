@@ -1,0 +1,10 @@
+{"id": "d37b6116e91b", "raw": "17/06/09 20:10:54 INFO executor.Executor: Finished task 0.0 in stage 7.0 (TID 285). 2667 bytes result sent to driver", "source": "Spark", "stratum": "in-dist-demo10"}
+{"id": "55f190ac1d8c", "raw": "Jul  7 16:33:52 combo ftpd[13520]: connection from 202.82.200.188 () at Thu Jul  7 16:33:52 2005", "source": "Linux", "stratum": "in-dist-demo10"}
+{"id": "8162501ebd5f", "raw": "2015-10-18 18:01:51,963 INFO [main] org.mortbay.log: jetty-6.1.26", "source": "Hadoop", "stratum": "in-dist-demo10"}
+{"id": "6aa93010ed9c", "raw": "2015-10-18 18:01:51,806 INFO [IPC Server listener on 62260] org.apache.hadoop.ipc.Server: IPC Server listener on 62260: starting", "source": "Hadoop", "stratum": "in-dist-demo10"}
+{"id": "1b660ec2367a", "raw": "[Sun Dec 04 06:16:51 2005] [notice] jk2_init() Found child 32437 in scoreboard slot 7", "source": "Apache", "stratum": "in-dist-demo10"}
+{"id": "3643266b9bd5", "raw": "081111 044700 19 INFO dfs.FSDataset: Deleting block blk_-1046472716157313227 file /mnt/hadoop/dfs/data/current/subdir62/blk_-1046472716157313227", "source": "HDFS", "stratum": "in-dist-demo10"}
+{"id": "bdfe9a3e551e", "raw": "Dec 10 10:57:36 LabSZ sshd[25068]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=183.62.140.253  user=root", "source": "OpenSSH", "stratum": "in-dist-demo10"}
+{"id": "1559d222e807", "raw": "Jul 17 21:23:20 combo ftpd[25042]: connection from 82.68.222.194 (82-68-222-194.dsl.in-addr.zen.co.uk) at Sun Jul 17 21:23:20 2005", "source": "Linux", "stratum": "in-dist-demo10"}
+{"id": "264609460ce7", "raw": "2015-07-29 19:27:27,928 - INFO  [/10.10.34.12:3888:QuorumCnxManager$Listener@493] - Received connection request /10.10.34.12:56057", "source": "Zookeeper", "stratum": "in-dist-demo10"}
+{"id": "998ceee853bd", "raw": "17/06/09 20:10:56 INFO storage.MemoryStore: Block broadcast_28_piece0 stored as bytes in memory (estimated size 5.6 KB, free 409.8 KB)", "source": "Spark", "stratum": "in-dist-demo10"}
