@@ -29,10 +29,23 @@ QUOTA = {
 SEED = 20260820
 
 # --- template signature: collapse variable content so near-identical lines dedupe
+_DAY = r'Mon|Tue|Wed|Thu|Fri|Sat|Sun'
+_MON = r'Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec'
+
 _SIG = [
     (re.compile(r'\b(?:\d{1,3}\.){3}\d{1,3}\b'), '<IP>'),
     (re.compile(r'\b[0-9a-fA-F]{8,}\b'), '<HEX>'),
     (re.compile(r'\b\d+\b'), '<N>'),
+    # A textual month is timestamp CONTENT, not template structure. Without
+    # this, `[Thu Jun 09 ...] [notice] Digest: done` and
+    # `[Thu Jan 26 ...] [notice] Digest: done` sign differently and a
+    # same-template pair crosses the train/eval boundary undetected. It cost
+    # 16 of the 96 P1 in-distribution lines before it was caught.
+    # Only masked adjacent to a day number, so the word "May" in prose and a
+    # service called "Mar" are left alone.
+    (re.compile(rf'\b(?:{_DAY})\s+(?:{_MON})\b(?=\s+<N>)'), '<DATE>'),
+    (re.compile(rf'\b(?:{_MON})\b(?=\s+<N>)'), '<DATE>'),
+    (re.compile(rf'\b(?:{_DAY})\b(?=\s+<DATE>)'), '<DAY>'),
     (re.compile(r'/[\w./\-]+'), '<PATH>'),
     (re.compile(r'\s+'), ' '),
 ]
